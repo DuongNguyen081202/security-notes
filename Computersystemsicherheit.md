@@ -82,3 +82,13 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
 <img width="541" height="257" alt="Bildschirmfoto 2025-10-07 um 10 53 53" src="https://github.com/user-attachments/assets/ef318ba2-ac8b-4ea3-bd4a-108dff4852ab" />
 
 <img width="539" height="247" alt="Bildschirmfoto 2025-10-07 um 10 55 29" src="https://github.com/user-attachments/assets/ff798999-8976-4fa0-8841-f81628158493" />
+---
+**Kryptographische Hashfunktionen** $H: \{0,1\}^\* \to \{0,1\}^n$
+- Eingabe: Nachricht beliebiger Länge
+- Ausgabe: fixe Länge
+- 3 Sicherheitsdefinitionen:
+  + Preimage resistance: gegeben h ist es schwer m zu finden, so dass H(m) = h
+  + Second Preimage resistance: gegeben m ist es schwer m´ ≠ m zu finden, so dass h:= H(m) = H(m´)
+  + Collision resistance: es ist schwer, m und m´ zu finden, so dass h:= H(m) = H(m´)
+ 
+### Message Authentication codes
