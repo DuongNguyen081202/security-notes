@@ -107,3 +107,4 @@ und mit Nachricht unterschiedlicher Länge, aber es ist nicht sicher, da den Tag
 
 <img width="548" height="173" alt="Bildschirmfoto 2025-10-07 um 14 48 11" src="https://github.com/user-attachments/assets/d0133b39-9acc-439b-9cd9-122da1ca955c" />
 
+Wir anwenden stattdessen HMAC für die Nachrichten beliebiger Länge. die Schritte sind: 1. Berechne y = H(m) der langen Nachricht m mit Hilfe von hashfunktion; 2. Berechne MAC
