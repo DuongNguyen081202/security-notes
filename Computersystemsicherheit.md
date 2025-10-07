@@ -85,12 +85,25 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
 
 ---
 
-**Kryptographische Hashfunktionen** $H: \{0,1\}^\* \to \{0,1\}^n$
+**Kryptographische Hashfunktionen** $H: \ {0,1\}^\* \to \{0,1\}^n$
 - Eingabe: Nachricht beliebiger Länge
 - Ausgabe: fixe Länge
 - 3 Sicherheitsdefinitionen:
   + Preimage resistance: gegeben h ist es schwer m zu finden, so dass H(m) = h
-  + Second Preimage resistance: gegeben m ist es schwer m´ ≠ m zu finden, so dass h:= H(m) = H(m´)
-  + Collision resistance: es ist schwer, m und m´ zu finden, so dass h:= H(m) = H(m´)
+  + Second Preimage resistance: gegeben m ist es schwer m´ ≠ m zu finden, so dass h := H(m) = H(m´)
+  + Collision resistance: es ist schwer, m und m´ zu finden, so dass h := H(m) = H(m´)
  
-### Message Authentication codes
+### Message Authentication Codes (MACs)
+- Für Erhaltung Integrität und Vertraulichkeit der Nachricht
+- Algorithmen: (gen, Mac, Vrfy)
+
+   <img width="480" height="85" alt="Bildschirmfoto 2025-10-07 um 14 44 57" src="https://github.com/user-attachments/assets/3368d58e-15f5-4168-8562-8bcd25d2c91e" />
+
+**CBC-MAC**
+
+<img width="386" height="169" alt="Bildschirmfoto 2025-10-07 um 14 46 42" src="https://github.com/user-attachments/assets/5a14d656-cc3a-4ea1-ad13-36b37bd92b93" />
+
+und mit Nachricht unterschiedlicher Länge, aber es ist nicht sicher, da den Tag für die modifizierte Nachricht berechnet werden kann:
+
+<img width="548" height="173" alt="Bildschirmfoto 2025-10-07 um 14 48 11" src="https://github.com/user-attachments/assets/d0133b39-9acc-439b-9cd9-122da1ca955c" />
+
