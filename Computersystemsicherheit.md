@@ -24,21 +24,8 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
 | **Integrität & Authentizität** | <ul><li>CBC-MAC</li><li>HMAC</li></ul>                 | <ul><li>RSA Signaturen</li><li>Schnorr Signaturen</li></ul>          |
 
 **Symmetrische Kryptographie**
-```mermaid
-%%{init: {"securityLevel":"loose","flowchart":{"htmlLabels":true}} }%%
-flowchart LR
-    A["Klartext <i style='color:#c00'>m</i>"] --> ENC["Verschlüsselung"]
-    ENC --> Ctxt["Chiffretext <i style='color:#c00'>c</i>"]
-    Ctxt --> DEC["Entschlüsselung"]
-    DEC --> Mout["<i style='color:#c00'>m</i>"]
 
-    Key[Gen] -->|"Geheimer Schlüssel <i style='color:#c00'>k</i>"| ENC
-    Key -->|"Geheimer Schlüssel <i style='color:#c00'>k</i>"| DEC
-
-    classDef box fill:#ffffff,stroke:#000,rx:6,ry:6,color:#111;
-    class A,ENC,Ctxt,DEC,Mout,Key box;
-    linkStyle default interpolate basis
-```
+<img width="586" height="109" alt="Bildschirmfoto 2025-10-07 um 14 17 00" src="https://github.com/user-attachments/assets/18b9a3d1-06f9-422a-8850-2fb72e37cf7d" />
 
 **Sicherheitsspiel**
 1. IND-CPA: Angreifer darf so viele Nachrichten verschlüsseln lassen, wie es will. Aber die Gewinnwahrscheinlichkeot des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
@@ -57,19 +44,8 @@ flowchart LR
 - Ver- und Entschlüsselung von Nachrichten/Chiffretextblöcken mit fixer Länge
 - Blocklänge n =|m|=|c|: häufig 64-128 Bits
 - Schlüssellänge k: häufig 128-256 Bits
-```mermaid
-flowchart LR
 
-  %% --- Verschlüsselung ---
-    M1["Nachricht M (n bits)"] --> E["Enc"]
-    E --> C1["Chiffretext C (n bits)"]
-    K1["Schlüssel K (k bits)"] --> E
-
-  %% --- Entschlüsselung ---
-    C2["Chiffretext C (n bits)"] --> D["Dec"]
-    D --> M2["Nachricht M (n bits)"]
-    K2["Schlüssel K (k bits)"] --> D
-```
+<img width="648" height="156" alt="Bildschirmfoto 2025-10-07 um 14 15 11" src="https://github.com/user-attachments/assets/f40499c1-899e-4104-9f1f-b229eb8fc96e" />
 
 **Data Encryption Standard (DES)** 
 - Blocklänge n= 64 Bits
@@ -77,22 +53,9 @@ flowchart LR
 
 **Triple DES**
 - Schlüssellänge: 3*56= 168 Bits
-```mermaid
-flowchart LR
-    direction TB
-    D1[DES]
-    K0[K0] --> D1
 
-    direction TB
-    D2[DES⁻¹]
-    K1[K1] --> D2
+<img width="610" height="70" alt="Bildschirmfoto 2025-10-07 um 14 15 38" src="https://github.com/user-attachments/assets/c481110b-55c0-44cc-945a-62e95857bc89" />
 
-    direction TB
-    D3[DES]
-    K2[K2] --> D3
-
-  M["M ∈ {0,1}^64"] --> D1 --> D2 --> D3 --> C["C ∈ {0,1}^64"]
-```
 - This Modell kann mit MitM Angriff attackiert werden, oder mit Seite-Kanal-Angriffe und Fehlerangriffe.
 - Probleme:
   + Nicht IND-CPA sicher
