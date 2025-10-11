@@ -95,7 +95,7 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
  
 ### Message Authentication Codes (MACs)
 - Für Erhaltung Integrität und Vertraulichkeit der Nachricht
-- Algorithmen: (gen, Mac, Vrfy)
+- Algorithmen: (Gen, Mac, Vrfy)
 
    <img width="480" height="85" alt="Bildschirmfoto 2025-10-07 um 14 44 57" src="https://github.com/user-attachments/assets/3368d58e-15f5-4168-8562-8bcd25d2c91e" />
 
@@ -103,8 +103,21 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
 
 <img width="386" height="169" alt="Bildschirmfoto 2025-10-07 um 14 46 42" src="https://github.com/user-attachments/assets/5a14d656-cc3a-4ea1-ad13-36b37bd92b93" />
 
-und mit Nachricht unterschiedlicher Länge, aber es ist nicht sicher, da den Tag für die modifizierte Nachricht berechnet werden kann:
+und mit Nachricht unterschiedlicher Länge, aber es ist nicht sicher, da der Tag für die modifizierte Nachricht berechnet werden kann:
 
 <img width="548" height="173" alt="Bildschirmfoto 2025-10-07 um 14 48 11" src="https://github.com/user-attachments/assets/d0133b39-9acc-439b-9cd9-122da1ca955c" />
 
 Wir anwenden stattdessen HMAC für die Nachrichten beliebiger Länge. die Schritte sind: 1. Berechne y = H(m) der langen Nachricht m mit Hilfe von hashfunktion; 2. Berechne MAC
+
+**Authentifizierte Verschlüsselung** kombinieren Verschlüsselung und Integritätsschutz, um Ziele: Vertraulichkeit, Integrität, und Authentizität der Nachricht zu gewährleisten.
+1. Encrypt-then-MAC
+   1. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m)$ (nonce hier kann auch IV sein)
+   2. Authentisieren: t= $\mathrm{MAC}_{k_M}(\text{AAD} || c)$
+   - Sende: (nonce, c, t)
+   - Empfang: Tag prüfen, und entschlüsseln nur bei Erfolg
+   - Probleme: anfällig für Padding/Timing- Orakel in bestimmten Modi (TLS-CBC: Lucky-13, Padding-Orakel); IND-CCA sicher durch Authentifizierung
+2. Mac-then-Encrypt:
+   1. Authentisieren: t= $\mathrm{MAC}_{k_M}(\text{m})$
+   2. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m||t)$
+   - Sende: (nonce, c)
+   - Empfang: Erst entschlüsseln, dann Tag prüfen
