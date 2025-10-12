@@ -24,6 +24,7 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
 | **Integrität & Authentizität** | <ul><li>CBC-MAC</li><li>HMAC</li></ul>                 | <ul><li>RSA Signaturen</li><li>Schnorr Signaturen</li></ul>          |
 
 **Symmetrische Kryptographie**
+- Algorithmen: (Gen, Enc, Dec)
 
 <img width="586" height="109" alt="Bildschirmfoto 2025-10-07 um 14 17 00" src="https://github.com/user-attachments/assets/18b9a3d1-06f9-422a-8850-2fb72e37cf7d" />
 
@@ -44,6 +45,7 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre,
 - Ver- und Entschlüsselung von Nachrichten/Chiffretextblöcken mit fixer Länge
 - Blocklänge n =|m|=|c|: häufig 64-128 Bits
 - Schlüssellänge k: häufig 128-256 Bits
+- Enc(.) hier spielt die Rolle als PRP, so wir schätzen eine Blockschiffre stark oder nicht dadurch ein, ob Schlüsselraum groß genug oder nicht ist. Dies vorstellt uns auch die Sicherheit von Blockschiffre (Angreifer kann nicht zwischen Enc(.) und P(.) unterscheiden).
 
 <img width="648" height="156" alt="Bildschirmfoto 2025-10-07 um 14 15 11" src="https://github.com/user-attachments/assets/f40499c1-899e-4104-9f1f-b229eb8fc96e" />
 
@@ -121,3 +123,19 @@ Wir anwenden stattdessen HMAC für die Nachrichten beliebiger Länge. die Schrit
    2. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m||t)$
    - Sende: (nonce, c)
    - Empfang: Erst entschlüsseln, dann Tag prüfen
+
+**Asysmmetrische Kryptographie**
+- Es gibt stattdessen ein Schlüsselpaar (pk, sk), dies macht es möglich, dass kein Schlüsselaustausch notwendig ist, dies folgt auch, dass nur n Schlüsselpaare gebraucht sind, statt <sup>n(n-1)</sup>/<sub>2</sub>
+- Algorithmen: (Gen, Enc, Dec)
+
+<img width="585" height="127" alt="Bildschirmfoto 2025-10-12 um 02 37 43" src="https://github.com/user-attachments/assets/5065defd-1f10-4c18-9206-f1dff4a986e1" />
+
+**RSA Verschlüsselung**
+1. RSA Schlüsselerzeugung: GenRSA(n) mit Sicherheitsparameter n
+   - Wähle 2 n.bit *Primzahlen* p, q mit p ≠ q
+   - Berechne N= p*q
+   - Wähle e> 1, sodass ggT(e, 𝝋(N)) = 1
+   - Berechne d = $\{e\}^\{-1\}$ mod𝝋(N); 𝝋(N) =(p-1)(q-1)
+   - Ausgabe: (N,e,d) = GenRSA(n)
+     
+   
