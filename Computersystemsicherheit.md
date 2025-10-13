@@ -132,10 +132,24 @@ Wir anwenden stattdessen HMAC für die Nachrichten beliebiger Länge. die Schrit
 
 **RSA Verschlüsselung**
 1. RSA Schlüsselerzeugung: GenRSA(n) mit Sicherheitsparameter n
-   - Wähle 2 n.bit *Primzahlen* p, q mit p ≠ q
+   - Wähle 2 n-bit *Primzahlen* p, q mit p ≠ q
    - Berechne N= p*q
    - Wähle e> 1, sodass ggT(e, 𝝋(N)) = 1
    - Berechne d = $\{e\}^\{-1\}$ mod𝝋(N); 𝝋(N) =(p-1)(q-1)
    - Ausgabe: (N,e,d) = GenRSA(n)
      
-   
+   <img width="273" height="180" alt="Bildschirmfoto 2025-10-12 um 02 50 24" src="https://github.com/user-attachments/assets/9b6389df-14b0-45fe-ae6b-3c6e622eec64" />
+
+2. RSA Annahmen:
+   1. d ist benögtigt, um die Invertierung der RSA Funktion zu berechnen
+   2. y ist zufällig in $\{Z\}^\{+\}_\{N\}$
+   3. Gegebn (N, e, y) ist es schwierig x zu berechnen, so dass z ≡ $\{x\}^\{e\}$ mod N
+- **Homomorphe Verschlüsselung**: Verschlüsselungsverfahren heißt (multiplikativ) homomorph, wenn $\mathrm{Enc}(\mathsf{pk}, m_0)\cdot \mathrm{Enc}(\mathsf{pk}, m_1)
+= \mathrm{Enc}(\mathsf{pk}, m_0\cdot m_1).$
+  - Textbuch RSA ist homomorph, da $(m_0^{\,e} \bmod N)\cdot (m_1^{\,e} \bmod N)
+\equiv (m_0\cdot m_1)^{e} \pmod N.$
+- Diese Verschlüsselung ist deterministisch, so damit Textbuch RSA nicht mehr deterministisch wird, tragen wir Zufälligkeit in Encoding-Schritt ein, und Format wird geprüft in Decoding-Schritt. Dies nennen wir **RSA OAEP**:
+
+  <img width="552" height="275" alt="Bildschirmfoto 2025-10-12 um 19 44 58" src="https://github.com/user-attachments/assets/a9a4a87a-a586-4854-a2d5-26a00fbe5b0f" />
+
+Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alternative Verschlüsselungsverfahren. Nächste betrachten wir das **Elgamal Verfahren**
