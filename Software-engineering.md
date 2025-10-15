@@ -25,7 +25,7 @@
 
 *Requirement types*
   - User requirements:
-    + services ecpected to be provided by the system
+    + services expected to be provided by the system
     + operational contraints
   - System requirements:
     + determine the system interface; define solution space
