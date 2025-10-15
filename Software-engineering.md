@@ -36,8 +36,8 @@
     + specify system behavior in specific situations
   - Non-functional requirements:
     + contraints on the services or functions offered by the systen, including: Service-level agreement, Contraints from development process, Alignment to standards
-  - Doamin requirements:
-  - + derived from application domain
+  - Domain requirements:
+   + derived from application domain
    
 *Loop of requirements elicitation and analysis*:
   1. requirements discovery
