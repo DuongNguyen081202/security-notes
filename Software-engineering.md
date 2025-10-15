@@ -237,15 +237,15 @@ classDiagram
          
 *Automated Test Case Generation (ATCG)*
   1. White box (code-based): code of Implementation under test (IUT) is analyzed to achieve coverage, ex.,
-    - syntactic approaches:
-     + scanning for conditions, evaluation
-     + suitable to achieve logic-based coverage criteria
-     + can be over-approximation: unreach code, infeasible decisions
-    - symbolic execution:
-     + unwinding CFG with symbolic values
-     + suitable to achieve structural coverage criteria
-     + can be under-approximation: unreached code
-  3. Black box: analysis of input data or model of IUT
+     - syntactic approaches:
+       + scanning for conditions, evaluation
+       + suitable to achieve logic-based coverage criteria
+       + can be over-approximation: unreach code, infeasible decisions
+      - symbolic execution:
+        + unwinding CFG with symbolic values
+        + suitable to achieve structural coverage criteria
+        + can be under-approximation: unreached code
+  2. Black box: analysis of input data or model of IUT
 
 *Automatic static verification techniques*
   - Static checking: typically based on CFG of IUT and constraint solving: check runtime exception, liveness, information flow; fully automated; over-approximating and possibly many false positives; scales reasonably well
