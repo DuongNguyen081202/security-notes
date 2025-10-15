@@ -158,11 +158,16 @@ Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alter
   + Gegeben: *zufälliges* h ∈ G
   + Suche: x, sodass $\{g\}^\{x\}$ = h
   + Annahme: diskreten Logarithmus zu finden ist schwer für geeignete Gruppe G
-  + Andere Varianten: CDH- und DDH-Annahme:
-    1. CDH-Annahme: 
+  + Andere Varianten: **CDH- und DDH-Annahme**:
+    1. CDH-Annahme: es ist schwer, $\{g\}^\{xy\}$ zu berechnen
+    2. DDH-Annahme: es ist schwer, zu entscheiden, ob ein T aus $\{g\}^\{xy\}$ kommt oder zufällig ist
 **Schlüsselaustausch**
 1. Diffie-Hellman Schlüsselaustausch:
    <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
+   Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung** eingesetzt: Sie kombiniert einen asymmetrischen Schlüsselaustausch (KEM) mit der effizienten symmetrischen Verschlüsselung der Daten (DEM).
+   - Verschlüsselung: <img width="717" height="287" alt="Bildschirmfoto 2025-10-15 um 17 28 09" src="https://github.com/user-attachments/assets/2cec1d23-6f5a-4d2b-b299-59e5a8c7a796" />
+  - Entschlüsselung: <img width="713" height="288" alt="Bildschirmfoto 2025-10-15 um 17 29 21" src="https://github.com/user-attachments/assets/9304def3-ccf6-48af-895b-1cda90e6dbc6" />
 
-
+**Signaturen**
+```mermaid
 
