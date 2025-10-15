@@ -153,3 +153,16 @@ Wir anwenden stattdessen HMAC für die Nachrichten beliebiger Länge. die Schrit
   <img width="552" height="275" alt="Bildschirmfoto 2025-10-12 um 19 44 58" src="https://github.com/user-attachments/assets/a9a4a87a-a586-4854-a2d5-26a00fbe5b0f" />
 
 Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alternative Verschlüsselungsverfahren. Nächste betrachten wir das **Elgamal Verfahren**
+- Diskrete Logarithmus Annahme:
+  + Setup: zyklische Gruppe G der Ordnung q mit Generator g und q prim
+  + Gegeben: *zufälliges* h ∈ G
+  + Suche: x, sodass $\{g\}^\{x\}$ = h
+  + Annahme: diskreten Logarithmus zu finden ist schwer für geeignete Gruppe G
+  + Andere Varianten: CDH- und DDH-Annahme:
+    1. CDH-Annahme: 
+**Schlüsselaustausch**
+1. Diffie-Hellman Schlüsselaustausch:
+   <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
+
+
+
