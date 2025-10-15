@@ -32,7 +32,7 @@
     + refinement of user requirements
   - Functional requirements:
     + specify services to be provided by the system
-    + specify system reations to dpecific inputs/events
+    + specify system reations to specific inputs/events
     + specify system behavior in specific situations
   - Non-functional requirements:
     + contraints on the services or functions offered by the systen, including: Service-level agreement, Contraints from development process, Alignment to standards
