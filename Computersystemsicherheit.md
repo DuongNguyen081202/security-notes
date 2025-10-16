@@ -109,7 +109,7 @@ und mit Nachricht unterschiedlicher Länge, aber es ist nicht sicher, da der Tag
 
 <img width="548" height="173" alt="Bildschirmfoto 2025-10-07 um 14 48 11" src="https://github.com/user-attachments/assets/d0133b39-9acc-439b-9cd9-122da1ca955c" />
 
-Wir anwenden stattdessen HMAC für die Nachrichten beliebiger Länge. die Schritte sind: 1. Berechne y = H(m) der langen Nachricht m mit Hilfe von hashfunktion; 2. Berechne MAC
+Wir anwenden stattdessen **HMAC** für die Nachrichten beliebiger Länge. die Schritte sind: 1. Berechne y = H(m) der langen Nachricht m mit Hilfe von hashfunktion; 2. Berechne MAC
 
 **Authentifizierte Verschlüsselung** kombinieren Verschlüsselung und Integritätsschutz, um Ziele: Vertraulichkeit, Integrität, und Authentizität der Nachricht zu gewährleisten.
 1. Encrypt-then-MAC
@@ -169,5 +169,18 @@ Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alter
   - Entschlüsselung: <img width="713" height="288" alt="Bildschirmfoto 2025-10-15 um 17 29 21" src="https://github.com/user-attachments/assets/9304def3-ccf6-48af-895b-1cda90e6dbc6" />
 
 **Signaturen**
+*Digitale Signaturen*
 ```mermaid
-
+flowchart LR
+    A[Geheimer Schlüssel sk] --> B[Sig]
+    B --> C[Signatur]
+    C --> D[Ver]
+    E[Öffentlicher Schlüssel] --> D
+    D --> F[1 = `akzeptieren` oder 0 = `verwerfen`]
+```
+- Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: Empfänger bekommt einmal öffentlichen Schlüssel pk von Sender über einen authentifizierte Kanal, dann der Empfänger kann jedes Mal eine neue Signatur aus dem Sender mithilfe von demselben pk prüfen.
+  + Algorithmen: (Gen, Sig, Ver)
+    <img width="595" height="182" alt="Bildschirmfoto 2025-10-15 um 21 42 56" src="https://github.com/user-attachments/assets/f16ca8eb-2528-48a7-a0eb-d36b373673da" />
+  + Sig(sk,m) hängt stark von Nachricht ab, so Angreifer kann keine Signeturen auf neue Nachricht fälschen.
+ 
+Um die Authentizität und Integrität der Nachricht zu prüfen (Angreifer kann keine Signatur auf neue Nachricht fälschen), wenden **UEF-CMA** Sicherheitsspiel an
