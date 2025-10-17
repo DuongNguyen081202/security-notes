@@ -185,4 +185,45 @@ flowchart LR
  
 Um die Authentizität und Integrität der Nachricht zu prüfen (Angreifer kann keine Signatur auf neue Nachricht fälschen), wenden **UEF-CMA** Sicherheitsspiel an
 
-Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen
+Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen**, und **Diskreter-Logarithmus-basiert**; beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
+- Hash-and-Sign-Prinzip ermöglicht das Signieren von beliebig langen Nachrichten, und Hashfunktion trägt zut Sicherheit des Verfahren bei.
+  <img width="1322" height="474" alt="image" src="https://github.com/user-attachments/assets/b6e6eb51-cf32-4487-807c-f9ce0b63c565" />
+1. RSA-basiert Signaturen:
+   - RSA Signieren: hier wird sk = (N,d) verwendet
+     1. Hashe Nachricht m auf H(m)
+     2. Kodiere "kurzen" Hashwert auf RSA-Länge
+     3. "Kern"-Signaturverfahren: wende RSA-Schlüssel $\{(·)\}^\{d\} mod N$ an
+   - RSA Verifizieren: hier wird pk = (N,e) verwendet
+     1. Hashe Nachricht m auf H(m)
+     2. Kodiere "kurzen" Hashwert auf RSA-Länge
+     3. Vergleiche Signatur $\{s\}^\{e\} mode N$ mit Encode(H(m))
+<img width="433" height="210" alt="Bildschirmfoto 2025-10-17 um 02 43 05" src="https://github.com/user-attachments/assets/c72e5563-d6c0-43c0-a935-ec3344a8fbdf" />
+
+2. Diskrete-Logarithmus-basiert Signaturen: hier betrachten wir Schnorr-Signaturen:
+   - Setup:
+     + Gruppe G zyklisch, Primordnung q, Generator g
+     + Schlüssel: privat $\{x\} \in {1,...,q-1}$, öffentlich $\{y\} = \{g\}^\{x\}$
+   - Signieren:
+     1. Wähle *zufällige Nonce k* $\in {1,...,q-1}$
+     2. $\{R\} = \{g\}^\{k\}$, Challenge r = H(R||m)
+     3. s = k + r*x*(mod q)
+     4. Signatur: (r,s)
+   - Verifikation
+     1. $\{R'\} = \{g\}^\{k\}*\{y\}^\{-r\}$
+     2. v = H(R'||m)
+     3. Ausgabe 1 iff v = r, sonst Ausgabe 0
+    
+**Zertifikate**
+1. Zertifizierungshierarchie:
+   ```mermaid
+   flowchart TB
+    root[Root-CA]
+    inter[übergeordnete CA]
+    ca[CA]
+    holder[Schlüsselinhaber]
+
+    root -->|Zertifiziert mittels Signatur| inter
+    inter -->|Zertifiziert mittels Signatur| ca
+    ca -->|Zertifiziert mittels Signatur| holder
+
+  ```
