@@ -308,6 +308,6 @@ Beisiele für **DAC**:
    <img width="590" height="151" alt="Bildschirmfoto 2025-10-17 um 12 44 43" src="https://github.com/user-attachments/assets/ad05fa86-c941-4696-a1a2-2d60810f360d" />
 
 Für **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Vertraulichkeit in Multi-Level Security. Dieses Model regelt die Informationsflüsse in eine Hierarchie: 
-- No-Read-Up Regel: Lesezugriff nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
-- No-Write-Down Regel: Erzeugung von Onjekten nur für Hierarchie ≥ Hierarchie des Subjekts
+- No-Read-Up Regel: Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
+- No-Write-Down Regel: Erzeugung von Onjekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
 So muss jedem Subjekt eine Sicherheitsklasse $ SC(s) \in SC$ zugewiesen (*Clearance*), und jedem Onjekt wird eine Sicherheitsklasse $ SC(o) \in SC$ zugewiesen (*Classification*)
