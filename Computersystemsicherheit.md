@@ -215,7 +215,7 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfu
     
 **Zertifikate**
 1. Zertifizierungshierarchie:
-   ```mermaid
+```mermaid
    flowchart TB
     root[Root-CA]
     inter[übergeordnete CA]
@@ -225,5 +225,15 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfu
     root -->|Zertifiziert mittels Signatur| inter
     inter -->|Zertifiziert mittels Signatur| ca
     ca -->|Zertifiziert mittels Signatur| holder
+```
 
-  ```
+2. Zertifikate revozieren
+   1. Variante 1: Certificate Revocation Lists (CRLs)
+      - Veröffentlicht unterschriebene Liste aller gesperrter Zertifikate
+   2. Online Certificate Status Protocol (OCSP)
+      - Benutzer fragt Gültigkeit eines bestimmten Zertifikats ab
+      - Es gibt viele Vorteile:
+        + Echtzeitabfrage
+        + Kürzer & effizienter
+
+
