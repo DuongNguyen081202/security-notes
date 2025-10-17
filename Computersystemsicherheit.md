@@ -4,7 +4,7 @@
 
 Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 1. Vertrauenlichkeit von Daten/Nachrichten
-2. Integrität von Daten/Beechnungen
+2. Integrität von Daten/Berechnungen
 3. Authentizität von Dateien
 4. Anonzmität von Benutzern
 5. Verfügbarkeit von Dienst
