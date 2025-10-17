@@ -241,8 +241,7 @@ Jetzt unterscheiden wir uns die folgenden Begriffe:
 2. Authentisierung: Identität bestätigen
 3. Autorisierung: bestimmen, was gegenüber machen darf nach bestandener Kontrolle
 
-**3 Faktoren für Authentisierung:**
-# Faktoren zur Authentisierung – Übersicht
+# 3 Faktoren zur Authentisierung – Übersicht
 
 | Faktor (Auth) | Beispiele | Vorteile | Nachteile |
 |---|---|---|---|
