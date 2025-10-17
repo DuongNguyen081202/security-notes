@@ -1,8 +1,15 @@
 **Sicherheit** heißt beide Safety und Security auf Englisch:
 - Safety: gegenüber Fehlern
 - Security: gegenüber böswilligen Handlungen
-  
-Es gibt 3 Ziele der Kryptographie:
+
+Es gibt 5 **Sicherheiteigenschaften** (erweitert):
+1. Vertrauenlichkeit von Daten/Nachrichten
+2. Integrität von Daten/Beechnungen
+3. Authentizität von Dateien
+4. Anonzmität von Benutzern
+5. Verfügbarkeit von Dienst
+   
+Es gibt 3 **Ziele der Kryptographie**, dies kann auch CIA-Triade gennent werden und ist auch die Standard-Kern der Informationssicherheit:
 1. Vertraulichkeit: Angerifer kann Inhalt der Nachrichten nicht lernen
 2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bekannt wird
 3. Authentizität: Angreifer kann nicht bahaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
@@ -274,7 +281,33 @@ Es existiert 2 **Arten von Token**: *Software*- (bsp. Web-Cookies) und *Hardware
   + benötigt vertrauenswürdige Geräte vor Ort
   + oft leicht zu fälschen
 
+**Single-Sign-On (SSO)**
+- Vorteile:
+  + Nur ein Passwort notwendig
+  + Phishing-Attacken schwerer, da einzelne Login-Stelle leichter auf Korrektheit überprüft werden kann
+  + IT-Sicherheitmaßnahmen fokussieren sich auf zentrale Stelle
+ - Nachteil: Verfügbarkeit von Dienst hängt von Verfügbarkeit des SSO ab
+ - Für Authentisierung des SSOs, wenden wir Kerberos Protokoll an.
+   <img width="695" height="144" alt="Bildschirmfoto 2025-10-17 um 12 34 28" src="https://github.com/user-attachments/assets/0f4b5f7b-bd8b-4385-89a5-569348e38e78" />
+
 ## Autorisierung
 - Autorisierung heißt, dass wir die Rechten für jemand auf jede Datei zuweisen werden (Zugriffkontrolle)
 - Schutzziel: Integrität und Vertraulichkeit
+- Es gibt 2 Arten der Autorisierung:
+  1. Rechtfestsetzung:
+     1. Discretionary Access Control (DAC): Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest
+     2. Mandatory Access Control (MAC): Autorität setzt Zugriffsrechte fest
+  2. Granularität der Zuweisung:
+     1. Role-based Acess Control (RBAC): Zugriffsrecht durch Rolle festgelegt 
+     2. Attribute-based Access Control (ABAC): feinere Zugriffsrecht gemäß logischer Formel
 
+Beisiele für **DAC**: 
+1. Acces Matrix Model
+<img width="714" height="159" alt="Bildschirmfoto 2025-10-17 um 12 42 03" src="https://github.com/user-attachments/assets/5b9a8df0-cdd6-48e7-a0a7-b8b0ae06a674" />
+2. Acces Control List
+   <img width="590" height="151" alt="Bildschirmfoto 2025-10-17 um 12 44 43" src="https://github.com/user-attachments/assets/ad05fa86-c941-4696-a1a2-2d60810f360d" />
+
+Für **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Vertraulichkeit in Multi-Level Security. Dieses Model regelt die Informationsflüsse in eine Hierarchie: 
+- No-Read-Up Regel: Lesezugriff nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
+- No-Write-Down Regel: Erzeugung von Onjekten nur für Hierarchie ≥ Hierarchie des Subjekts
+So muss jedem Subjekt eine Sicherheitsklasse $ SC(s) \in SC$ zugewiesen (*Clearance*), und jedem Onjekt wird eine Sicherheitsklasse $ SC(o) \in SC$ zugewiesen (*Classification*)
