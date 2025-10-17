@@ -1,3 +1,7 @@
+**Sicherheit** heißt beide Safety und Security auf Englisch:
+- Safety: gegenüber Fehlern
+- Security: gegenüber böswilligen Handlungen
+  
 Es gibt 3 Ziele der Kryptographie:
 1. Vertraulichkeit: Angerifer kann Inhalt der Nachrichten nicht lernen
 2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bekannt wird
@@ -241,13 +245,14 @@ Jetzt unterscheiden wir uns die folgenden Begriffe:
 2. Authentisierung: Identität bestätigen
 3. Autorisierung: bestimmen, was gegenüber machen darf nach bestandener Kontrolle
 
-# 3 Faktoren zur Authentisierung – Übersicht
+## Authentisierung
+### 3 Faktoren zur Authentisierung – Übersicht
 
 | Faktor (Auth) | Beispiele | Vorteile | Nachteile |
 |---|---|---|---|
 | **Wissen - Was man weiß** | Passwort, PIN | einfach zu ändern; einfach mitnehmbar | kann vergessen werden; leicht zu duplizieren/phishen |
 | **Besitz - Was man hat** | Chipkarte, Hardware-Token| einfach mitnehmbar; nicht leicht zu duplizieren | übertragbar/teilbar; leicht zu stehlen/verlieren |
-| **persönlicher Chrakteristika - Was man ist** | Biometrie: Fingerabdruck, Gesicht| nicht übertragbar; individuell | oft (relativ) fälschbar; unveränderbar bei Leak; Datenschutz/Privacy-Probleme |
+| **biometrische Authentisierung - Was man ist** | Biometrie: Fingerabdruck, Gesicht| nicht übertragbar; individuell | oft (relativ) fälschbar; unveränderbar bei Leak; Datenschutz/Privacy-Probleme |
 
 **Passwortspeicherung**
 1. Naive: einfacher Abgleich mit im Klartext gespeicherten Passwörtern
@@ -256,4 +261,20 @@ Jetzt unterscheiden wir uns die folgenden Begriffe:
 4. Rainbow Table: benutzen Hashfunktion H: Passwort -> Hash und Reduktionsfunktion R: Hash -> Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
 5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speiche H(S||pwd) in Passwort.
 6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten
+
+**Tokens**
+Es existiert 2 **Arten von Token**: *Software*- (bsp. Web-Cookies) und *Hardware*-Token (bsp. Autoschlüssel), ansonsten betrachten wir auch 2 **Eigenschaften von Token**: *statisch* (bsp. einfache Überstragung des Geheimnisses) und *dynamisch* (Berechnung mit Geheimnis zur Authentisierung). Mithilfe von dynamisches Token können wir **Replay-Angriffe** vorbeugen.
+
+**Biometrische Authentisierung**
+- Fehler:
+  + Falsch positiv
+  + Falsch negativ
+- Probleme:
+  + nicht widerrufbar
+  + benötigt vertrauenswürdige Geräte vor Ort
+  + oft leicht zu fälschen
+
+## Autorisierung
+- Autorisierung heißt, dass wir die Rechten für jemand auf jede Datei zuweisen werden (Zugriffkontrolle)
+- Schutzziel: Integrität und Vertraulichkeit
 
