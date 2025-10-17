@@ -236,4 +236,25 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfu
         + Echtzeitabfrage
         + Kürzer & effizienter
 
+Jetzt unterscheiden wir uns die folgenden Begriffe:
+1. Identifizierung: Identität feststellen
+2. Authentisierung: Identität bestätigen
+3. Autorisierung: bestimmen, was gegenüber machen darf nach bestandener Kontrolle
+
+**3 Faktoren für Authentisierung:**
+# Faktoren zur Authentisierung – Übersicht
+
+| Faktor (Auth) | Beispiele | Vorteile | Nachteile |
+|---|---|---|---|
+| **Was man weiß** | Passwort, PIN | einfach zu ändern; einfach mitnehmbar | kann vergessen werden; leicht zu duplizieren/phishen |
+| **Was man hat** | Chipkarte, Hardware-Token| einfach mitnehmbar; nicht leicht zu duplizieren | übertragbar/teilbar; leicht zu stehlen/verlieren |
+| **Was man ist** | Biometrie: Fingerabdruck, Gesicht| nicht übertragbar; individuell | oft (relativ) fälschbar; unveränderbar bei Leak; Datenschutz/Privacy-Probleme |
+
+**Passwortspeicherung**
+1. Naive: einfacher Abgleich mit im Klartext gespeicherten Passwörtern
+2. Verschlüsselung: Speichere Passwärter verschlüsselt, Sever hat zusätzlich Schlüsselpaar (sk, pk). Hier sind die Einwegfunktionen benötigt.
+3. Hashen: Speichere Passwörter als Hash
+4. Rainbow Table: benutzen Hashfunktion H: Passwort -> Hash und Reduktionsfunktion R: Hash -> Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
+5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speiche H(S||pwd) in Passwort.
+6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten
 
