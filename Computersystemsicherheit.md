@@ -5,11 +5,12 @@
 Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 1. Vertrauenlichkeit von Daten/Nachrichten
 2. Integrität von Daten/Berechnungen
-3. Authentizität von Dateien
-4. Anonzmität von Benutzern
-5. Verfügbarkeit von Dienst
+3. Verfügbarkeit von Dienst
+   (CIA-Triad)
+5. Authentizität von Dateien
+6. Anonzmität von Benutzern
    
-Es gibt 3 **Ziele der Kryptographie**, dies kann auch CIA-Triade gennent werden und ist auch die Standard-Kern der Informationssicherheit:
+Kryptographie liefert 3 **Ziele**:
 1. Vertraulichkeit: Angerifer kann Inhalt der Nachrichten nicht lernen
 2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bekannt wird
 3. Authentizität: Angreifer kann nicht bahaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
@@ -107,7 +108,7 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
   + Collision resistance: es ist schwer, m und m´ zu finden, so dass h := H(m) = H(m´)
  
 ### Message Authentication Codes (MACs)
-- Für Erhaltung Integrität und Vertraulichkeit der Nachricht
+- Für Erhaltung Integrität und Authentifizität der Nachricht
 - Algorithmen: (Gen, Mac, Vrfy)
 
    <img width="480" height="85" alt="Bildschirmfoto 2025-10-07 um 14 44 57" src="https://github.com/user-attachments/assets/3368d58e-15f5-4168-8562-8bcd25d2c91e" />
@@ -189,12 +190,12 @@ flowchart LR
     E[Öffentlicher Schlüssel] --> D
     D --> F[1 = `akzeptieren` oder 0 = `verwerfen`]
 ```
-- Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: Empfänger bekommt einmal öffentlichen Schlüssel pk von Sender über einen authentifizierte Kanal, dann der Empfänger kann jedes Mal eine neue Signatur aus dem Sender mithilfe von demselben pk prüfen.
+- Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: einmalig Schlüssel authentisieren => anschließend beliebig viele Nachrichten signiert prüfen.
   + Algorithmen: (Gen, Sig, Ver)
     <img width="595" height="182" alt="Bildschirmfoto 2025-10-15 um 21 42 56" src="https://github.com/user-attachments/assets/f16ca8eb-2528-48a7-a0eb-d36b373673da" />
   + Sig(sk,m) hängt stark von Nachricht ab, so Angreifer kann keine Signeturen auf neue Nachricht fälschen.
  
-Um die Authentizität und Integrität der Nachricht zu prüfen (Angreifer kann keine Signatur auf neue Nachricht fälschen), wenden **UEF-CMA** Sicherheitsspiel an
+Um die Authentizität und Integrität der Nachricht zu prüfen (Angreifer kann keine Signatur auf neue Nachricht fälschen), wenden **EUF-CMA** Sicherheitsspiel an
 
 Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen**, und **Diskreter-Logarithmus-basiert**; beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
 - Hash-and-Sign-Prinzip ermöglicht das Signieren von beliebig langen Nachrichten, und Hashfunktion trägt zut Sicherheit des Verfahren bei.
@@ -207,10 +208,10 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfu
    - RSA Verifizieren: hier wird pk = (N,e) verwendet
      1. Hashe Nachricht m auf H(m)
      2. Kodiere "kurzen" Hashwert auf RSA-Länge
-     3. Vergleiche Signatur $\{s\}^\{e\} mode N$ mit Encode(H(m))
+     3. Vergleiche Signatur $\{s\}^\{e\} mod N$ mit Encode(H(m))
 <img width="433" height="210" alt="Bildschirmfoto 2025-10-17 um 02 43 05" src="https://github.com/user-attachments/assets/c72e5563-d6c0-43c0-a935-ec3344a8fbdf" />
 
-2. Diskrete-Logarithmus-basiert Signaturen: hier betrachten wir Schnorr-Signaturen:
+2. Diskrete-Logarithmus-basiert Signaturen: hier betrachten wir **Schnorr-Signaturen**:
    - Setup:
      + Gruppe G zyklisch, Primordnung q, Generator g
      + Schlüssel: privat $\{x\} \in {1,...,q-1}$, öffentlich $\{y\} = \{g\}^\{x\}$
@@ -220,7 +221,7 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfu
      3. s = k + r*x*(mod q)
      4. Signatur: (r,s)
    - Verifikation
-     1. $\{R'\} = \{g\}^\{k\}*\{y\}^\{-r\}$
+     1. $\{R'\} = \{g\}^\{s\}*\{y\}^\{-r\}$
      2. v = H(R'||m)
      3. Ausgabe 1 iff v = r, sonst Ausgabe 0
     
