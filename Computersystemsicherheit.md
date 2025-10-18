@@ -312,3 +312,8 @@ Für **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Ve
 - No-Read-Up Regel: Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
 - No-Write-Down Regel: Erzeugung von Objekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
 So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (*Clearance*), und jedem Objekt wird eine Sicherheitsklasse $\{SC(o)\} \in \{SC\}$ zugewiesen (*Classification*)
+
+### Netzwerksicherheit
+- Local Area Netzwerk (LAN): Menge an verknüpften lokalen Geräten, die miteinander kommunizieren können
+- Wide Area Netz (WAN): Verbinden mehrer LAN mit Routern
+  <img width="798" height="260" alt="Bildschirmfoto 2025-10-18 um 22 00 43" src="https://github.com/user-attachments/assets/bb4a12aa-5756-43bd-80d4-e40e33d1c7db" />
