@@ -334,18 +334,42 @@ So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (
 
 1. Link Layer:
    - Bietet an: Übertragung zwischen 2 Punkten inklusive Konvertierung in physikalische Signale
-   - Beispiele: Ethernet, WiFi
+   - Beispiele: Ethernet, WiFi, Address Resolution protocol (ARP)
    - Die kommunikation muss beinhalten: Senderadresse, Zieladresse, und Daten
-   - Identifikation: mit MAC Adressen:
+   - Identifikation: mit **MAC Adressen**:
      + 6 Byte Adresse, die jedes netzwerkfähige Gerät im Internat besitzt
      + Weltweit eindeutige Adresse der Hardware (eindeutig pro Netwerkschnittstelle)
      + steht aus: OUI (erste 3 Bytes = Hersteller) + gerätespezifischer Teil (letzte 3 Bytes)
      + Beispiel: 13:37:ca:fe:f0:0d
+   - Angriffe auf Link Layer:
+     Nutzt die Wahrheit, dass manchen LANs Broadcast Kommunikation nutzen, der Angreifer kann zuhören mithilfe von Netzwerkkarte in ``promiscuous mode´´, oder Analyse mit ``Paket Sniffer´´. Ansonsten benutzt Link Layer MAC Adresse für Identifikation, führt dies zu einige Angriffstechniken:
+     1. MACs als Zugrifftechniken: is kein Angriff, aber ein Schwach von Link Layer, weil MAC Adresse leicht spoofbar ist, ansonsten MAC Adrressen sind auch leicht per Software zu ändern
+     2. MAC Flooding: is ein Angriff
 
  2. Internet Layer:
     - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
     - erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
     - Pakete beinhalten: Sender-, Zieladdresse, Daten; Pakete mitgleicher Sender-, Zieladdresse können unterschiedliche Routen nehmen
-      *Internet Protocol (IP)*: is die Protokoll zur Kommunikatio zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
-      - 
-      
+      **Internet Protocol (IP)**:
+      - is die Protokoll zur Kommunikatio zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
+      1. IPv4: 32 Bit Adresse der Form: 120.19.22.00
+      2. IPv6: 128 Bit Adresse der Form: 2607:f140:8801::1:23
+      - Probleme von IP: is **unzuverlässig**:
+        + Pakete können verloren gehen
+        + Pakete können Fehler aufweisen
+        + Pakete können in falscher Ordnung beim Empfänger eintreffen
+  
+       
+3. Transport Layer:
+   - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
+   - Protokolle:
+     # TCP vs. UDP – Übersicht
+
+| Protokoll | Verbindung | Zuverlässigkeit | Reihenfolge | Übertragung/Overhead | Kurzbeschreibung |
+|---|---|---|---|---|---|
+| **TCP** | Verbindungsorientiert (stellt Verbindung zwischen Endpunkten her) | **Zuverlässig** (korrekte Pakete werden bestätigt/neu gesendet) | **Geordnet** (Pakete kommen in korrekter Reihenfolge an) | **Langsamer** (mehr Kontrollmechanismen) | Für zuverlässige, geordnete Datenströme. |
+| **UDP** | Verbindungslos | **Unzuverlässig** (keine Garantie für Zustellung) | **Ungeordnet** (keine Reihenfolge-Garantie) | **Schneller** (weniger Overhead) | Für einfache, latenzkritische Übertragungen. |
+
+4.  Application Layer:
+   - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
+   - Adressierung der Anwendung mittels Ports 
