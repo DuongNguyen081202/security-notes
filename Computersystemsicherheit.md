@@ -345,3 +345,7 @@ So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (
  2. Internet Layer:
     - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
     - erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
+    - Pakete beinhalten: Sender-, Zieladdresse, Daten; Pakete mitgleicher Sender-, Zieladdresse können unterschiedliche Routen nehmen
+      *Internet Protocol (IP)*: is die Protokoll zur Kommunikatio zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
+      - 
+      
