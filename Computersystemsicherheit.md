@@ -314,6 +314,34 @@ Für **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Ve
 So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (*Clearance*), und jedem Objekt wird eine Sicherheitsklasse $\{SC(o)\} \in \{SC\}$ zugewiesen (*Classification*)
 
 ### Netzwerksicherheit
+**WLAN vs. WAN**
 - Local Area Netzwerk (LAN): Menge an verknüpften lokalen Geräten, die miteinander kommunizieren können
 - Wide Area Netz (WAN): Verbinden mehrer LAN mit Routern
   <img width="798" height="260" alt="Bildschirmfoto 2025-10-18 um 22 00 43" src="https://github.com/user-attachments/assets/bb4a12aa-5756-43bd-80d4-e40e33d1c7db" />
+
+**Protokoll**: Vereinbarung wie einzelne Knoten im Netzwerk miteinander kommunizieren:
+- Syntax: Wie ist die Kommunikation strukturiert und spezifiert
+- Semantik: Bedeutung der Kommunikation
+
+**Netwerk-schichtenmodelle**
+1. OSI Modell: Kommunikation zwischen 2 OSI Modell:
+<img width="687" height="323" alt="Bildschirmfoto 2025-10-19 um 13 14 54" src="https://github.com/user-attachments/assets/1cda487c-3b02-4908-9b8c-dac333ebb55e" />
+2. TCP/IP Modell: Kommunikation zwischen 2 TCP/IP Modell:
+   <img width="652" height="324" alt="Bildschirmfoto 2025-10-19 um 13 17 58" src="https://github.com/user-attachments/assets/4c7ada62-c844-4bb0-9c65-635ad4d493c5" />
+
+**Protokolle auf jedem Layer**
+<img width="878" height="318" alt="Bildschirmfoto 2025-10-19 um 13 20 45" src="https://github.com/user-attachments/assets/84f61329-8c11-4d26-9ed3-d855abcec57c" />
+
+1. Link Layer:
+   - Bietet an: Übertragung zwischen 2 Punkten inklusive Konvertierung in physikalische Signale
+   - Beispiele: Ethernet, WiFi
+   - Die kommunikation muss beinhalten: Senderadresse, Zieladresse, und Daten
+   - Identifikation: mit MAC Adressen:
+     + 6 Byte Adresse, die jedes netzwerkfähige Gerät im Internat besitzt
+     + Weltweit eindeutige Adresse der Hardware (eindeutig pro Netwerkschnittstelle)
+     + steht aus: OUI (erste 3 Bytes = Hersteller) + gerätespezifischer Teil (letzte 3 Bytes)
+     + Beispiel: 13:37:ca:fe:f0:0d
+
+ 2. Internet Layer:
+    - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
+    - erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
