@@ -378,10 +378,12 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + Pakete können verloren gehen
         + Pakete können Fehler aufweisen
         + Pakete können in falscher Ordnung beim Empfänger eintreffen
-    - Internet Control Message Protocol (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
+    - **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
+      + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
+      
 3. Transport Layer:
    - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
-   - Protokolle:
+   - Protokolle: TCP, UDP, und QUIC
      # TCP vs. UDP – Übersicht
 
 | Protokoll | Verbindung | Zuverlässigkeit | Reihenfolge | Übertragung/Overhead | Kurzbeschreibung |
