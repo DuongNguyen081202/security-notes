@@ -6,7 +6,7 @@ Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 1. Vertrauenlichkeit von Daten/Nachrichten
 2. Integrität von Daten/Berechnungen
 3. Verfügbarkeit von Dienst
-   (CIA-Triad)
+   (CIA-Triade)
 5. Authentizität von Dateien
 6. Anonzmität von Benutzern
    
