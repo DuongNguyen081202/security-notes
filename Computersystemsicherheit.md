@@ -359,7 +359,12 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
           + Verschlüsselung des Datenverkehrs aufhöheren Schichten (IPSec, TLS) gegen MitM-Angriff
           + Nutzt stattdessen IPv6 für Neighbor Discovery Protocol (NDP)
     
-      4. DHCP Spoofing:
+      4. DHCP Spoofing (Dynamic Host Configuration Protocol Spoofing):
+         - Obwohl DHCP das Protokoll von Applikation Layer: es nutzt UDP (Transport Layer) und initiale Broadcoasts laufen (Link Layer), aber dieser Angriff nutzt die Schwachstelle auf Link Layer ausnutzen: der Client muss zuerst via Broadcast Anfrage nach Konfiguration schicken, DHCP-Server kann Client ein Angebot für Konfiguration machen (bsw., IP-Adresse, Gateway, usw.) - hier kann auch Angreifer eigenes Angebot schicken, weiterhin wählt Client Angebot des Angreifers, denn er kann unehrliche/ehrliche Angebote nicht unterscheiden. Am Ende ausgewählter Server bestätigt Konfiguration. Zusammenfassung: DHCP Spoofing ist der **Angriff auf Link Layer, der Auswirkungen auf den Internet Layer** hat: Der Angreifer gibt sich im Link Layer als DHCP-Server aus, wodurch Clients falsche IP-, Gateway- und DNS-Einstellungen (Internet Layer) erhalten.
+         - Gegenmaßnahmen:
+           + Monitoring, IDS
+           + DHCP Snooping
+           + Verwendung von Schutzmechanism aus höheren Ebenen
 
  2. Internet Layer:
     - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
@@ -373,8 +378,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + Pakete können verloren gehen
         + Pakete können Fehler aufweisen
         + Pakete können in falscher Ordnung beim Empfänger eintreffen
-  
-       
+    - Internet Control Message Protocol (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
 3. Transport Layer:
    - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
    - Protokolle:
@@ -387,4 +391,14 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
 
 4.  Application Layer:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
-   - Adressierung der Anwendung mittels Ports 
+   - Adressierung der Anwendung mittels Ports
+   - Protokoll für Routing: Border Gateway Protokoll (BGP)
+     + Jedes AS teilt seine aktuellen Routen mit seinen Nachbarn
+     + Metrik für Paket Routing:
+       1. Länge des Präfix
+       2. Bei mehreren Routen zum selben Ziel wird die kürzeste Route gewählt
+     + BGP Hijacking: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen
+       - Gegenmaßnahmen:
+         1. Überwachung des Internetverkehrs
+         2. RIR speichern wem welche Präfixe gehören
+         3. Nutzen Resource Public Key Infrastructure (RPKI): Kryptographische Absicherung von BGP Bekanntmachungen
