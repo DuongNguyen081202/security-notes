@@ -381,12 +381,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + Pakete können in falscher Ordnung beim Empfänger eintreffen
     - **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
       + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
-    - Angriffe:
-      1. TCP Hijacking: ist ein Angriff, darin Angreifer eine bestehende TCP Besitzung manipuliert (Daten ändern oder einschleusen); es geben 2 Arten:
-         1. Dateninjektion: Spoofing von Datenpaketen, um schädliche Daten in eine Verbindung einzuschleusen. Für Spoofing muss Angreifer INS des Absender kennen. Normalerweise geben es 2 Arten von Angreifer:
-            1. On-path-Angreifer: Verhältnismäßig einfach (Race-Condition)
-            2. Off-Path-Angreifer: 32-Bit-ISN erraten
-         2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden
+    
 3. Transport Layer:
    - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
    - Protokolle: TCP, UDP, und QUIC
@@ -415,7 +410,17 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + ist eine öglichkeit, eine Verbindung zu beenden
         + erfordert keine Bestätigung (ACK)
         + es werden keine Pakete mehr gesendet und empfangen
-      
+   - Angriffe:
+      1. TCP Hijacking: ist ein Angriff, darin Angreifer eine bestehende TCP Besitzung manipuliert (Daten ändern oder einschleusen); es geben 2 Arten:
+         1. Dateninjektion: Spoofing von Datenpaketen, um schädliche Daten in eine Verbindung einzuschleusen. Für Spoofing muss Angreifer INS des Absender kennen. Normalerweise geben es 2 Arten von Angreifer:
+            1. On-path-Angreifer: Verhältnismäßig einfach (Race-Condition)
+            2. Off-Path-Angreifer: 32-Bit-ISN erraten
+            - Gegenmaßnahmen:
+              + Nutze Protokolle in höherer Schicht, um Angriffe zu verhindern
+              + Zufällige Wahl der ISN schützt vor Off-Path Angreifer
+         2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden. Es wird manchmal von Zensur- oder Filter-Systeme benutzt; ein Dritter fälscht ein TCP-Segment mit RST-Flag, so beide Enpunkte glauben, der Peer habe die Verbindung zurückgestzt, führt dazu, dass Verbindung abbricht (DoS-Angriff)
+       2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (DoS Angriff)
+          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reserviert: \[ \text{SeqNr\_S} := H(k_s, \text{SeqNr\_C}, \text{IP\_C}, \text{Port\_C}) \]. So nur wenn \[ \text{SeqNr\_S +1} := H(k_s, \text{SeqNr\_C}, \text{IP\_C}, \text{Port\_C}) +1 \] dann wird Speicher reserviert.
 4.  Application Layer:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
    - Adressierung der Anwendung mittels Ports
