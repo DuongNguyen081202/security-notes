@@ -420,7 +420,21 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
               + Zufällige Wahl der ISN schützt vor Off-Path Angreifer
          2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden. Es wird manchmal von Zensur- oder Filter-Systeme benutzt; ein Dritter fälscht ein TCP-Segment mit RST-Flag, so beide Enpunkte glauben, der Peer habe die Verbindung zurückgestzt, führt dazu, dass Verbindung abbricht (DoS-Angriff)
        2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (DoS Angriff)
-          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reserviert: \[ \text{SeqNr\_S} := H(k_s, \text{SeqNr\_C}, \text{IP\_C}, \text{Port\_C}) \]. So nur wenn \[ \text{SeqNr\_S +1} := H(k_s, \text{SeqNr\_C}, \text{IP\_C}, \text{Port\_C}) +1 \] dann wird Speicher reserviert.
+          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren:
+
+$$
+\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})
+$$
+
+So, nur wenn
+
+$$
+\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C}) + 1,
+$$
+
+dann wird Speicher reserviert.
+
+
 4.  Application Layer:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
    - Adressierung der Anwendung mittels Ports
@@ -434,4 +448,4 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
          1. Überwachung des Internetverkehrs
          2. RIR speichern wem welche Präfixe gehören
          3. Nutzen Resource Public Key Infrastructure (RPKI): Kryptographische Absicherung von BGP Bekanntmachungen
-
+    - Angriffe: 
