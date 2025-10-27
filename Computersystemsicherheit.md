@@ -395,6 +395,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
      + TCP teilt beim Sender die Nachricht in kleinere Pakete auf und setzt diese beim Empfönger wieder zusammen
      + Verwendung von **Sequenznummern**, um Ordnung beim Empfänger wieder herzustellen; jeder TCP-Verbindung erfordert 2 Arten von Sequenznummnern: isn für Nachrichten vom Client an den Server (client_isn) und isn für Nachrichten vom Server an den Client (server_isn) und ISNs ist zufällig für jede neue Verbindung für Verhinderung von TCP hijacking)
      + Empfänger antwortet mit Empfangsbestätigung **ACK**. Wenn ACK nicht beim Sender eintrifft, sender das Paket erneut
+     + Weiterhin gibt es ein kryptografisches Protokoll oberhalb von TCP: TLS, das per Handshake Sitzungsschlüssel aushandelt und danach Anwendungsadten vertraulich und integritätgeschützt überträgt
      Datenübertragung mit TCP:
        <img width="636" height="292" alt="Bildschirmfoto 2025-10-25 um 22 28 52" src="https://github.com/user-attachments/assets/270876a6-a61b-4df9-8a26-c151faa7f07e" />
    - TCP Flags:
@@ -438,14 +439,38 @@ dann wird Speicher reserviert.
 4.  Application Layer:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
    - Adressierung der Anwendung mittels Ports
+   - Protokolle:
+     1. HTTP/HTTPS: Transport von Web-Inhalten
+        + HTTP: über TCP 80, zustandlos
+        + HTTPS: HTTP über TLS, meist TCP 443
+     2. DNS/DNSSEC: Namensauflösung
+        + DNS: über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
+        + DNSSEC: Signiert DNS-Records für Integrität und Authentizität
+     3. SMTP: E-Mail-Übertragung: über Ports 25 (Server nach Server), 587 (Submission mit STATTLS), und 465 (SMTPS/ TLS-wrapped)
    - Protokoll für Routing: Border Gateway Protokoll (BGP)
      + Jedes AS teilt seine aktuellen Routen mit seinen Nachbarn
      + Metrik für Paket Routing:
        1. Länge des Präfix
        2. Bei mehreren Routen zum selben Ziel wird die kürzeste Route gewählt
      + BGP Hijacking: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen
-       - Gegenmaßnahmen:
+        * Gegenmaßnahmen:
          1. Überwachung des Internetverkehrs
          2. RIR speichern wem welche Präfixe gehören
          3. Nutzen Resource Public Key Infrastructure (RPKI): Kryptographische Absicherung von BGP Bekanntmachungen
-    - Angriffe: 
+   - Hier werden wir genauer betrachten, was TLS ist:
+     + Dies ermöglicht sichere Kommunikationskanäle für das Internet:
+       * Vertraulichkeit: Angreifer kann Kommunikation nicht mitlesen
+       * Integrität: Verhindert Abänderung der Kommunikation
+       * Authentizität: Client komuniziert mit dem legitimen Server
+     + Der Aufbau von TLS:
+       * Handshake:
+         + ist Aushandlung kryptographischer Verfahren/Parameter
+         + Authentikation Etabilierung eines Sitzungsschlüssels k
+         + geben es 3 Handshake-Familien:
+           1. Ephemeral Diffie-Hellman (TLS-DHE)
+           2. Static Diffie-Hellman (TLS-DH)
+           3. RSA Verschlüsselung (TLS-RSA)
+       * Record Layer: Dateverschlüsselung und Authentifizierung mit Schlüssel k
+         <img width="471" height="112" alt="Bildschirmfoto 2025-10-27 um 10 40 34" src="https://github.com/user-attachments/assets/fa06e7cb-0f3a-43e1-87ba-b3535a9c7131" />
+      + Cipher Suites: gehören zu TLS, legen fest, mit welchen Algorihmen eine TLS-Verbindung arbeitet. Es gibt Unterschied unter die Versions von TLS,a aber allgemein bestimmt eine Cipher Suite: Schlüsselaustausch, Authentisierung/Signaturverfahren, Verschlüsselung, Integrität, Hashfunktion
+     
