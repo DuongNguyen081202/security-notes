@@ -421,19 +421,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
               + Zufällige Wahl der ISN schützt vor Off-Path Angreifer
          2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden. Es wird manchmal von Zensur- oder Filter-Systeme benutzt; ein Dritter fälscht ein TCP-Segment mit RST-Flag, so beide Enpunkte glauben, der Peer habe die Verbindung zurückgestzt, führt dazu, dass Verbindung abbricht (DoS-Angriff)
        2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (DoS Angriff)
-          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren:
-
-$$
-\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})
-$$
-
-So, nur wenn
-
-$$
-\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C}) + 1,
-$$
-
-dann wird Speicher reserviert.
+          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren: $\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})$. So, nur wenn $\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\\mathrm{Port\_C}) + 1,$ dann wird Speicher reserviert.
 
 
 4.  Application Layer:
@@ -486,3 +474,9 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         + MiTM-Angreifer modifiziert die SSL 3.0 ClientHello Nachricht, sodass sie wie ein SSL 2.0 ClientHello aussieht. Dies zwingt den Server angreifbares SSL 2.0 zu benutzen
         + Gegenmaßnahmen: Im Padding bei RSA-Ciphersuites integriert der Client eine SSL-Versionsnummer, der Server wird dann prüfen, ob die Versionsnummer korrekt ist
      4. Bleichenbachers Angriff auf TLS-RSA
+        - TLS-RSA wendet RSA-PKCS#1 v1.5 Encryption an (vor TLS 1.3)
+        - RSA-PKCS#1 v1.5 Encryption:
+          1. Sei pre_master_secret (pms) ein Bit String (46 zufällige Bytes + 2 Buyte Versionsnr.
+          2. m := pad(pms) := 0x00 || 0x02 || random || 0x00 || pms
+          3. $c_{\text{PKCS}} \;=\; \text{Enc}_{\text{RSA}}(e,m) \;:=\; m^{e} \bmod n$
+
