@@ -470,7 +470,19 @@ dann wird Speicher reserviert.
            1. Ephemeral Diffie-Hellman (TLS-DHE)
            2. Static Diffie-Hellman (TLS-DH)
            3. RSA Verschlüsselung (TLS-RSA)
+         + Beispiel für TLS-DHE Handshake (vereinfacht):
+           <img width="738" height="317" alt="Bildschirmfoto 2025-10-27 um 15 15 26" src="https://github.com/user-attachments/assets/56aa6f8f-df38-493b-a425-2925d3ae726a" />
+$\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MAC), der die Integrität von übertragenen Daten schützt
        * Record Layer: Dateverschlüsselung und Authentifizierung mit Schlüssel k
          <img width="471" height="112" alt="Bildschirmfoto 2025-10-27 um 10 40 34" src="https://github.com/user-attachments/assets/fa06e7cb-0f3a-43e1-87ba-b3535a9c7131" />
       + Cipher Suites: gehören zu TLS, legen fest, mit welchen Algorihmen eine TLS-Verbindung arbeitet. Es gibt Unterschied unter die Versions von TLS,a aber allgemein bestimmt eine Cipher Suite: Schlüsselaustausch, Authentisierung/Signaturverfahren, Verschlüsselung, Integrität, Hashfunktion
-     
+   - Angriffe:
+     1. Cipher Suite Rollback Angriff:
+        + ein MiTM.Angreifer ändert die Liste der Cipher Suites in der ClientHello Nachricht
+        + er löscht alle starken Cipher Suites, so muss der Server eine chwache Cipher Suite wählen
+     2. ChangeCipherSpec Message Drop Angriff: angrifft auf SSL 2.0 oder vorige Versionen:
+        + der MiTM-Angreifer fängt die ChangCipherSpec Nachrichten ab und verwirft sie, dann werden sie niemals auf verschlüsselte Übertragung umgeschltet, alle Daten werden dann im Klartext übertragen
+     3. Version Rollback Angriff:
+        + MiTM-Angreifer modifiziert die SSL 3.0 ClientHello Nachricht, sodass sie wie ein SSL 2.0 ClientHello aussieht. Dies zwingt den Server angreifbares SSL 2.0 zu benutzen
+        + Gegenmaßnahmen: Im Padding bei RSA-Ciphersuites integriert der Client eine SSL-Versionsnummer, der Server wird dann prüfen, ob die Versionsnummer korrekt ist
+     4. Bleichenbachers Angriff auf TLS-RSA
