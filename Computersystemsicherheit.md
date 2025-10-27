@@ -479,4 +479,19 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
           1. Sei pre_master_secret (pms) ein Bit String (46 zufällige Bytes + 2 Buyte Versionsnr.
           2. m := pad(pms) := 0x00 || 0x02 || random || 0x00 || pms
           3. $c_{\text{PKCS}} \;=\; \text{Enc}_{\text{RSA}}(e,m) \;:=\; m^{e} \bmod n$
+         <img width="604" height="295" alt="Bildschirmfoto 2025-10-27 um 16 17 36" src="https://github.com/user-attachments/assets/2584e764-7264-4258-ada6-757868052a1d" />
+         Genauer: <img width="473" height="183" alt="Bildschirmfoto 2025-10-27 um 16 17 55" src="https://github.com/user-attachments/assets/9f8aa0eb-2ac7-4cd7-8574-9f0945b4405a" />
+        - Gegenmaßnahmen: aber kann nicht ganz gegen anderen Angriffen
+          + Wählen neues Premaster-Secret, wenn Padding von pms nicht korrekt
+          + ein wenig mehr Zieet für Extra-Schritt (Constannt-Time Implementation)
+      5. Der Crime Angriff: *C*ompression *R*atio *I*nfo-leak *M*ade *E*asy Angriff; ist der Angriff auf Verschlüsselung + Kompression, um HTTP Cookies aus dem Browser wobei Cookies für Webseiten dienne zu klauen.
+         - Voraussetzung:
+           1. Client greift auf unsichere Verbindung zu und macht Anfrage auf korrekter Webseiten
+           2. Kann verschlüsselte Kommunikation abhören
+         - Schritte:
+           + Bösartiges Javascript wzingt das Opfer, zahlweiche Anfragen zu senden
+           + Angreifer kontrolloert Teile der Anfragedaten
+           + Angreifer beobachtet die Größe der komprimierten Anfragen
+           + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
+
 
