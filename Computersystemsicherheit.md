@@ -8,7 +8,7 @@ Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 3. Verfügbarkeit von Dienst
    (CIA-Triade)
 5. Authentizität von Dateien
-6. Anonzmität von Benutzern
+6. Anonymität von Benutzern
    
 Kryptographie liefert 3 **Ziele**:
 1. Vertraulichkeit: Angerifer kann Inhalt der Nachrichten nicht lernen
