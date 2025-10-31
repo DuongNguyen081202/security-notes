@@ -97,6 +97,7 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
 
 <img width="539" height="247" alt="Bildschirmfoto 2025-10-07 um 10 55 29" src="https://github.com/user-attachments/assets/ff798999-8976-4fa0-8841-f81628158493" />
 
+- Zufälliges IV kommt aus einer randomisierte Zählfunktion, was einen Zufallswert und eine natürliche Zahl auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Bỉnärdarstellung der natürlich Zahl mit 0-Padding
 ---
 
 **Kryptographische Hashfunktionen** $H: \ {0,1\}^\* \to \{0,1\}^n$
