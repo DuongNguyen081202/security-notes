@@ -64,17 +64,26 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
 **Data Encryption Standard (DES)** 
 - Blocklänge n= 64 Bits
 - Schlüssellänge k= 56 Bits
+- Ciphertextslänge c= 64 Bits
+- Hauptschwachpunkt: kurzer Schlüsssel
 
 **Triple DES**
 - Schlüssellänge: 3*56= 168 Bits
 
 <img width="610" height="70" alt="Bildschirmfoto 2025-10-07 um 14 15 38" src="https://github.com/user-attachments/assets/c481110b-55c0-44cc-945a-62e95857bc89" />
+- angreifbar mit MitM Angriff.
 
-- This Modell kann mit MitM Angriff attackiert werden, oder mit Seite-Kanal-Angriffe und Fehlerangriffe.
-- Probleme:
-  + Nicht IND-CPA sicher
+**Advanced Encryption Standard (AES)**
+ - Schlüssellänge: 128, 192 oder 256 Bits
+ - Block-Größe: 128 Bits
+ - ist mit Seiten-Kanal-Angriffe oder Fehleerangriffe angreifbar.
+  
+
+- Probleme von Blockschiffren:
+  + Nicht IND-CPA sicher, weil es deterministisch ist
   + Nicht möglich Nachrichten beliebiger Länge zu verschlüsseln
- 
+
+  
 ### Modes of Operation
 **Electronic Code Book (ECB) Modus**
 
@@ -82,7 +91,6 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
 
 - Der Klartext muss um ein Padding eingefügt werden, wenn |m| kein Vielfaches der Blocklänge ist
 - Dieses Modus ist deterministisch
-
 
 **Cipher Block Chaining (CBC) Modus**
 
