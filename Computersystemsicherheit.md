@@ -97,7 +97,12 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
 
 <img width="539" height="247" alt="Bildschirmfoto 2025-10-07 um 10 55 29" src="https://github.com/user-attachments/assets/ff798999-8976-4fa0-8841-f81628158493" />
 
-- Zufälliges IV kommt aus einer randomisierte Zählfunktion, was einen Zufallswert und eine natürliche Zahl auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Bỉnärdarstellung der natürlich Zahl mit 0-Padding
+- Nonce kommt aus einer randomisierte Zählfunktion, was einen Zufallswert (Nonce) und eine natürliche Zahl (Counter) auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Binärdarstellung der natürlich Zahl mit 0-Padding (LSB- oder MSB-Kodierung). **Problem** ist, dass ein randomisierter Zähler kann nie injektiv sein, so soll man die Periode so lang wie möglich wählen.
+  
+- Die Länge von der Kombination von Nonce und Counter hängt von der Größe des Blocks. diese Länge definiert den maximale Werte von Nonce und Counter.
+  
+- **Nonce vs. IV**: Nonce wird benutzt, da CTR nur Einzigartigkeit benögtigt, Nonce kann auch deterministisch sein (-> uniqueness matters), aber IV betonnt auch die Unvorhersagbarkeit (-> unpredicablity matters). So Nonce verhindert die Wiederverwendung von Schlüsselströmen, während IV das Durchsickern von Informationen aus gewähltern Klartext verhindert.
+  
 ---
 
 **Kryptographische Hashfunktionen** $H: \ {0,1\}^\* \to \{0,1\}^n$
