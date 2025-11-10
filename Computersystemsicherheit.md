@@ -488,7 +488,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         + MiTM-Angreifer modifiziert die SSL 3.0 ClientHello Nachricht, sodass sie wie ein SSL 2.0 ClientHello aussieht. Dies zwingt den Server angreifbares SSL 2.0 zu benutzen
         + Gegenmaßnahmen: Im Padding bei RSA-Ciphersuites integriert der Client eine SSL-Versionsnummer, der Server wird dann prüfen, ob die Versionsnummer korrekt ist
      4. Bleichenbachers Angriff auf TLS-RSA
-        - TLS-RSA wendet RSA-PKCS#1 v1.5 Encryption an (vor TLS 1.3)
+        - Ausnutzen die Fakt, dass TLS-RSA RSA-PKCS#1 v1.5 Encryption anwendet (vor TLS 1.3)
         - RSA-PKCS#1 v1.5 Encryption:
           1. Sei pre_master_secret (pms) ein Bit String (46 zufällige Bytes + 2 Buyte Versionsnr.
           2. m := pad(pms) := 0x00 || 0x02 || random || 0x00 || pms
@@ -497,13 +497,13 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
          Genauer: <img width="473" height="183" alt="Bildschirmfoto 2025-10-27 um 16 17 55" src="https://github.com/user-attachments/assets/9f8aa0eb-2ac7-4cd7-8574-9f0945b4405a" />
         - Gegenmaßnahmen: aber kann nicht ganz gegen anderen Angriffen
           + Wählen neues Premaster-Secret, wenn Padding von pms nicht korrekt
-          + ein wenig mehr Zieet für Extra-Schritt (Constannt-Time Implementation)
+          + ein wenig mehr Zeit für Extra-Schritt (Constannt-Time Implementation)
       5. Der Crime Angriff: *C*ompression *R*atio *I*nfo-leak *M*ade *E*asy Angriff; ist der Angriff auf Verschlüsselung + Kompression, um HTTP Cookies aus dem Browser wobei Cookies für Webseiten dienne zu klauen.
          - Voraussetzung:
            1. Client greift auf unsichere Verbindung zu und macht Anfrage auf korrekter Webseiten
            2. Kann verschlüsselte Kommunikation abhören
          - Schritte:
-           + Bösartiges Javascript wzingt das Opfer, zahlweiche Anfragen zu senden
+           + Bösartiges Javascript zwingt das Opfer, zahlweiche Anfragen zu senden
            + Angreifer kontrolloert Teile der Anfragedaten
            + Angreifer beobachtet die Größe der komprimierten Anfragen
            + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
