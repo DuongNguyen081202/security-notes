@@ -409,7 +409,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
      + TCP teilt beim Sender die Nachricht in kleinere Pakete auf und setzt diese beim Empfönger wieder zusammen
      + Verwendung von **Sequenznummern**, um Ordnung beim Empfänger wieder herzustellen; jeder TCP-Verbindung erfordert 2 Arten von Sequenznummnern: isn für Nachrichten vom Client an den Server (client_isn) und isn für Nachrichten vom Server an den Client (server_isn) und ISNs ist zufällig für jede neue Verbindung für Verhinderung von TCP hijacking)
      + Empfänger antwortet mit Empfangsbestätigung **ACK**. Wenn ACK nicht beim Sender eintrifft, sender das Paket erneut
-     + Weiterhin gibt es ein kryptografisches Protokoll oberhalb von TCP: TLS, das per Handshake Sitzungsschlüssel aushandelt und danach Anwendungsadten vertraulich und integritätgeschützt überträgt
+     + Weiterhin gibt es ein kryptografisches Protokoll oberhalb von TCP: TLS (Transport Layer Security), das per Handshake Sitzungsschlüssel aushandelt und danach Anwendungsadten vertraulich und integritätgeschützt überträgt
      Datenübertragung mit TCP:
        <img width="636" height="292" alt="Bildschirmfoto 2025-10-25 um 22 28 52" src="https://github.com/user-attachments/assets/270876a6-a61b-4df9-8a26-c151faa7f07e" />
    - TCP Flags:
@@ -437,7 +437,6 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
        2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (DoS Angriff)
           - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren: $\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})$. So, nur wenn $\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\\mathrm{Port\_C}) + 1,$ dann wird Speicher reserviert.
 
-
 4.  Application Layer:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
    - Adressierung der Anwendung mittels Ports
@@ -446,7 +445,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + HTTP: über TCP 80, zustandlos
         + HTTPS: HTTP über TLS, meist TCP 443
      2. DNS/DNSSEC: Namensauflösung
-        + DNS: über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
+        + DNS (Domain Name System): über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
         + DNSSEC: Signiert DNS-Records für Integrität und Authentizität
      3. SMTP: E-Mail-Übertragung: über Ports 25 (Server nach Server), 587 (Submission mit STATTLS), und 465 (SMTPS/ TLS-wrapped)
    - Protokoll für Routing: Border Gateway Protokoll (BGP)
@@ -459,7 +458,8 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
          1. Überwachung des Internetverkehrs
          2. RIR speichern wem welche Präfixe gehören
          3. Nutzen Resource Public Key Infrastructure (RPKI): Kryptographische Absicherung von BGP Bekanntmachungen
-   - Hier werden wir genauer betrachten, was TLS ist:
+   - Hier werden wir genauer betrachten, was **TLS** ist:
+     + TLS ist ein Sicherheitsprotokoll, das oberhalb von TCP arbeitet und oft als Teil der Anwendungsshicht betrachtet wird
      + Dies ermöglicht sichere Kommunikationskanäle für das Internet:
        * Vertraulichkeit: Angreifer kann Kommunikation nicht mitlesen
        * Integrität: Verhindert Abänderung der Kommunikation
@@ -478,11 +478,23 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        * Record Layer: Dateverschlüsselung und Authentifizierung mit Schlüssel k
          <img width="471" height="112" alt="Bildschirmfoto 2025-10-27 um 10 40 34" src="https://github.com/user-attachments/assets/fa06e7cb-0f3a-43e1-87ba-b3535a9c7131" />
       + Cipher Suites: gehören zu TLS, legen fest, mit welchen Algorihmen eine TLS-Verbindung arbeitet. Es gibt Unterschied unter die Versions von TLS,a aber allgemein bestimmt eine Cipher Suite: Schlüsselaustausch, Authentisierung/Signaturverfahren, Verschlüsselung, Integrität, Hashfunktion
-   - Angriffe:
+   - DNS:
+     + Schritte:
+       - Rechner muss IP von Webseite suchen
+       - DNS Server kennt entweder IP-Adresse oder fragt Root-Server zu zuständigem Name-Server
+       - DNS Server antwortet den Rechner die IP-Adresse der Webseite
+       - Rechner speichert IP-Adresse lokal
+      + DNS Adress Records:
+     
+| Name | Type | Class | TTL | RDLength | RData |
+|------|------|--------|-----|-----------|-------|
+| Fully Qualified Domain Name | Datentypbezeichner | Klassenbezeichner | Time to Live – Verfallsdatum | Länge des Data-Felds in Bytes | Der im Record abgelegte Wert zum Schlüssel |<img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
+
+   - Angriffe: (1-5 sind auf TLS)
      1. Cipher Suite Rollback Angriff:
-        + ein MiTM.Angreifer ändert die Liste der Cipher Suites in der ClientHello Nachricht
-        + er löscht alle starken Cipher Suites, so muss der Server eine chwache Cipher Suite wählen
-     2. ChangeCipherSpec Message Drop Angriff: angrifft auf SSL 2.0 oder vorige Versionen:
+        + ein MiTM-Angreifer ändert die Liste der Cipher Suites in der ClientHello Nachricht
+        + er löscht alle starken Cipher Suites, so muss der Server eine schwache Cipher Suite wählen
+     2. ChangeCipherSpec Message Drop Angriff: grifft auf SSL 2.0 oder vorige Versionen an:
         + der MiTM-Angreifer fängt die ChangCipherSpec Nachrichten ab und verwirft sie, dann werden sie niemals auf verschlüsselte Übertragung umgeschltet, alle Daten werden dann im Klartext übertragen
      3. Version Rollback Angriff:
         + MiTM-Angreifer modifiziert die SSL 3.0 ClientHello Nachricht, sodass sie wie ein SSL 2.0 ClientHello aussieht. Dies zwingt den Server angreifbares SSL 2.0 zu benutzen
@@ -505,8 +517,39 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            3. Compression vor Verschlüsselung ist aktiviert
          - Schritte:
            + Bösartiges Javascript zwingt das Opfer, zahlweiche Anfragen zu senden
-           + Angreifer kontrolloert Teile der Anfragedaten
-           + Angreifer beobachtet die Größe der komprimierten Anfragen
+           + Angreifer kontrolliert Teile der Anfragedaten
+           + Angreifer beobachtet die Größe der komprimierten Anfragen, während der Veränderung des schickenden Text bis das verrateten Text zu Geheimnis passt (komprimierte Text wird kürzer)
            + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
-
-
+         - Gegenmaßnahme: TLS 1.3 oder höher (kein Kompression mehr)
+      6. DNS Cache Poisoning & Spoofing:
+         1. Cache Poisoning Angriff: Angerifer speichert bösartige DNS Records bei einem DNS Server
+            - Cache des DNS Servers wird dann vergiftet durch
+            - DNS nutzt UDO und keine Verifikation der Authentizität
+          2. Cache Spoofing Angriff: ermöglicht durch Cache Poisoning Angriff: Anfragen an eine Domäne werden an die IP-Adresse des Angreifers weitergeleitet (da DNS Server falsche Daten speichert)
+           - Gegenmaßnahmen:
+             + Bailiwick-Überprüfung: der Resolver akzeptiert nur Records von Nameservern, die für angefragte Zone verantwortlich sind
+             + DNSSEC
+       7. DNS Reflection Angriff: ein Art von DDoS Angriff, macht Endsystem/Zwischensystemen überlastet
+          - Funktionsweise:
+            + Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Addresse DNS-Anfragen an Server
+            + Amplification: Anworten von Server an Opfer sind deutlich größer als Anfragen
+          - Gegenmaßnahmen:
+            1. Opfer-seitig:
+               - Kapazitätsreserven an Netz und Systemen bereitstellen
+               - Filterung von gespooften IP-Paketen (aufwändig)
+            2. Gegen Missbrauchter DNS-Dienst:
+               - Minimierung der Antwortgröße, um Amplification-Fakto
+               - Filterung von gespooften IP-Paketen
+            3. Gegen den Angreifer:
+               - Eliminierung von Paketen mit gespoofter IP-Adresse im Ursprungsnetzwerke
+               - Stilllegung von Botnetzen
+       9. DNS Tunneling:
+          - verdecktes Übertragen von beliebigen Daten über DNS-Anfragen, damit die folgenden möglich werden:
+            + Extraktion von ausspionierten Informationen aus einem kompromitierten Netzwerk
+            + Umgehung von Netzsperren und Firewalls
+            + Verdeckte Kommunikation von Bots mit ihrem Master
+          - Funktionsweise:
+            + Angreifer setzt autoritativen Server und Domain als Endpunkt auf
+            + Client codiert Daten in angefragten Namen
+            + Resolver leiten Daten an autoritaativen Server weiter
+          - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
