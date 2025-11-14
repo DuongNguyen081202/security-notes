@@ -599,3 +599,12 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
 - Wardriving: ist das GPS-gestützte Aufspüren und Kartieren von WLANs durch passives/halb-aktives Scannen, ist primär zur Bestandsaufnahme, kann aber auch zur Angriffsvorbereitung missbraucht werden.
 
 ### Websicherheit
+**Web**
+- World Wide Web (WWW): ist eine Anwendung im Internet; eine Sammlung von Webservern, und daruaf zugegriffen mit Webbrowsern
+- Bausteine des Webs:
+  1. eindeutige Identifizierung von Daten und Dienste mit *Uniform Resource Locator (URL)*
+  2. Kommunikation zwischen Browser und Server, um Daten auszutauschen: *Hypertext Transfer Protocol (HTTP)*
+  3. Bestandteilen, daraus eine Webseite besteht:
+     1. Hypertext Markup Language (HTML): ist Auszeichnungssprache, um statische Webseiten zu erstellen
+     2. Cascading Style Sheets (CSS): Stylesheet-Sprache, um Aussehen einer Webseite zu definieren
+     3. JavaScript (JS): Skriptsprache, die vom Browser ausgeführt wird und somit dynamische Webseite ermöglicht
