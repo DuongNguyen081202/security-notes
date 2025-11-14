@@ -342,7 +342,7 @@ So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (
 2. TCP/IP Modell: Kommunikation zwischen 2 TCP/IP Modell:
    <img width="652" height="324" alt="Bildschirmfoto 2025-10-19 um 13 17 58" src="https://github.com/user-attachments/assets/4c7ada62-c844-4bb0-9c65-635ad4d493c5" />
 
-**Protokolle auf jedem Layer**
+### Protokolle auf jedem Layer
 <img width="878" height="318" alt="Bildschirmfoto 2025-10-19 um 13 20 45" src="https://github.com/user-attachments/assets/84f61329-8c11-4d26-9ed3-d855abcec57c" />
 
 1. Link Layer:
@@ -561,7 +561,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             + Resolver leiten Daten an autoritaativen Server weiter
           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
          
-## WLAN Sicherheit
+### WLAN Sicherheit
 - Typische Komponenten eines WLAN Netwerkes:
   + Access point: ein Gerät, das die Verbindung zum Netwerk ermöglicht
   + SSID - service set identifier: Name des WLAN Netwerkes
@@ -585,9 +585,17 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Rogue Access Point: Aangreifer gibt sich als Access Point aus, und führt das Handshake mit eigener Nonce durch: MitM-Angriff. Aber Angreifer braucht Kenntnis des Passworts.
       2. WPA3:
          - SEA (Simultaneous Authentication of Equals/Dragonfly) Schlüsselaustausch: ist DH-Schlüsselaustausch + Ableitung des Generators von Passwort. Es verhindert Offline Dictionary Attacks, und bietet Forward Secrecy, aber anfällig für ARP oder DHCP Spoofing
+         -  Sicherheitsratschläge sind mit Vorsicht zu genießen:
+           + Veränderung der IP-Adresse des Routers
+           + Filterung von MAC-Adressen
+           + Unterdrückung von SSID-Beacons
+           + Einschränkung der Reichweite des WLANs
          - WPA3 Enterprise Version:
            + Client baut über Access Point Verbindung zu Authentifizierungsservice auf
            + Service authentifiziert sich über digitales Zertifikat
            + Client authentifiziert sich mit eigenem Username und Passwort
            + Service verteilt frischen one-time key
+             
+- Wardriving: ist das GPS-gestützte Aufspüren und Kartieren von WLANs durch passives/halb-aktives Scannen, ist primär zur Bestandsaufnahme, kann aber auch zur Angriffsvorbereitung missbraucht werden.
 
+### Websicherheit
