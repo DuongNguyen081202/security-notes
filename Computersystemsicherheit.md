@@ -78,7 +78,6 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
  - Block-Größe: 128 Bits
  - ist mit Seiten-Kanal-Angriffe oder Fehleerangriffe angreifbar.
   
-
 - Probleme von Blockschiffren:
   + Nicht IND-CPA sicher, weil es deterministisch ist
   + Nicht möglich Nachrichten beliebiger Länge zu verschlüsseln
@@ -561,3 +560,34 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             + Client codiert Daten in angefragten Namen
             + Resolver leiten Daten an autoritaativen Server weiter
           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
+         
+## WLAN Sicherheit
+- Typische Komponenten eines WLAN Netwerkes:
+  + Access point: ein Gerät, das die Verbindung zum Netwerk ermöglicht
+  + SSID - service set identifier: Name des WLAN Netwerkes
+  + Password (optional): um Kommunikation abzusichern
+- WLAN Verschlüsselung:
+  1. Ziele:
+     - Jeder mmit dem WLAN-Passwort kann dem Netzwerk beitreten
+     - Ohne Kenntnis des Passworts können Nachrichten nicht mitgelesen werden
+   2. Versionen von WLAN Verschlüsselung:
+      1. WPA2:
+         - verwendet AES
+         - Angriffe:
+           + Wörterbuchattacke
+           + Rogue Access Point: Angreier kann sich selbst als Access Point ausgeben
+           + KRACKATTACK: Fehler im Standard führt zum Resseten von kryptographischen Variablen bei Replay von Nachrichten
+         - nutzt Handshake: damit Client und Access Point gemeinsame Schlüssel zum Schutz der Kommunikation anleitet
+           <img width="277" height="427" alt="Bildschirmfoto 2025-11-12 um 04 42 04" src="https://github.com/user-attachments/assets/ad7ed1ff-2eb8-49cb-8c54-34f14023262a" />
+           optimiert: WPA2 4-way Handshake:<img width="275" height="424" alt="Bildschirmfoto 2025-11-12 um 05 08 52" src="https://github.com/user-attachments/assets/b9c81d86-2c32-4df7-86ea-a1a61073a661" />
+         - Angriffe auf Handshake:
+           + Offline brute-force attack: nutzt einmaligen Mitschnitt von Kommunikation, um Sicherheit offline zu brechen (sichtbare Nonce mithören)
+           + Rogue Access Point: Aangreifer gibt sich als Access Point aus, und führt das Handshake mit eigener Nonce durch: MitM-Angriff. Aber Angreifer braucht Kenntnis des Passworts.
+      2. WPA3:
+         - SEA (Simultaneous Authentication of Equals/Dragonfly) Schlüsselaustausch: ist DH-Schlüsselaustausch + Ableitung des Generators von Passwort. Es verhindert Offline Dictionary Attacks, und bietet Forward Secrecy, aber anfällig für ARP oder DHCP Spoofing
+         - WPA3 Enterprise Version:
+           + Client baut über Access Point Verbindung zu Authentifizierungsservice auf
+           + Service authentifiziert sich über digitales Zertifikat
+           + Client authentifiziert sich mit eigenem Username und Passwort
+           + Service verteilt frischen one-time key
+
