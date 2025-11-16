@@ -670,13 +670,16 @@ Wie wir wissen, dass HTTP zustandlos ist (es ist nur ein Anfrage-Antwort Protoko
   + wann Cookie zu Anfrage hinzugefügt wird
   + Ob JS verbieten auf den Cookie zuzugreifen
   + Ab wann ist der Cookie nicht mehr gültig
+Beispiel:
+<img width="252" height="191" alt="Bildschirmfoto 2025-11-16 um 15 42 44" src="https://github.com/user-attachments/assets/77d944bf-c9c7-454b-b24b-6259502eacf8" />
+
 - Erstellung eines Cookies:
-  + Server kann in HTTP Response den Header "wet-cookie" setzen
+  + Server kann in HTTP Response den Header "set-cookie" setzen
   + JS kann Cookie erzeugen
   + Manuelle Erzeugung im Browser ist möglich
 - Speicherung eines Cookies: Browser speichert die Cookies
 - Senden eines Cookies:
-  + Browser fügt Cookies automatisch in jeder Anfrage hinzu
+  + Browser fügt Cookies automatisch zu jeder Anfrage an die entsprechende Domain hinzu
   + Server kann gesendete Informationen dann verarbeiten und nutzen
  
 Ablauf der Sendung eines Cookies:
@@ -684,6 +687,6 @@ Ablauf der Sendung eines Cookies:
 - Sicherheitsrisiken:
   + Webserver darf nicht Cookies für andere Webser setzen
   + Cookies dürfen nicht an falsche Adressarten gesendet werden
-- Cookie Policy: ist eine Menge an Regeln, antwortet die folgende Frage:
+- Cookie Policy: ist eine Menge an Regeln, die beanwortet:
   + Wenn Browser ein Cookie von Webserver empfängt, soll er es akzeptieren?
   + Wenn Browser eine Anfrage an Webseite stellt, soll er das Cookie mitsenden
