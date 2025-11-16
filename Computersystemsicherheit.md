@@ -608,3 +608,30 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
      1. Hypertext Markup Language (HTML): ist Auszeichnungssprache, um statische Webseiten zu erstellen
      2. Cascading Style Sheets (CSS): Stylesheet-Sprache, um Aussehen einer Webseite zu definieren
      3. JavaScript (JS): Skriptsprache, die vom Browser ausgeführt wird und somit dynamische Webseite ermöglicht
+
+**URL**
+- Grundlegender Aufbau: schema ":" schema-specifischer Teil
+  + Beispiele für Schema: http(s), ftp, ssh, usw.: hilft uns dabei, mit welchem benutzten Protokoll im Internet für Kommunikation zu definieren
+  + schema-specifischer Teil: //{<user>:<password>@}<host>{:<port>}{/<path>}{?<query>}{#<fragment>}:
+    1. Beutzername und Passwort: für Basic Authetifizierung
+    2. Domain: definiert welcher Webserver kontaktiert werden soll
+    3. Port: Specifizierung einer Anwendung auf dem Webserver (bsp. 8080 für HTTP, 443 für HTTPS, 21 für FTP)
+    4. Pfad: definiert welche Datei vom Webserver geladen werden soll
+    5. Abfrage: zusätzliche Informationen an den Server, dir dort versrbeitet werden können
+    6. Fragment: wird von Browser verwendet, um an Stelle auf Seite zu scrollen
+
+- URL-Encoding: ist eine Transport-Kodierung, keine Sicherheitsmaßnahme, damit es sichergestellt wird, dass URLs technisch korrekt, eindeutig und kompatibel bleiben
+
+**HTTP**
+- ist ein Protokoll, um Daten an Server zu schicken und von Server zu Empfangen
+- baut auf Anfrage-Antwort Prinzip auf
+- Fortschritt: HTTPS: ist sichere Variante von HTTP, nutzt Verschlüsselung der Daten mittels TLS
+
+Beispiel für HTTP Anfrage und HTTP Antwort:
+Anfrage: <img width="400" height="250" alt="Bildschirmfoto 2025-11-16 um 00 59 34" src="https://github.com/user-attachments/assets/d8471bfc-4324-4f9a-b2e8-03f6e6b2e945" />
+
+Antwort: <img width="370" height="220" alt="Bildschirmfoto 2025-11-16 um 01 28 00" src="https://github.com/user-attachments/assets/e451bc1a-f365-4f1a-939b-1bd31fcda123" />
+
+
+
+
