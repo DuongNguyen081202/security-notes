@@ -600,7 +600,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
 
 ### Websicherheit
 **Web**
-- World Wide Web (WWW): ist eine Anwendung im Internet; eine Sammlung von Webservern, und daruaf zugegriffen mit Webbrowsern
+- ist World Wide Web (WWW): eine Anwendung im Internet; eine Sammlung von Webservern, und daruaf zugegriffen mit Webbrowsern
 - Bausteine des Webs:
   1. eindeutige Identifizierung von Daten und Dienste mit *Uniform Resource Locator (URL)*
   2. Kommunikation zwischen Browser und Server, um Daten auszutauschen: *Hypertext Transfer Protocol (HTTP)*
@@ -628,13 +628,21 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
 - Fortschritt: HTTPS: ist sichere Variante von HTTP, nutzt Verschlüsselung der Daten mittels TLS
 
 Beispiel für HTTP Anfrage und HTTP Antwort:
+
 Anfrage: 
 <img width="400" height="250" alt="Bildschirmfoto 2025-11-16 um 00 59 34" src="https://github.com/user-attachments/assets/d8471bfc-4324-4f9a-b2e8-03f6e6b2e945" />
 
 Antwort: 
 <img width="370" height="220" alt="Bildschirmfoto 2025-11-16 um 01 28 00" src="https://github.com/user-attachments/assets/e451bc1a-f365-4f1a-939b-1bd31fcda123" />
 
+**Bausteine einer Webseite** (HTML, CSS, JS)
+1. HTML: ist eine Auszeichnungssprache, um strukturierte Dokumente zu erstellen
+2. CSS : ist eine Style-sheet-Sprache, um das Aussehen/Design einer Webseite festzulegen
+3. JS: ist Skriptsprache, die für dynamische Webseiten entwickelt wurde
+   - Eingebettet in HTML-Seiten
+   - Kann den Inhalt der Seiten verändern, neue Inhalte laden
+   - wird im Browser des Clients ausgeführt
 
-
+**Sicherheitsrisiken im Web**
 
 
