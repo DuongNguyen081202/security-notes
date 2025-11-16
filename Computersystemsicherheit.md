@@ -579,8 +579,13 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Rogue Access Point: Angreier kann sich selbst als Access Point ausgeben
            + KRACKATTACK: Fehler im Standard führt zum Resseten von kryptographischen Variablen bei Replay von Nachrichten
          - nutzt Handshake: damit Client und Access Point gemeinsame Schlüssel zum Schutz der Kommunikation anleitet
+           
            <img width="277" height="427" alt="Bildschirmfoto 2025-11-12 um 04 42 04" src="https://github.com/user-attachments/assets/ad7ed1ff-2eb8-49cb-8c54-34f14023262a" />
-           optimiert: WPA2 4-way Handshake:<img width="275" height="424" alt="Bildschirmfoto 2025-11-12 um 05 08 52" src="https://github.com/user-attachments/assets/b9c81d86-2c32-4df7-86ea-a1a61073a661" />
+
+           optimiert: WPA2 4-way Handshake:
+
+           <img width="275" height="424" alt="Bildschirmfoto 2025-11-12 um 05 08 52" src="https://github.com/user-attachments/assets/b9c81d86-2c32-4df7-86ea-a1a61073a661" />
+           
          - Angriffe auf Handshake:
            + Offline brute-force attack: nutzt einmaligen Mitschnitt von Kommunikation, um Sicherheit offline zu brechen (sichtbare Nonce mithören)
            + Rogue Access Point: Aangreifer gibt sich als Access Point aus, und führt das Handshake mit eigener Nonce durch: MitM-Angriff. Aber Angreifer braucht Kenntnis des Passworts.
