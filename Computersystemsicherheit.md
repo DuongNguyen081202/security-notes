@@ -663,6 +663,7 @@ Für Risiko 3 braucht der Browser eine Regel: "JS von einer Seite darf nicht ein
 - Regel: JS auf eine Webseite darf nicht Dokumente mit andere Origin zugreifen
 
 Wie wir wissen, dass HTTP zustandlos ist (es ist nur ein Anfrage-Antwort Protokoll, und Server behandelt jede Anfrage unabhängig), aber Webseiten brauchen Zustand (bsp. **Session-Token** für Login, Warenkorb, Sprache, usw.). Aus diesem Grund brauchen wir Cookies
+
 **Cookies**
 - enthält Daten, um Zustand über mehrere Anfragen zu erhalten, zum Beispiel:
   + Daten werden als Name-Wert-Paar gespeichert
@@ -690,3 +691,22 @@ Ablauf der Sendung eines Cookies:
 - Cookie Policy: ist eine Menge an Regeln, die beanwortet:
   + Wenn Browser ein Cookie von Webserver empfängt, soll er es akzeptieren?
   + Wenn Browser eine Anfrage an Webseite stellt, soll er das Cookie mitsenden
+Mit Cookie Policy and Same-Origin Policy bestimmen wir: wer Cookies setzen darf, wohin sie gesendet werden, und wer sie lesen darf
+
+**Session Authentifizierung**
+- Session Token:
+  + wird von Server erstellt, wenn wir uns erstmal in einer Webseite einloggen
+  + Websserver sendet Session Token, das in Cookie abgelegt wird
+  + Bei jeder neuen Anfrage wird der Session Token mitgesendet
+  + Nach log-out löschen Webserver und Client-Browser das Session Token
+ 
+Um Sicherheit des Session Token zu gewahrleisten, muss Server Session Token zufällig wählen und sicher auf Server ablegen; ansonten muss Browser sicherstellen, das bösartige Webseite Session Token nicht lernen kann (beispieleweise Maßnahmen: durch Cookie Policy, Same-Origin Policy, oder Setzen des HttpOnly-Felds)
+
+So zum Schluss wissen wir, dass ohne Cookies gibt es keine bequeme Sessions/Logins, und ohne Same-Origin & Cookie Policy könnte andere Seiten unsere Session klauen
+
+Jetzt lernen wir kennen, wie Angreifer die Bausteine von dem Web und der Webseiten missbrauchen kann. Wir gewöhnen uns an *Cross-Site Request Forgery (CSRF)*, *Cross-Site Scripting (XSS)*, und *SQL Injection* an:
+
+**CSRF**
+- nutzt aus, dass Browser Cookies automatisch mitsendet
+- Idee: Angreifer bringt ein eingeloggtes Opfer dazu, ungewollte Requests an eine Seite zu schicken. Browser hängt automatisch Cookies an, so wirkt es wie legitime Anfrage vom Opfer
+- Typischer Ablauf: 
