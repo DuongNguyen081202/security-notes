@@ -707,6 +707,49 @@ So zum Schluss wissen wir, dass ohne Cookies gibt es keine bequeme Sessions/Logi
 Jetzt lernen wir kennen, wie Angreifer die Bausteine von dem Web und der Webseiten missbrauchen kann. Wir gewöhnen uns an *Cross-Site Request Forgery (CSRF)*, *Cross-Site Scripting (XSS)*, und *SQL Injection* an:
 
 **CSRF**
+- Ziel: Im Namen eines eingeloggten Opfers eine Aktion auf einer fremden Website ausführen, ohne dass das Opfer das wirklich will oder merkt.
 - nutzt aus, dass Browser Cookies automatisch mitsendet
 - Idee: Angreifer bringt ein eingeloggtes Opfer dazu, ungewollte Requests an eine Seite zu schicken. Browser hängt automatisch Cookies an, so wirkt es wie legitime Anfrage vom Opfer
-- Typischer Ablauf: 
+- Typischer Ablauf:
+  1. Benutyer authentiziert sich gegenüber Server, Benutzer dann enthält Session-Cookie
+  2. Angeifer bringt den Benutzer dazu, eine ungewollte Anfrage an Server zu schicken
+  3. Server akzeptiert ungewollte Anfrage von Benutzer
+**Gut zu merken**: Dieser Angriff nutzt automatisches Mitsenden von Cookies; funktioniert auch über Social Engineering: Opfer auf einen Link klicken, oder boshaftes HTML auf Webeite einbinden, die  Opfer besucht 
+- Gegenmaßnahmen:
+  1. CSRF Tokens: eine Server-seitig Gegenmaßnahme
+     - Server generiert zufälliges Token, bettet es in HTML-Seite ein
+     - Request ist nur gültig, wenn korrektes Token mitgeschickt wird
+     - Angreifer soll Token nicht kennen, und kann auch nicht es raten
+  2. Referer Header:
+     - Server akzeptiert y.B nur Requests, deren Origin oder Referer auf sicherer Webseite zeigt
+     - Nachteile: Datenschutz, Header ist optional, Angreifer kann fehlen lassen
+  3. SameSite-Cookie-Attribut:
+     - Setze ″SameSite = Strict″, werden Cookies nur bei gleichen Domain-Kontexten gesendet
+     - erschwert CSRF, aber muss korrekt konfiguriert sein
+
+**XSS**
+- Ziel: schädliches JS in eine legitime Seite einschleusen, dass der Browser es im Kontext dieser Seite ausführt // umgehen mit Same-Origin Policy
+- Prinzip:
+  1. Angreifer injiziert schädlicher Code in Webseite
+  2. Opfer macht Anfrage und enthält HTML-Antwort mit schädlichem Code
+- Varianten von XSS:
+  1. Reflected XSS (non-persistent)
+     - Idee: Schädliche Daten kommen im Request, Server reflektiert sie direkt in der Antwort
+     - Voraussetzung: Opfer macht aelbst Anfrage mit schädlichem Code
+  2. Persistent XSS:
+     - Idee: Anfrage von Angreifer veranlasst Server den schädlichen Code dauerhaft zu speichern, Opfer lädt dann Seite von Server mit schädlichem Code
+- Gegenmaßnahmen:
+  1. Input-Filter/Validierung: Jede Eingabe werden als potenziell schädlich behandelt
+  2. HTML-Escaping/Sanitization: spezielle Zeichen furch eine Sequenz aus Zeichen anstatt von reinem HTML dargestellt, startet mit & und beendet mit ;
+  3. Content Securitz Policy (SCP)
+     - Idee: HTTP Header teilt mit dem Webserver dem Browser mit, welche dynamischen Ressourcen
+     - verhindert Inline-JS und Fremd-Domänen
+    
+**SQL Injection**
+Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit Datenbank zu interagieren
+- Voraussetzung von dem Angriff: User.Eingabe wird direkt in SQL eingebaut
+- Gegenmaßnahmen:
+  1. Keine String-Konkatenation mit User-Daten
+  2. Prepared Statements (Parameterized Queries):
+     - erstelle Statement mit Platzhaltern, bsp. SELECT * FROM Accounts WHERE username= **?** AND password= **?**;
+     - DB-Engine parst Query zuerst, dann werden Daten gebunden, Daten werden nicht als Code interpretiert, so keine Injection möglich
