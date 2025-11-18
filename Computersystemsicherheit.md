@@ -1,6 +1,6 @@
 **Sicherheit** heißt beide Safety und Security auf Englisch:
 - Safety: gegenüber Fehlern
-- Security: gegenüber böswilligen Handlungen
+- Security: gegenüber böswilligen Handlungen 
 
 Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 1. Vertraulichkeit von Daten/Nachrichten
