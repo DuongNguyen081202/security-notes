@@ -3,7 +3,7 @@
 - Security: gegenüber böswilligen Handlungen
 
 Es gibt 5 **Sicherheiteigenschaften** (erweitert):
-1. Vertrauenlichkeit von Daten/Nachrichten
+1. Vertraulichkeit von Daten/Nachrichten
 2. Integrität von Daten/Berechnungen
 3. Verfügbarkeit von Dienst
    (CIA-Triade)
@@ -11,15 +11,15 @@ Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 6. Anonymität von Benutzern
    
 Kryptographie liefert 3 **Ziele**:
-1. Vertraulichkeit: Angerifer kann Inhalt der Nachrichten nicht lernen
-2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bekannt wird
-3. Authentizität: Angreifer kann nicht bahaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
+1. Vertraulichkeit: Angreifer kann Inhalt der Nachrichten nicht lernen
+2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bemerkt wird
+3. Authentizität: Angreifer kann nicht behaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
 
 Es gibt 2 Arten von Kryptographie: Symmetrie (gleicher Schlüssel zum Ver- und Entschlüsseln) und Asymmetrie (2 Schlüssel zum Ver- und Entschlüsseln).
 
 **Kerckhoffs´Prinzip**: ein Kryptosystem muss selbst dann sicher sein, wenn alles dran öffentlich bekannt ist -außer dem Schlüssel.
 
-Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre: Caesars Chiffre, Substitutionschiffre, Vigenere-chiffre, OTP) und **moderne** Chiffren. Moderne Chiffre enthält 3 zu merkende Dinge: Formale Definitionen, systematisches Design, und sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen (beim Sicherheitsbeweis gibt ansonsten kryptographische Annahme: wäre Annahme falsch, wäre Verfahren nicht mehr sicher).
+Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: Caesars Chiffre, SubstitutionChiffre, Vigenere-chiffre, OTP) und **moderne** Chiffren. Moderne Chiffre enthält 3 zu merkende Dinge: Formale Definitionen, systematisches Design, und sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen (beim Sicherheitsbeweis gibt ansonsten kryptographische Annahme: wäre Annahme falsch, wäre Verfahren nicht mehr sicher).
 
 ### Kryptographische primitive
 
@@ -53,11 +53,11 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
   + Dec: für c ∈ C: Ausgabe Dec(k, c) = k ⊕ c.
 - Sicherheit: mit dem Annahme: Schlüssel darf nur einmal verwendet werden
 
-### Blockschiffre
+### BlockChiffre
 - Ver- und Entschlüsselung von Nachrichten/Chiffretextblöcken mit fixer Länge
 - Blocklänge n =|m|=|c|: häufig 64-128 Bits
 - Schlüssellänge k: häufig 128-256 Bits
-- Enc(.) hier spielt die Rolle als PRP, so wir schätzen eine Blockschiffre stark oder nicht dadurch ein, ob Schlüsselraum groß genug oder nicht ist. Dies vorstellt uns auch die Sicherheit von Blockschiffre (Angreifer kann nicht zwischen Enc(.) und P(.) unterscheiden).
+- Enc(.) hier spielt die Rolle als PRP, so wir schätzen eine BlockChiffre stark oder nicht dadurch ein, ob Schlüsselraum groß genug oder nicht ist. Dies vorstellt uns auch die Sicherheit von BlockChiffre (Angreifer kann nicht zwischen Enc(.) und P(.) unterscheiden).
 
 <img width="648" height="156" alt="Bildschirmfoto 2025-10-07 um 14 15 11" src="https://github.com/user-attachments/assets/f40499c1-899e-4104-9f1f-b229eb8fc96e" />
 
@@ -78,7 +78,7 @@ Es gibt auch 2 Arten von Schiffren: **klassische** Chiffren (bsp. Shift-Chiffre:
  - Block-Größe: 128 Bits
  - ist mit Seiten-Kanal-Angriffe oder Fehleerangriffe angreifbar.
   
-- Probleme von Blockschiffren:
+- Probleme von BlockChiffren:
   + Nicht IND-CPA sicher, weil es deterministisch ist
   + Nicht möglich Nachrichten beliebiger Länge zu verschlüsseln
 
@@ -336,7 +336,7 @@ So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (
 - Syntax: Wie ist die Kommunikation strukturiert und spezifiert
 - Semantik: Bedeutung der Kommunikation
 
-**Netwerk-schichtenmodelle**
+**Netzwerk-schichtenmodelle**
 1. OSI Modell: Kommunikation zwischen 2 OSI Modell:
 <img width="687" height="323" alt="Bildschirmfoto 2025-10-19 um 13 14 54" src="https://github.com/user-attachments/assets/1cda487c-3b02-4908-9b8c-dac333ebb55e" />
 2. TCP/IP Modell: Kommunikation zwischen 2 TCP/IP Modell:
@@ -351,7 +351,7 @@ So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (
    - Die kommunikation muss beinhalten: Senderadresse, Zieladresse, und Daten
    - Identifikation: mit **MAC Adressen**:
      + 6 Byte Adresse, die jedes netzwerkfähige Gerät im Internat besitzt
-     + Weltweit eindeutige Adresse der Hardware (eindeutig pro Netwerkschnittstelle)
+     + Weltweit eindeutige Adresse der Hardware (eindeutig pro Netzwerkschnittstelle)
      + steht aus: OUI (erste 3 Bytes = Hersteller) + gerätespezifischer Teil (letzte 3 Bytes)
      + Beispiel: 13:37:ca:fe:f0:0d
    - Angriffe auf Link Layer:
@@ -407,7 +407,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
    - Eigenschaften von TCP:
      + TCP teilt beim Sender die Nachricht in kleinere Pakete auf und setzt diese beim Empfönger wieder zusammen
      + Verwendung von **Sequenznummern**, um Ordnung beim Empfänger wieder herzustellen; jeder TCP-Verbindung erfordert 2 Arten von Sequenznummnern: isn für Nachrichten vom Client an den Server (client_isn) und isn für Nachrichten vom Server an den Client (server_isn) und ISNs ist zufällig für jede neue Verbindung für Verhinderung von TCP hijacking)
-     + Empfänger antwortet mit Empfangsbestätigung **ACK**. Wenn ACK nicht beim Sender eintrifft, sender das Paket erneut
+     + Empfänger antwortet mit Empfangsbestätigung **ACK**. Wenn ACK nicht beim Sender eintrifft, sendet das Paket erneut
      + Weiterhin gibt es ein kryptografisches Protokoll oberhalb von TCP: TLS (Transport Layer Security), das per Handshake Sitzungsschlüssel aushandelt und danach Anwendungsadten vertraulich und integritätgeschützt überträgt
      Datenübertragung mit TCP:
        <img width="636" height="292" alt="Bildschirmfoto 2025-10-25 um 22 28 52" src="https://github.com/user-attachments/assets/270876a6-a61b-4df9-8a26-c151faa7f07e" />
@@ -496,7 +496,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        1. Kryptographie um zu beweisen, dass zurückgegebenen Antworten korrekt sind (mit digitale Signaturen von Nameservern), und
        2. hierarchisches, verteiles Vertrauenssytem (bsp. Root-Nameserver) zur Identifikation, um vor bösartigem Nameserver zu schützen
    - TOR - The Onion Router:
-     + ist ein Overlay/Anonymisierungsnetwerk auf Applikation Layer, das IP-Verbindung anonymisiert, indem der Client sein Traffic (IP-Pakete) durch mehrere Replay-Knoten (Entry - Middle - Exit) leitet
+     + ist ein Overlay/AnonymisierungsNetzwerk auf Applikation Layer, das IP-Verbindung anonymisiert, indem der Client sein Traffic (IP-Pakete) durch mehrere Replay-Knoten (Entry - Middle - Exit) leitet
    - Angriffe: (1-5 sind auf TLS)
      1. Cipher Suite Rollback Angriff:
         + ein MiTM-Angreifer ändert die Liste der Cipher Suites in der ClientHello Nachricht
@@ -532,15 +532,15 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
       6. DNS Cache Poisoning & Spoofing:
          1. Cache Poisoning Angriff: Angerifer speichert bösartige DNS Records bei einem DNS Server
             - Cache des DNS Servers wird dann vergiftet durch
-            - DNS nutzt UDO und keine Verifikation der Authentizität
+            - DNS nutzt UDP und keine Verifikation der Authentizität
           2. Cache Spoofing Angriff: ermöglicht durch Cache Poisoning Angriff: Anfragen an eine Domäne werden an die IP-Adresse des Angreifers weitergeleitet (da DNS Server falsche Daten speichert)
            - Gegenmaßnahmen:
              + Bailiwick-Überprüfung: der Resolver akzeptiert nur Records von Nameservern, die für angefragte Zone verantwortlich sind
              + DNSSEC
-       7. DNS Reflection Angriff: ein Art von DDoS Angriff, macht Endsystem/Zwischensystemen überlastet
+       7. DNS Reflection Angriff: eine Art von DDoS Angriff, macht Endsystem/Zwischensystemen überlastet
           - Funktionsweise:
             + Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Addresse DNS-Anfragen an Server
-            + Amplification: Anworten von Server an Opfer sind deutlich größer als Anfragen
+            + Amplification: Antworten von Server an Opfer sind deutlich größer als Anfragen
           - Gegenmaßnahmen:
             1. Opfer-seitig:
                - Kapazitätsreserven an Netz und Systemen bereitstellen
@@ -563,13 +563,13 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
          
 ### WLAN Sicherheit
-- Typische Komponenten eines WLAN Netwerkes:
-  + Access point: ein Gerät, das die Verbindung zum Netwerk ermöglicht
-  + SSID - service set identifier: Name des WLAN Netwerkes
+- Typische Komponenten eines WLAN Netzwerkes:
+  + Access point: ein Gerät, das die Verbindung zum Netzwerk ermöglicht
+  + SSID - service set identifier: Name des WLAN Netzwerkes
   + Password (optional): um Kommunikation abzusichern
 - WLAN Verschlüsselung:
   1. Ziele:
-     - Jeder mmit dem WLAN-Passwort kann dem Netzwerk beitreten
+     - Jeder mit dem WLAN-Passwort kann dem Netzwerk beitreten
      - Ohne Kenntnis des Passworts können Nachrichten nicht mitgelesen werden
    2. Versionen von WLAN Verschlüsselung:
       1. WPA2:
@@ -696,11 +696,11 @@ Mit Cookie Policy and Same-Origin Policy bestimmen wir: wer Cookies setzen darf,
 **Session Authentifizierung**
 - Session Token:
   + wird von Server erstellt, wenn wir uns erstmal in einer Webseite einloggen
-  + Websserver sendet Session Token, das in Cookie abgelegt wird
+  + Webserver sendet Session Token, das in Cookie abgelegt wird
   + Bei jeder neuen Anfrage wird der Session Token mitgesendet
   + Nach log-out löschen Webserver und Client-Browser das Session Token
  
-Um Sicherheit des Session Token zu gewahrleisten, muss Server Session Token zufällig wählen und sicher auf Server ablegen; ansonten muss Browser sicherstellen, das bösartige Webseite Session Token nicht lernen kann (beispieleweise Maßnahmen: durch Cookie Policy, Same-Origin Policy, oder Setzen des HttpOnly-Felds)
+Um Sicherheit des Session Token zu gewährleisten, muss Server Session Token zufällig wählen und sicher auf Server ablegen; ansonsten muss Browser sicherstellen, dass bösartige Webseiten Session Token nicht lernen kann (beispieleweise Maßnahmen: durch Cookie Policy, Same-Origin Policy, oder Setzen des HttpOnly-Felds)
 
 So zum Schluss wissen wir, dass ohne Cookies gibt es keine bequeme Sessions/Logins, und ohne Same-Origin & Cookie Policy könnte andere Seiten unsere Session klauen
 
