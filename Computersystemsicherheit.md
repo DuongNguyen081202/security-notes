@@ -747,9 +747,48 @@ Jetzt lernen wir kennen, wie Angreifer die Bausteine von dem Web und der Webseit
     
 **SQL Injection**
 Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit Datenbank zu interagieren
-- Voraussetzung von dem Angriff: User.Eingabe wird direkt in SQL eingebaut
+- Voraussetzung von dem Angriff: User-Eingabe wird direkt in SQL eingebaut
 - Gegenmaßnahmen:
-  1. Keine String-Konkatenation mit User-Daten
+  1. Keine String-Konkatenation mit User-Daten / Eingabe müsen gefiltet werden
   2. Prepared Statements (Parameterized Queries):
      - erstelle Statement mit Platzhaltern, bsp. SELECT * FROM Accounts WHERE username= **?** AND password= **?**;
      - DB-Engine parst Query zuerst, dann werden Daten gebunden, Daten werden nicht als Code interpretiert, so keine Injection möglich
+
+- Variance von SQL Injection:
+  <img width="711" height="154" alt="Bildschirmfoto 2025-11-25 um 22 38 30" src="https://github.com/user-attachments/assets/beef7470-9bca-478d-a64a-22950b840090" />
+
+### Systemsicherheit
+**MALWARE** 
+- is schädlicher Code des Angreifers, der aus der Maschine des Opfers ausgeführt wird
+- Ziel: Vielseitige Angriffe möglich:
+  + Löschen von Datein
+  + Senden von Spam Nachrichten von Opfermachine
+  + Denial of Service Angriff als Teil eines Botnets
+  + Harddisk Verschlüsselung zur Erpressung von Lösegeld
+  + Private Informationen extrahieren
+  + Physikalische Zerstörung des Computers
+ 
+- Arten:
+  1. Wurm: eigenständige Software, die sich selbst über Netwerk verbreitet. Durch die Replikation vertreiben sich Würmer exponentiell, bis die Menge von verwundbaren Zielsystemen betroffen ist
+  2. Virus: hängt sich an andere Software/Systeme an; benögtigt Benutzerinteraktion, um sich zu verbreiten; oft polymorph.
+     + Polymorphe Viren ist verschlüsselt <img width="549" height="206" alt="Bildschirmfoto 2025-11-25 um 23 56 10" src="https://github.com/user-attachments/assets/43a21bad-466f-49a1-8698-a7cfbd36df59" /> und sie können Erscheinungsbild mit jeder Replikation verändern.
+     + Metamorphe Viren:
+       - jedes Mal wenn sich der Virus repliziert, erzeugt er eine semantisch unterschiedliche Version des Virus Codes. So sie sind gleiche High-Level Aktionen aber mit kleinen unbedeutenden Abweichungen <img width="227" height="194" alt="Bildschirmfoto 2025-11-26 um 00 00 22" src="https://github.com/user-attachments/assets/a87a9150-501b-47c0-835f-5a125e7252ea" />
+       - Gegenmaßnahmen:
+         1. Erkennung anhand des Verhaltens
+         2. Strategien eines Virus, um Erkennung zu verhindern
+
+  4. Trojaner: Software mit zusätzlicher, böswilliger Funktion; repliziert sich i.d.R nicht von selbst
+  5. Ransomware: ist Trojaner, der Dateien verschlüsellt und nur gegen Lösegeld-Zahlung wieder freigibt / oder auch nicht
+  6. Scareware: ist Trojaner, der z.N als Virenscanner vermeintlich gefundene Viren gegen Bezahlung lösen soll
+ 
+- Weise, die Malware verbreiten können:
+  1. klassisch: als E-Mail Anhang oder während einer Programm-Installation
+     + Gegenmaßnahmen: nur vertrauenswürdige Quellen akzeptieren
+  2. drive-by-download: beim Besuch einer Webseite
+     + Gegenmaßnahmen: Ausführung von Skripten deaktivieren
+  3. physich: durch infiziert Tokens
+     + Gegenmaßnahmen: nur vertrauenswürdige Quelle akzeptieren
+
+
+
