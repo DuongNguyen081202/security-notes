@@ -19,7 +19,7 @@ Es gibt 2 Arten von Kryptographie: Symmetrie (gleicher Schlüssel zum Ver- und E
 
 **Kerckhoffs´ Prinzip**: ein Kryptosystem muss selbst dann sicher sein, wenn alles dran öffentlich bekannt ist -außer dem Schlüssel.
 
-Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: Caesars Chiffre, SubstitutionChiffre, Vigenere-chiffre, OTP) und **moderne** Chiffren. Moderne Chiffre enthält 3 zu merkende Dinge: Formale Definitionen, systematisches Design, und sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen (beim Sicherheitsbeweis gibt ansonsten kryptographische Annahme: wäre Annahme falsch, wäre Verfahren nicht mehr sicher).
+Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: Caesars Chiffre, Substitution-Chiffre, Vigenere-chiffre, OTP) und **moderne** Chiffren. Moderne Chiffre enthält 3 zu merkende Dinge: Formale Definitionen, systematisches Design, und sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen (beim Sicherheitsbeweis gibt ansonsten kryptographische Annahme: wäre Annahme falsch, wäre Verfahren nicht mehr sicher).
 
 ### Kryptographische primitive
 
@@ -53,7 +53,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
   + Dec: für c ∈ C: Ausgabe Dec(k, c) = k ⊕ c.
 - Sicherheit: mit dem Annahme: Schlüssel darf nur einmal verwendet werden
 
-### BlockChiffre
+### Block-Chiffre
 - Ver- und Entschlüsselung von Nachrichten/Chiffretextblöcken mit fixer Länge
 - Blocklänge n =|m|=|c|: häufig 64-128 Bits
 - Schlüssellänge k: häufig 128-256 Bits
@@ -71,7 +71,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 - Schlüssellänge: 3*56= 168 Bits
 
 <img width="610" height="70" alt="Bildschirmfoto 2025-10-07 um 14 15 38" src="https://github.com/user-attachments/assets/c481110b-55c0-44cc-945a-62e95857bc89" />
-- angreifbar mit MitM Angriff.
+- angreifbar mit MitM Angriff (112 Bits).
 
 **Advanced Encryption Standard (AES)**
  - Schlüssellänge: 128, 192 oder 256 Bits
@@ -96,7 +96,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 <img width="545" height="252" alt="Bildschirmfoto 2025-10-06 um 21 41 01" src="https://github.com/user-attachments/assets/1a67ac63-42f3-4923-b7fd-f71abdd309e6" />
 <img width="545" height="253" alt="Bildschirmfoto 2025-10-06 um 21 40 06" src="https://github.com/user-attachments/assets/3b4bfe0b-3291-47b5-b880-587670711b3b" />
 
-- CBC ist IND-CPA sicher, aber es gibt Probleme mit Padding sind häufig in der Praxis. So was ist **Padding Angriffe** auf CBC? Annahme: Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel; ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. Schritte von Angreifer: Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht mithilfe von Fehlermeldungen oder side-channel Messungen, weiter mit andere Blocks wird Angreifer ursprünglichen Klartext rekonstruieren können.
+- CBC ist IND-CPA sicher, wenn das IV zufällig und unvorhersagbar ist, und es nicht wiederverwendet wird, und es gibt auch Probleme mit Padding sind häufig in der Praxis. So was ist **Padding Angriffe** auf CBC? Annahme: Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel; ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. Schritte von Angreifer: Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht mithilfe von Fehlermeldungen oder side-channel Messungen, weiter mit andere Blocks wird Angreifer ursprünglichen Klartext rekonstruieren können.
 
 **Counter Modus (CTR)** 
 
@@ -134,7 +134,8 @@ und mit Nachricht unterschiedlicher Länge, aber es ist nicht sicher, beispielwe
 
 <img width="548" height="173" alt="Bildschirmfoto 2025-10-07 um 14 48 11" src="https://github.com/user-attachments/assets/d0133b39-9acc-439b-9cd9-122da1ca955c" />
 
-Wir anwenden stattdessen **HMAC** für die Nachrichten beliebiger Länge. die Schritte sind: 1. Berechne y = H(m) der langen Nachricht m mit Hilfe von hashfunktion; 2. Berechne MAC
+Wir wenden stattdessen **HMAC** für die Nachrichten beliebiger Länge an. 
+$\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad}) \ \|\ m)\bigr)$
 
 **Authentifizierte Verschlüsselung** kombinieren Verschlüsselung und Integritätsschutz, um Ziele: Vertraulichkeit, Integrität, und Authentizität der Nachricht zu gewährleisten.
 1. Encrypt-then-MAC
@@ -280,8 +281,8 @@ Jetzt unterscheiden wir uns die folgenden Begriffe:
 2. Verschlüsselung: Speichere Passwärter verschlüsselt, Sever hat zusätzlich Schlüsselpaar (sk, pk). Hier sind die Einwegfunktionen benötigt.
 3. Hashen: Speichere Passwörter als Hash
 4. Rainbow Table: benutzen Hashfunktion H: Passwort -> Hash und Reduktionsfunktion R: Hash -> Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
-5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speiche H(S||pwd) in Passwort.
-6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten
+5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speichere H(S||pwd) in Passwort.
+6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten (nicht zusammen mit den Hashes in der DB steht.
 
 **Tokens**
 Es existiert 2 **Arten von Token**: *Software*- (bsp. Web-Cookies) und *Hardware*-Token (bsp. Autoschlüssel), ansonsten betrachten wir auch 2 **Eigenschaften von Token**: *statisch* (bsp. einfache Überstragung des Geheimnisses) und *dynamisch* (Berechnung mit Geheimnis zur Authentisierung). Mithilfe von dynamisches Token können wir **Replay-Angriffe** vorbeugen.
@@ -301,7 +302,7 @@ Es existiert 2 **Arten von Token**: *Software*- (bsp. Web-Cookies) und *Hardware
   + Phishing-Attacken schwerer, da einzelne Login-Stelle leichter auf Korrektheit überprüft werden kann
   + IT-Sicherheitmaßnahmen fokussieren sich auf zentrale Stelle
  - Nachteil: Verfügbarkeit von Dienst hängt von Verfügbarkeit des SSO ab
- - Für Authentisierung des SSOs, wenden wir Kerberos Protokoll an.
+ - Ein Beispiel für ein SSO-Protokoll ist Kerberos (v.a. im Unternehmensumfeld). Andere verbreitete Varianten nutzen SAML oder OpenID Connect.
    <img width="695" height="144" alt="Bildschirmfoto 2025-10-17 um 12 34 28" src="https://github.com/user-attachments/assets/0f4b5f7b-bd8b-4385-89a5-569348e38e78" />
 
 ## Autorisierung
@@ -590,7 +591,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Offline brute-force attack: nutzt einmaligen Mitschnitt von Kommunikation, um Sicherheit offline zu brechen (sichtbare Nonce mithören)
            + Rogue Access Point: Aangreifer gibt sich als Access Point aus, und führt das Handshake mit eigener Nonce durch: MitM-Angriff. Aber Angreifer braucht Kenntnis des Passworts.
       2. WPA3:
-         - SEA (Simultaneous Authentication of Equals/Dragonfly) Schlüsselaustausch: ist DH-Schlüsselaustausch + Ableitung des Generators von Passwort. Es verhindert Offline Dictionary Attacks, und bietet Forward Secrecy, aber anfällig für ARP oder DHCP Spoofing
+         - SAE (Simultaneous Authentication of Equals/Dragonfly) Schlüsselaustausch: ist DH-Schlüsselaustausch + Ableitung des Generators von Passwort. Es verhindert Offline Dictionary Attacks, und bietet Forward Secrecy. ARP- und DHCP-Spoofing sind Netzwerkangriffe auf darunterliegende Ebenen, die man auch in einem WPA3-WLAN haben kann, wenn das restliche Netz nicht gut gesichert ist, aber es ist die allgemeine Layer-2/3-Probleme.
          -  Sicherheitsratschläge sind mit Vorsicht zu genießen:
            + Veränderung der IP-Adresse des Routers
            + Filterung von MAC-Adressen
@@ -775,8 +776,7 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
      + Metamorphe Viren:
        - jedes Mal wenn sich der Virus repliziert, erzeugt er eine semantisch unterschiedliche Version des Virus Codes. So sie sind gleiche High-Level Aktionen aber mit kleinen unbedeutenden Abweichungen <img width="227" height="194" alt="Bildschirmfoto 2025-11-26 um 00 00 22" src="https://github.com/user-attachments/assets/a87a9150-501b-47c0-835f-5a125e7252ea" />
        - Gegenmaßnahmen:
-         1. Erkennung anhand des Verhaltens
-         2. Strategien eines Virus, um Erkennung zu verhindern
+         1. Erkennung anhand des Verhaltens, aber ein Virus kann auch Strategien haben, um Erkennung zu verhindern
 
   4. Trojaner: Software mit zusätzlicher, böswilliger Funktion; repliziert sich i.d.R nicht von selbst
   5. Ransomware: ist Trojaner, der Dateien verschlüsellt und nur gegen Lösegeld-Zahlung wieder freigibt / oder auch nicht
