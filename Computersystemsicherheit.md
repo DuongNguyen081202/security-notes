@@ -41,7 +41,9 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 <img width="586" height="109" alt="Bildschirmfoto 2025-10-07 um 14 17 00" src="https://github.com/user-attachments/assets/18b9a3d1-06f9-422a-8850-2fb72e37cf7d" />
 
 **Sicherheitsspiel**
-1. IND-CPA: Angreifer darf so viele Nachrichten verschlüsseln lassen, wie es will. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
+1. IND-COA: Angreifer sieht nur Ciphertexte, Spiel ist, dass Angreifer 2 möglichen Klartexten unterschieden können muss. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
+2. IND-KPA: Angreifer kennt Paare (m,c), und kann daraus Statistik und Muster ableiten, hat feste Formate und Standards, und wiederkehrende Signaturen/Footer in Emails, Spiel ist, dass Angreifer 2 möglichen Klartexten unterschieden können muss. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub> 
+3. IND-CPA: Angreifer darf so viele Nachrichten verschlüsseln lassen, wie es will. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
 - Gefahr: Chosen Ciphertext Angriff, bsp. Padding Orakel Angriff
 2. IND-CCA: Angreifer bekommt Zugang zu Orakel, das ausgewählte Chiffretexte entschlüsseln kann. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
 
@@ -150,16 +152,25 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
    - Sende: (nonce, c)
    - Empfang: Erst entschlüsseln, dann Tag prüfen
 
-**Asysmmetrische Kryptographie**
+**Asymmetrische Kryptographie**
 - Es gibt stattdessen ein Schlüsselpaar (pk, sk), dies macht es möglich, dass kein Schlüsselaustausch notwendig ist, dies folgt auch, dass nur n Schlüsselpaare gebraucht sind, statt <sup>n(n-1)</sup>/<sub>2</sub>
+- ist ein 7-Tupel $(\mathcal{M}, \mathcal{K}_s, \mathcal{K}_p, \mathcal{K}, \mathcal{C}, e, d)$, mit
+  + $\mathcal{M}$ ist Menge von Klartext
+  + $\mathcal{K}_s$ ist Menge von geheimen / privaten Schlüsseln
+  + $\mathcal{K}_p$ ist Menge von öffentlichen Schlüsseln
+  + $\mathcal{K} \subset \mathcal{K}_s \times \mathcal{K}_p$ ist Menge von Schlüsselpaaren
+  + $\mathcal{C}$ ist Menge von Shiffretexten
+  + $e$ ist Verschlüsselungsfunktion: $\mathcal{M} \times \mathcal{K}_p \rightarrow \mathcal{C}$
+  + $e$ ist Entschlüsselungsfunktion: $\mathcal{C} \times \mathcal{K}_s \rightarrow \mathcal{M}$
+
 - Algorithmen: (Gen, Enc, Dec)
 
 <img width="585" height="127" alt="Bildschirmfoto 2025-10-12 um 02 37 43" src="https://github.com/user-attachments/assets/5065defd-1f10-4c18-9206-f1dff4a986e1" />
 
 **RSA Verschlüsselung**
 1. RSA Schlüsselerzeugung: GenRSA(n) mit Sicherheitsparameter n
-   - Wähle 2 n-bit *Primzahlen* p, q mit p ≠ q
-   - Berechne N= p*q
+   - Wähle 2 große *Primzahlen* p, q mit p ≠ q, und ungefähr gleicher Länge
+   - Berechne N= p*q hat gewünschte Bitlänge n
    - Wähle e> 1, sodass ggT(e, 𝝋(N)) = 1
    - Berechne d = $\{e\}^\{-1\}$ mod𝝋(N); 𝝋(N) =(p-1)(q-1)
    - Ausgabe: (N,e,d) = GenRSA(n)
@@ -179,6 +190,31 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
   <img width="552" height="275" alt="Bildschirmfoto 2025-10-12 um 19 44 58" src="https://github.com/user-attachments/assets/a9a4a87a-a586-4854-a2d5-26a00fbe5b0f" />
 
 Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alternative Verschlüsselungsverfahren. Nächste betrachten wir das **Elgamal Verfahren**
+
+**Schlüsselgenerierung (von Alice)**
+
+1. Wähle eine zyklische Gruppe $\mathcal{G} = (G, \circ, e)$ mit Erzeuger $g$ und Ordnung $q$.
+2. Wähle einen geheimen Exponenten $a \in \{2, \dots, q-1\}$ und setze $A = g^a$.
+3. Privater Schlüssel: $\mathsf{sk} = (\mathcal{G}, g, a)$.  
+   Öffentlicher Schlüssel: $\mathsf{pk} = (\mathcal{G}, g, A)$.
+
+**Verschlüsselung (an Alice)**
+
+Gegeben Nachricht $m \in G$ und öffentlicher Schlüssel $(\mathcal{G}, g, A)$:
+
+1. Wähle zufällig $r \in \{2, \dots, q-1\}$ und setze $R = g^r$.
+2. Berechne $K = A^r = (g^a)^r = g^{ar}$ und setze $C = m \circ K$.
+3. Ciphertext ist $e(m, (\mathcal{G}, g, A)) = (R, C)$.
+
+**Entschlüsselung (Alice)**
+
+Gegeben Ciphertext $(R, C)$ und privater Schlüssel $(\mathcal{G}, g, a)$:
+
+1. Berechne $K = R^a = (g^r)^a = g^{ra}$.
+2. Bestimme $K^{-1}$ in $\mathcal{G}$.
+3. Ausgabe der Entschlüsselung:  
+   $d((R, C), (\mathcal{G}, g, a)) = C \circ K^{-1} = m \circ K \circ K^{-1} = m$.
+
 - Diskrete Logarithmus Annahme:
   + Setup: zyklische Gruppe G der Ordnung q mit Generator g und q prim
   + Gegeben: *zufälliges* h ∈ G
@@ -193,9 +229,14 @@ Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alter
    Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung** eingesetzt: Sie kombiniert einen asymmetrischen Schlüsselaustausch (KEM) mit der effizienten symmetrischen Verschlüsselung der Daten (DEM).
    - Verschlüsselung: <img width="717" height="287" alt="Bildschirmfoto 2025-10-15 um 17 28 09" src="https://github.com/user-attachments/assets/2cec1d23-6f5a-4d2b-b299-59e5a8c7a796" />
   - Entschlüsselung: <img width="713" height="288" alt="Bildschirmfoto 2025-10-15 um 17 29 21" src="https://github.com/user-attachments/assets/9304def3-ccf6-48af-895b-1cda90e6dbc6" />
-
+  - Nachteil: Sicherheit ist abhängig von der Sicherheit zweiter Kryptosysteme
 **Signaturen**
-*Digitale Signaturen*
+*Digitale Signaturen* erlauben:
+- einen Test auf *Authentizität* und *Integrität* einer Nachricht,
+- sowie (in der Praxis) *Nicht-Abstreitbarkeit* des Absenders.
+Grundlage ist asymmetrische Kryptographie: Es wird mit dem privaten
+Schlüssel signiert und mit dem öffentlichen Schlüssel verifiziert.
+
 ```mermaid
 flowchart LR
     A[Geheimer Schlüssel sk] --> B[Sig]
@@ -209,7 +250,27 @@ flowchart LR
     <img width="595" height="182" alt="Bildschirmfoto 2025-10-15 um 21 42 56" src="https://github.com/user-attachments/assets/f16ca8eb-2528-48a7-a0eb-d36b373673da" />
   + Sig(sk,m) hängt stark von Nachricht ab, so Angreifer kann keine Signeturen auf neue Nachricht fälschen.
  
-Um die Authentizität und Integrität der Nachricht zu prüfen (Angreifer kann keine Signatur auf neue Nachricht fälschen), wenden **EUF-CMA** Sicherheitsspiel an
+EUF-CMA-Sicherheit formalisiert, dass ein Angreifer keine neuen gültigen Signaturen erzeugen kann → Voraussetzung für Authentizität und (kryptographische) Nicht-Abstreitbarkeit.
+
+**Digitale Signaturen – rechtlicher Rahmen (eIDAS / VDG)**
+
+Die EU-Verordnung **eIDAS** (in Deutschland u.a. durch das **Vertrauensdienstegesetz (VDG)**) unterscheidet drei Arten elektronischer Signaturen:
+
+1. Einfache elektronische Signatur (EES)
+- Kann Beweiskraft haben, aber **keine besondere rechtliche Vermutung**.
+- Beispiel: eingescannte Unterschrift / Name unter einer E-Mail.
+
+2. Fortgeschrittene elektronische Signatur (FES)
+- *Eindeutig dem Unterzeichner zugeordnet* (Identifizierung möglich).
+- Wird mit Signaturerstellungsdaten erzeugt, die *unter alleiniger Kontrolle* des Unterzeichners stehen.
+- *Nachträgliche Änderungen* der signierten Daten müssen erkennbar sein.
+- *Keine automatische Gleichstellung* mit der handschriftlichen Unterschrift.
+
+3. Qualifizierte elektronische Signatur (QES)
+- *Rechtlich gleichgestellt* mit der handschriftlichen Unterschrift.
+- Basiert auf einem *qualifizierten Zertifikat* eines qualifizierten Vertrauensdiensteanbieters.
+- Wird mit einer *qualifizierten Signaturerstellungseinheit* erzeugt (z.B. Smartcard).
+- EU-weit anerkannt, wenn sie auf einem qualifizierten Zertifikat eines Mitgliedstaats beruht.
 
 Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen**, und **Diskreter-Logarithmus-basiert**; beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
 - Hash-and-Sign-Prinzip ermöglicht das Signieren von beliebig langen Nachrichten, und Hashfunktion trägt zut Sicherheit des Verfahren bei.
