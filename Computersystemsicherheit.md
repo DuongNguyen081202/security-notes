@@ -14,6 +14,7 @@ Kryptographie liefert 3 **Ziele**:
 1. Vertraulichkeit: Angreifer kann Inhalt der Nachrichten nicht lernen
 2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bemerkt wird
 3. Authentizität: Angreifer kann nicht behaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
+4. nicht-Abstreitbarkeit
 
 Es gibt 2 Arten von Kryptographie: Symmetrie (gleicher Schlüssel zum Ver- und Entschlüsseln) und Asymmetrie (2 Schlüssel zum Ver- und Entschlüsseln).
 
@@ -45,7 +46,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 2. IND-KPA: Angreifer kennt Paare (m,c), und kann daraus Statistik und Muster ableiten, hat feste Formate und Standards, und wiederkehrende Signaturen/Footer in Emails, Spiel ist, dass Angreifer 2 möglichen Klartexten unterschieden können muss. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub> 
 3. IND-CPA: Angreifer darf so viele Nachrichten verschlüsseln lassen, wie es will. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
 - Gefahr: Chosen Ciphertext Angriff, bsp. Padding Orakel Angriff
-2. IND-CCA: Angreifer bekommt Zugang zu Orakel, das ausgewählte Chiffretexte entschlüsseln kann. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
+4. IND-CCA: Angreifer bekommt Zugang zu Orakel, das ausgewählte Chiffretexte entschlüsseln kann. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
 
 **One-Time-Pad (OTP)** kann auch Vernam Chiffre genannt werden
 - OTP zur Verschlüsselung von Bitstrings der Länge n
@@ -63,6 +64,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 
 <img width="648" height="156" alt="Bildschirmfoto 2025-10-07 um 14 15 11" src="https://github.com/user-attachments/assets/f40499c1-899e-4104-9f1f-b229eb8fc96e" />
 
+DES, 3-DES, AES, Serpent, Twofish, Blowfish sind Blockchiffren (konkrete Algorithmen, die eine PRP auf festen Blockgrößen implementieren).
 **Data Encryption Standard (DES)** 
 - Blocklänge n= 64 Bits
 - Schlüssellänge k= 56 Bits
@@ -73,6 +75,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 - Schlüssellänge: 3*56= 168 Bits
 
 <img width="610" height="70" alt="Bildschirmfoto 2025-10-07 um 14 15 38" src="https://github.com/user-attachments/assets/c481110b-55c0-44cc-945a-62e95857bc89" />
+
 - angreifbar mit MitM Angriff (112 Bits).
 
 **Advanced Encryption Standard (AES)**
@@ -86,6 +89,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 
   
 ### Modes of Operation
+ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verwenden, um lange Nachrichten (mehrere Blöcke) zu ver- und entschlüsseln.
 **Electronic Code Book (ECB) Modus**
 
 <img width="370" height="273" alt="Bildschirmfoto 2025-10-06 um 21 33 11" src="https://github.com/user-attachments/assets/19370868-6fb7-4a9b-be48-7d88b2212405" />
