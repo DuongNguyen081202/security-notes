@@ -18,6 +18,8 @@ Kryptographie liefert 3 **Ziele**:
 
 Es gibt 2 Arten von Kryptographie: Symmetrie (gleicher Schlüssel zum Ver- und Entschlüsseln) und Asymmetrie (2 Schlüssel zum Ver- und Entschlüsseln).
 
+**Symmetrische Kryptosysteme** ist ein 5-Tupel (M,K,C,e,d), sodass für alle Klartexte $m \in \mathcal{M}$ und $k \in \mathcal{K}$ gilt, dass d(e(m,k), k) = m.
+
 **Kerckhoffs´ Prinzip**: ein Kryptosystem muss selbst dann sicher sein, wenn alles dran öffentlich bekannt ist -außer dem Schlüssel.
 
 Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: Caesars Chiffre, Substitution-Chiffre, Vigenere-chiffre, OTP) und **moderne** Chiffren. Moderne Chiffre enthält 3 zu merkende Dinge: Formale Definitionen, systematisches Design, und sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen (beim Sicherheitsbeweis gibt ansonsten kryptographische Annahme: wäre Annahme falsch, wäre Verfahren nicht mehr sicher).
@@ -57,14 +59,17 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 - Sicherheit: mit dem Annahme: Schlüssel darf nur einmal verwendet werden
 
 ### Block-Chiffre
+- Blockchiffren sind Kryptosysteme, die nur Blöcke fester Länge verschlüsseln können
 - Ver- und Entschlüsselung von Nachrichten/Chiffretextblöcken mit fixer Länge
 - Blocklänge n =|m|=|c|: häufig 64-128 Bits
-- Schlüssellänge k: häufig 128-256 Bits
-- Enc(.) hier spielt die Rolle als PRP, so wir schätzen eine BlockChiffre stark oder nicht dadurch ein, ob Schlüsselraum groß genug oder nicht ist. Dies vorstellt uns auch die Sicherheit von BlockChiffre (Angreifer kann nicht zwischen Enc(.) und P(.) unterscheiden).
+- Schlüssellänge k: häufig 128-256 Bits, und die gleiche Schlüssel kann mehrmals auf unterschiedliche Blocks verwendet werden
+- Enc(.) hier spielt die Rolle als PRP, so wir schätzen eine Block-Chiffre stark oder nicht dadurch ein, ob Schlüsselraum groß genug oder nicht ist. Dies vorstellt uns auch die Sicherheit von Block-Chiffre (Angreifer kann nicht zwischen Enc(.) und P(.) unterscheiden).
+- Beispiele von Blockchiffren: AES, DES, 3-DES, Serpent, Twofish, Blowfish, usw.
 
 <img width="648" height="156" alt="Bildschirmfoto 2025-10-07 um 14 15 11" src="https://github.com/user-attachments/assets/f40499c1-899e-4104-9f1f-b229eb8fc96e" />
 
 DES, 3-DES, AES, Serpent, Twofish, Blowfish sind Blockchiffren (konkrete Algorithmen, die eine PRP auf festen Blockgrößen implementieren).
+
 **Data Encryption Standard (DES)** 
 - Blocklänge n= 64 Bits
 - Schlüssellänge k= 56 Bits
@@ -87,22 +92,28 @@ DES, 3-DES, AES, Serpent, Twofish, Blowfish sind Blockchiffren (konkrete Algorit
   + Nicht IND-CPA sicher, weil es deterministisch ist
   + Nicht möglich Nachrichten beliebiger Länge zu verschlüsseln
 
-  
 ### Modes of Operation
 ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verwenden, um lange Nachrichten (mehrere Blöcke) zu ver- und entschlüsseln.
+
 **Electronic Code Book (ECB) Modus**
 
 <img width="370" height="273" alt="Bildschirmfoto 2025-10-06 um 21 33 11" src="https://github.com/user-attachments/assets/19370868-6fb7-4a9b-be48-7d88b2212405" />
 
 - Der Klartext muss um ein Padding eingefügt werden, wenn |m| kein Vielfaches der Blocklänge ist
-- Dieses Modus ist deterministisch
+- Vorteile:
+  + Einfache Bedienung: Implementierung ist unkompliziert, Jeder Block wird unabhängig bearbeitet
+  + Schnelligkeit: Ver- und Entschlüsselung parallelisierbar
+  + Fehlertoleranz: beschädigte Datenblöcke können nicht andere Blöcke beeinflussen und deren Ver-/Entschlüsselung beeinträchtigen
+- Nachteile:
+  + Deterministisch
+  + Kein Diffusion: kleine Änderungen im Klartext führen zu lokalisierte Äderungen im Geheimtext
 
 **Cipher Block Chaining (CBC) Modus**
 
 <img width="545" height="252" alt="Bildschirmfoto 2025-10-06 um 21 41 01" src="https://github.com/user-attachments/assets/1a67ac63-42f3-4923-b7fd-f71abdd309e6" />
 <img width="545" height="253" alt="Bildschirmfoto 2025-10-06 um 21 40 06" src="https://github.com/user-attachments/assets/3b4bfe0b-3291-47b5-b880-587670711b3b" />
 
-- CBC ist IND-CPA sicher, wenn das IV zufällig und unvorhersagbar ist, und es nicht wiederverwendet wird, und es gibt auch Probleme mit Padding sind häufig in der Praxis. So was ist **Padding Angriffe** auf CBC? Annahme: Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel; ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. Schritte von Angreifer: Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht mithilfe von Fehlermeldungen oder side-channel Messungen, weiter mit andere Blocks wird Angreifer ursprünglichen Klartext rekonstruieren können.
+- CBC ist IND-CPA sicher, wenn das Initialization Vector (IV) zufällig und unvorhersagbar ist, und es nicht wiederverwendet wird, und es gibt auch Probleme mit Padding sind häufig in der Praxis. So was ist **Padding Angriffe** auf CBC? Annahme: Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel; ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. Schritte von Angreifer: Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht mithilfe von Fehlermeldungen oder side-channel Messungen, weiter mit andere Blocks wird Angreifer ursprünglichen Klartext rekonstruieren können.
 
 **Counter Modus (CTR)** 
 
