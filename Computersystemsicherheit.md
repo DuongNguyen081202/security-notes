@@ -113,7 +113,12 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 <img width="545" height="252" alt="Bildschirmfoto 2025-10-06 um 21 41 01" src="https://github.com/user-attachments/assets/1a67ac63-42f3-4923-b7fd-f71abdd309e6" />
 <img width="545" height="253" alt="Bildschirmfoto 2025-10-06 um 21 40 06" src="https://github.com/user-attachments/assets/3b4bfe0b-3291-47b5-b880-587670711b3b" />
 
+- Zur Formalisierung von CBC benötigen wir **randoisierte Kryptosysteme**:
+  + ein randomisierte symmetrisches Kryptosystem ist ein 6-Tupel (M,K,C,R,e,d), sodass für alle Klartexte $m \in \mathcal{M}$ und $k \in \mathcal{K}$ gilt, dass d(e(m,k,r), k,r) = m.
+    
 - CBC ist IND-CPA sicher, wenn das Initialization Vector (IV) zufällig und unvorhersagbar ist, und es nicht wiederverwendet wird, und es gibt auch Probleme mit Padding sind häufig in der Praxis. So was ist **Padding Angriffe** auf CBC? Annahme: Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel; ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. Schritte von Angreifer: Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht mithilfe von Fehlermeldungen oder side-channel Messungen, weiter mit andere Blocks wird Angreifer ursprünglichen Klartext rekonstruieren können.
+
+- Für Sicherheit muss der Wert aus R gleichverteilt zufällig gewählt werden, und darf nur einmal verwendet wird
 
 **Counter Modus (CTR)** 
 
