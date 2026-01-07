@@ -84,11 +84,15 @@ DES, 3-DES, AES, Serpent, Twofish, Blowfish sind Blockchiffren (konkrete Algorit
 - angreifbar mit MitM Angriff (112 Bits).
 
 **Advanced Encryption Standard (AES)**
+ - Block-Größe: 128 Bits 
  - Schlüssellänge: 128, 192 oder 256 Bits
- - Block-Größe: 128 Bits
  - ist mit Seiten-Kanal-Angriffe oder Fehleerangriffe angreifbar.
+ - Probleme von AES:
+  + ist nur sicher solange die Implementierung und dazugehörige Systeme richtig konfiguriert sind
+  + Schwache Schlüssel und IV-Generierung kann die Sicherheit von AES gefährden
+  + Side-channel Angriffe können verwendet werden. um den Schlüssel abzuleiten (Gegenmaßnahme: Konstantzeit-Implementierung für Timing Angriffe, Maskierung für Power Ananlysis)
   
-- Probleme von BlockChiffren:
+- Probleme von Block-Chiffren:
   + Nicht IND-CPA sicher, weil es deterministisch ist
   + Nicht möglich Nachrichten beliebiger Länge zu verschlüsseln
 
@@ -115,10 +119,16 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 
 - Zur Formalisierung von CBC benötigen wir **randoisierte Kryptosysteme**:
   + ein randomisierte symmetrisches Kryptosystem ist ein 6-Tupel (M,K,C,R,e,d), sodass für alle Klartexte $m \in \mathcal{M}$ und $k \in \mathcal{K}$ gilt, dass d(e(m,k,r), k,r) = m.
-    
-- CBC ist IND-CPA sicher, wenn das Initialization Vector (IV) zufällig und unvorhersagbar ist, und es nicht wiederverwendet wird, und es gibt auch Probleme mit Padding sind häufig in der Praxis. So was ist **Padding Angriffe** auf CBC? Annahme: Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel; ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. Schritte von Angreifer: Angreifer ändert Chiffretext Block 1 so lange, bis gültiges Padding entsteht mithilfe von Fehlermeldungen oder side-channel Messungen, weiter mit andere Blocks wird Angreifer ursprünglichen Klartext rekonstruieren können.
 
-- Für Sicherheit muss der Wert aus R gleichverteilt zufällig gewählt werden, und darf nur einmal verwendet wird
+- Für Sicherheit muss der Wert aus R gleichverteilt zufällig gewählt werden (damit unvorhersagbar), und darf nur einmal verwendet wird.
+- Verschlüsselung ist nicht parallelisierbar + Entschlüsselung ist parallelisierbar. Da bei Entschlüsselung parallelisierbar ist, führt ein fehlerhafter Chiffreblock nur zur fehlerhaften Entschlüsselung des aktuellen und unmittelbar nachfolgenden Chiffreblock
+  
+- CBC ist **IND-CPA sicher**, wenn das Initialization Vector (IV) zufällig und unvorhersagbar ist, und es nicht wiederverwendet wird, aber CBC hat häufig Problem mit Padding in der Praxis.
+- Was ist **Padding Angriffe** auf CBC?
+  + Annahme:
+    1. Angreifer hat Chiffretext und Zugriff auf Padding Orakel, hat aber keine Ahnung über Klartext und Schlüssel. 
+    2. Ansonsten muss der Webserver ein überprüfbares Padding Schema (PKSC#7) verwenden. 
+   + Schritte von Angreifer: Angreifer muss verraten, ob ein entschlüsselter Text ein gültiges Padding ist. Dann beobachtet er entweder durch Fehlermeldungen oder side-channel Messungen, und herausfindet das gültiges Padding.
 
 **Counter Modus (CTR)** 
 
@@ -126,12 +136,21 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 
 <img width="539" height="247" alt="Bildschirmfoto 2025-10-07 um 10 55 29" src="https://github.com/user-attachments/assets/ff798999-8976-4fa0-8841-f81628158493" />
 
-- Nonce kommt aus einer randomisierte Zählfunktion, was einen Zufallswert (Nonce) und eine natürliche Zahl (Counter) auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Binärdarstellung der natürlich Zahl mit 0-Padding (LSB- oder MSB-Kodierung). **Problem** ist, dass ein randomisierter Zähler kann nie injektiv sein, so soll man die Periode so lang wie möglich wählen.
+- Nonce kommt aus einer **randomisierte Zählfunktion**, was einen Zufallswert (Nonce) und eine natürliche Zahl (Counter) auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Binärdarstellung der natürlich Zahl mit 0-Padding (LSB- oder MSB-Kodierung). **Problem** ist, dass ein randomisierter Zähler kann nie injektiv sein, so kann man die Periode nur so lang wie möglich wählen.
   
 - Die Länge von der Kombination von Nonce und Counter hängt von der Größe des Blocks. diese Länge definiert den maximale Werte von Nonce und Counter.
+- Ver- und Entschlüsselung können parallelisiert werden
+- CTR ist eine OTP Konstruktion mit der Blockchiffre als Pseudozufallsgenerator.
   
 - **Nonce vs. IV**: Nonce wird benutzt, da CTR nur Einzigartigkeit benögtigt, Nonce kann auch deterministisch sein (-> uniqueness matters), aber IV betonnt auch die Unvorhersagbarkeit (-> unpredicablity matters). So Nonce verhindert die Wiederverwendung von Schlüsselströmen, während IV das Durchsickern von Informationen aus gewähltern Klartext verhindert.
-  
+
+### Stromchiffren
+- Stromchiffren können beliebig lange Bitketten verschlüsseln
+  + Klar- und Chiffretexte sind Bitketten beliebiger Länge
+  + Schlüssel-Länge ist fest
+  + Ein pseudozufälliger Schlüsselstrom wird aus dem Schlüssel erzeugt
+  + Ver- und Entsclüsselung ist bitweises XOR mit dem Schlüsselstrom
+
 ---
 
 **Kryptographische Hashfunktionen** $H: \ {0,1\}^\* \to \{0,1\}^n$
