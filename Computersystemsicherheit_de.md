@@ -90,7 +90,7 @@ DES, 3-DES, AES, Serpent, Twofish, Blowfish sind Blockchiffren (konkrete Algorit
  - Probleme von AES:
   + ist nur sicher solange die Implementierung und dazugehörige Systeme richtig konfiguriert sind
   + Schwache Schlüssel und IV-Generierung kann die Sicherheit von AES gefährden
-  + Side-channel Angriffe können verwendet werden. um den Schlüssel abzuleiten (Gegenmaßnahme: Konstantzeit-Implementierung für Timing Angriffe, Maskierung für Power Ananlysis)
+  + Side-channel Angriffe können verwendet werden. um den Schlüssel abzuleiten (Gegenmaßnahme: Konstantzeit-Implementierung für Timing Angriffe, Maskierung für Power Ananlysis, oder AES-NI - eine Hardwareunterstützung/ eine Erweiterung des x86-Befehlssatzes von Intel- und AMD-Prozessoren, die eine sichere und schnellere Anwendung von AES) 
   
 - Probleme von Block-Chiffren:
   + Nicht IND-CPA sicher, weil es deterministisch ist
@@ -150,6 +150,12 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
   + Schlüssel-Länge ist fest
   + Ein pseudozufälliger Schlüsselstrom wird aus dem Schlüssel erzeugt
   + Ver- und Entsclüsselung ist bitweises XOR mit dem Schlüsselstrom
+- Ein Kryptosystem heißt Stromchiffre, wenn es eine Funktion (Schlüsselstromgenerator) $\mathrm{keystream}(x,z) = |x|$ und |x| heißt Schlüsselstrom gibt, so dass $e(x,z) = d(x,z) = x \oplus \mathrm{keystream}(x,z)$
+
+- **ChaCha20** ist eine moderne Stromchiffre, die als eine Alternative von AES entwickelt wurde:
+  + Blocklänge: 512 Bits
+  + Schlüssellänge: 256 Bits
+  + 
 
 ---
 
