@@ -155,17 +155,33 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 - **ChaCha20** ist eine moderne Stromchiffre, die als eine Alternative von AES entwickelt wurde:
   + Blocklänge: 512 Bits
   + Schlüssellänge: 256 Bits
-  + 
-
+  + ist schneller als AES ohne Hardwareunterstützung wie AES-NI
+  + geeignet für leistungsschwache Geräte
+  + geeignet für high-throughput und low-latency Protokollen
+  + nicht anfällig für Timing und Cache Angriffe, aber anfällig für Power/EM Analysis Angriffe
+  + oft verwendet in TLS 1.3, Wireguard VPN, usw.
+ 
 ---
 
 **Kryptographische Hashfunktionen** $H: \ {0,1\}^\* \to \{0,1\}^n$
 - Eingabe: Nachricht beliebiger Länge
 - Ausgabe: fixe Länge
+- 3 wichtige Eigenschaften für Haskfunktion:
+  + deterministisch
+  + schnelle Berechnungen
+  + Integritätsschutz: kleine Änderungen führen zu einem anderen Hash
 - 3 Sicherheitsdefinitionen:
-  + Preimage resistance: gegeben h ist es schwer m zu finden, so dass H(m) = h
+  + Pre-image resistance: gegeben h ist es schwer m zu finden, so dass H(m) = h
   + Second Preimage resistance: gegeben m ist es schwer m´ ≠ m zu finden, so dass h := H(m) = H(m´)
   + Collision resistance: es ist schwer, m und m´ zu finden, so dass h := H(m) = H(m´)
+ 
+| Hashfunktion   | Output               | Sicherheit           | Anwendung                                              |
+|---------------|----------------------|----------------------|--------------------------------------------------------|
+| MD5           | 128 Bits             | Unsicher             | X                                                      |
+| SHA-1         | 160 Bits             | Unsicher seit 2017   | X                                                      |
+| SHA-256       | 256 Bits             | Sicher               | TLS/SSL, hashing, Blockchain                           |
+| SHA-3/Keccak  | 224/256/384/512 Bits | Sicher               | Ähnlich wie SHA-2 (aber langsamer ohne Hardware Unterstützung) |
+
  
 ### Message Authentication Codes (MACs)
 - Für Erhaltung Integrität und Authentifizität der Nachricht
@@ -212,7 +228,7 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
 
 <img width="585" height="127" alt="Bildschirmfoto 2025-10-12 um 02 37 43" src="https://github.com/user-attachments/assets/5065defd-1f10-4c18-9206-f1dff4a986e1" />
 
-**RSA Verschlüsselung**
+**RSA-Kryptosystem**
 1. RSA Schlüsselerzeugung: GenRSA(n) mit Sicherheitsparameter n
    - Wähle 2 große *Primzahlen* p, q mit p ≠ q, und ungefähr gleicher Länge
    - Berechne N= p*q hat gewünschte Bitlänge n
@@ -268,6 +284,7 @@ Gegeben Ciphertext $(R, C)$ und privater Schlüssel $(\mathcal{G}, g, a)$:
   + Andere Varianten: **CDH- und DDH-Annahme**:
     1. CDH-Annahme: es ist schwer, $\{g\}^\{xy\}$ zu berechnen
     2. DDH-Annahme: es ist schwer, zu entscheiden, ob ein T aus $\{g\}^\{xy\}$ kommt oder zufällig ist
+       
 **Schlüsselaustausch**
 1. Diffie-Hellman Schlüsselaustausch:
    <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
