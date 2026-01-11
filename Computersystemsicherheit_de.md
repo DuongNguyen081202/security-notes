@@ -38,7 +38,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 | **Vertraulichkeit** | <ul><li>One-Time Pad</li><li>DES (3DES), AES</li></ul>            | <ul><li>RSA Verschlüsselung</li><li>ElGamal Verschlüsselung</li></ul> |
 | **Integrität & Authentizität** | <ul><li>CBC-MAC</li><li>HMAC</li></ul>                 | <ul><li>RSA Signaturen</li><li>Schnorr Signaturen</li></ul>          |
 
-**Symmetrische Kryptographie**
+### Symmetrische Kryptographie
 - Algorithmen: (Gen, Enc, Dec)
 
 <img width="586" height="109" alt="Bildschirmfoto 2025-10-07 um 14 17 00" src="https://github.com/user-attachments/assets/18b9a3d1-06f9-422a-8850-2fb72e37cf7d" />
@@ -213,7 +213,7 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
    - Sende: (nonce, c)
    - Empfang: Erst entschlüsseln, dann Tag prüfen
 
-**Asymmetrische Kryptographie**
+### Asymmetrische Kryptographie
 - Es gibt stattdessen ein Schlüsselpaar (pk, sk), dies macht es möglich, dass kein Schlüsselaustausch notwendig ist, dies folgt auch, dass nur n Schlüsselpaare gebraucht sind, statt <sup>n(n-1)</sup>/<sub>2</sub>
 - ist ein 7-Tupel $(\mathcal{M}, \mathcal{K}_s, \mathcal{K}_p, \mathcal{K}, \mathcal{C}, e, d)$, mit
   + $\mathcal{M}$ ist Menge von Klartext
@@ -230,68 +230,92 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
 
 **RSA-Kryptosystem**
 1. RSA Schlüsselerzeugung: GenRSA(n) mit Sicherheitsparameter n
-   - Wähle 2 große *Primzahlen* p, q mit p ≠ q, und ungefähr gleicher Länge
-   - Berechne N= p*q hat gewünschte Bitlänge n
-   - Wähle e> 1, sodass ggT(e, 𝝋(N)) = 1
-   - Berechne d = $\{e\}^\{-1\}$ mod𝝋(N); 𝝋(N) =(p-1)(q-1)
+   - Wähle 2 große *Primzahlen* p, q mit p ≠ q, und gleicher Länge
+   - Setze $N = pq$ und $\varphi(N) = (p-1)(q-1)$
+   - Wähle $e$ mit $1 < e < \varphi(N)$ und $\gcd(e,\varphi(N))=1$.
+   - Berechne $d$ als multiplikatives Inverses von $e$ modulo $\varphi(N)$:
+   \[
+   ed \equiv 1 \pmod{\varphi(N)}.
+   \]
+   - Öffentlicher Schlüssel: $pk=(N,e)$, privater Schlüssel: $sk=(N,d)$
    - Ausgabe: (N,e,d) = GenRSA(n)
      
    <img width="273" height="180" alt="Bildschirmfoto 2025-10-12 um 02 50 24" src="https://github.com/user-attachments/assets/9b6389df-14b0-45fe-ae6b-3c6e622eec64" />
 
-2. RSA Annahmen:
-   1. d ist benögtigt, um die Invertierung der RSA Funktion zu berechnen
-   2. y ist zufällig in $\{Z\}^\{+\}_\{N\}$
-   3. Gegebn (N, e, y) ist es schwierig x zu berechnen, so dass z ≡ $\{x\}^\{e\}$ mod N
-- **Homomorphe Verschlüsselung**: Verschlüsselungsverfahren heißt (multiplikativ) homomorph, wenn $\mathrm{Enc}(\mathsf{pk}, m_0)\cdot \mathrm{Enc}(\mathsf{pk}, m_1)
-= \mathrm{Enc}(\mathsf{pk}, m_0\cdot m_1).$
-  - Textbuch RSA ist homomorph, da $(m_0^{\,e} \bmod N)\cdot (m_1^{\,e} \bmod N)
-\equiv (m_0\cdot m_1)^{e} \pmod N.$
-- Diese Verschlüsselung ist deterministisch, so damit Textbuch RSA nicht mehr deterministisch wird, tragen wir Zufälligkeit in Encoding-Schritt ein, und Format wird geprüft in Decoding-Schritt. Dies nennen wir **RSA OAEP**:
+2. Textbuch RSA
+   \[
+   \text{Enc}(N,e,m)=m^e \bmod N,\qquad \text{Dec}(N,d,c)=c^d \bmod N
+   \]
+   **Achtung:** Textbook RSA ist **nicht sicher** (deterministisch, malleable, keine IND-CPA/CCA-Sicherheit).
+   - Textbuch RSA ist homomorph, da $(m_0^{\,e} \bmod N)\cdot (m_1^{\,e} \bmod N) \equiv (m_0\cdot m_1)^{e} \pmod N.$
+
+3. RSA-OAEP:
+In der Praxis benutzt man RSA **mit sicherem Padding**, typischerweise **RSA-OAEP**.
+- Ziel: Randomisierung + Schutz gegen viele strukturelle Angriffe
+- Für CCA-Sicherheit nutzt man heute häufig **KEM-DEM** bzw. direkt moderne Protokolle/AEAD.
 
   <img width="552" height="275" alt="Bildschirmfoto 2025-10-12 um 19 44 58" src="https://github.com/user-attachments/assets/a9a4a87a-a586-4854-a2d5-26a00fbe5b0f" />
 
 Denn Textbuch RSA ist fast immer unsicher in der Praxis, brauchen wir eine alternative Verschlüsselungsverfahren. Nächste betrachten wir das **Elgamal Verfahren**
+ElGamal arbeitet in einer zyklischen Gruppe $G$ der Ordnung $q$ mit Generator $g$.
 
 **Schlüsselgenerierung (von Alice)**
-
-1. Wähle eine zyklische Gruppe $\mathcal{G} = (G, \circ, e)$ mit Erzeuger $g$ und Ordnung $q$.
-2. Wähle einen geheimen Exponenten $a \in \{2, \dots, q-1\}$ und setze $A = g^a$.
-3. Privater Schlüssel: $\mathsf{sk} = (\mathcal{G}, g, a)$.  
-   Öffentlicher Schlüssel: $\mathsf{pk} = (\mathcal{G}, g, A)$.
-
+1. Wähle geheim $a \in \{1,\dots,q-1\}$ und setze $A=g^a$.
+2. Öffentlicher Schlüssel: $pk=(G,g,A)$, privater Schlüssel: $sk=(G,g,a)$.
+   
 **Verschlüsselung (an Alice)**
-
-Gegeben Nachricht $m \in G$ und öffentlicher Schlüssel $(\mathcal{G}, g, A)$:
-
-1. Wähle zufällig $r \in \{2, \dots, q-1\}$ und setze $R = g^r$.
-2. Berechne $K = A^r = (g^a)^r = g^{ar}$ und setze $C = m \circ K$.
-3. Ciphertext ist $e(m, (\mathcal{G}, g, A)) = (R, C)$.
+Für Nachricht $m \in G$:
+1. Wähle zufällig $r \in \{1,\dots,q-1\}$ und setze $R=g^r$.
+2. Berechne gemeinsamen Schlüssel:
+   \[
+   K=A^r=g^{ar}
+   \]
+3. Setze $C=m \circ K$.
+4. Ciphertext: $(R,C)$.
 
 **Entschlüsselung (Alice)**
+1. Berechne
+   \[
+   K = R^a = g^{ra}
+   \]
+2. Ausgabe:
+   \[
+   m = C \circ K^{-1}.
+   \]
 
-Gegeben Ciphertext $(R, C)$ und privater Schlüssel $(\mathcal{G}, g, a)$:
+**Sicherheitsintuition:** ElGamal ist (unter passenden Gruppenannahmen) **IND-CPA-sicher**, weil $r$ frisch random ist. Typisch: IND-CPA unter der **DDH-Annahme** (je nach Setting).
 
-1. Berechne $K = R^a = (g^r)^a = g^{ra}$.
-2. Bestimme $K^{-1}$ in $\mathcal{G}$.
-3. Ausgabe der Entschlüsselung:  
-   $d((R, C), (\mathcal{G}, g, a)) = C \circ K^{-1} = m \circ K \circ K^{-1} = m$.
+**Diskrete Logarithmus Annahme**
+Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$.
 
-- Diskrete Logarithmus Annahme:
-  + Setup: zyklische Gruppe G der Ordnung q mit Generator g und q prim
-  + Gegeben: *zufälliges* h ∈ G
-  + Suche: x, sodass $\{g\}^\{x\}$ = h
-  + Annahme: diskreten Logarithmus zu finden ist schwer für geeignete Gruppe G
-  + Andere Varianten: **CDH- und DDH-Annahme**:
-    1. CDH-Annahme: es ist schwer, $\{g\}^\{xy\}$ zu berechnen
-    2. DDH-Annahme: es ist schwer, zu entscheiden, ob ein T aus $\{g\}^\{xy\}$ kommt oder zufällig ist
+- **DLog-Annahme:** gegeben $h\in G$, finde $x$ mit $g^x=h$ (schwer).
+- **CDH-Annahme:** gegeben $g^x, g^y$, berechne $g^{xy}$ (schwer).
+- **DDH-Annahme:** gegeben $(g^x, g^y, T)$, entscheide ob $T=g^{xy}$ oder zufällig (schwer).
        
 **Schlüsselaustausch**
-1. Diffie-Hellman Schlüsselaustausch:
+1. Diffie-Hellman Schlüsselaustausch (**DH**):
    <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
-   Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung** eingesetzt: Sie kombiniert einen asymmetrischen Schlüsselaustausch (KEM) mit der effizienten symmetrischen Verschlüsselung der Daten (DEM).
-   - Verschlüsselung: <img width="717" height="287" alt="Bildschirmfoto 2025-10-15 um 17 28 09" src="https://github.com/user-attachments/assets/2cec1d23-6f5a-4d2b-b299-59e5a8c7a796" />
+- Ziel: Zwei Parteien erzeugen einen gemeinsamen Sitzungsschlüssel, ohne ihn direkt zu senden.
+   1. Alice wählt $x$, sendet $X=g^x$.
+   2. Bob wählt $y$, sendet $Y=g^y$.
+   3. Beide berechnen denselben Schlüssel:
+      \[
+      K = g^{xy} \quad\text{(Alice: }Y^x,\; Bob:\; X^y\text{)}.
+      \]
+- DH alleine bietet **keine Authentizität** → anfällig für **Man-in-the-Middle**, wenn man nicht zusätzlich authentifiziert (z.B. Signaturen/Zertifikate).
+  
+Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung - KEM-DEM** eingesetzt: Sie kombiniert einen asymmetrischen Schlüsselaustausch (**KEM - Key Encapsulation**) mit der effizienten symmetrischen Verschlüsselung der Daten (**DEM - Data Encapsulation**).
+  - Schema:
+    1. Erzeuge zufälligen Sitzungsschlüssel $k$
+    2. $c_1 = \text{Enc}^{\text{sym}}_k(m)$  (z.B. AES-GCM / ChaCha20-Poly1305)
+    3. $c_2 = \text{Enc}^{\text{pk}}(pk, k)$  (z.B. RSA-OAEP oder (EC)DH-basierter KEM)
+    4. Sende $(c_1, c_2)$
+       
+  - Verschlüsselung: <img width="717" height="287" alt="Bildschirmfoto 2025-10-15 um 17 28 09" src="https://github.com/user-attachments/assets/2cec1d23-6f5a-4d2b-b299-59e5a8c7a796" />
   - Entschlüsselung: <img width="713" height="288" alt="Bildschirmfoto 2025-10-15 um 17 29 21" src="https://github.com/user-attachments/assets/9304def3-ccf6-48af-895b-1cda90e6dbc6" />
+  - Vorteil: effizient + (mit AEAD/KEM) sehr gute Sicherheitseigenschaften, oft bis hin zu IND-CCA.
   - Nachteil: Sicherheit ist abhängig von der Sicherheit zweiter Kryptosysteme
+    
 **Signaturen**
 *Digitale Signaturen* erlauben:
 - einen Test auf *Authentizität* und *Integrität* einer Nachricht,
