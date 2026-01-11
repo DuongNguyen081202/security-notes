@@ -292,18 +292,71 @@ Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$.
 - **CDH-Annahme:** gegeben $g^x, g^y$, berechne $g^{xy}$ (schwer).
 - **DDH-Annahme:** gegeben $(g^x, g^y, T)$, entscheide ob $T=g^{xy}$ oder zufällig (schwer).
        
-**Schlüsselaustausch**
+#### Schlüsselaustausch
+- Beide Parteien erzeugen gemeinsam einen Schlüssel, ohne ihn direkt zu übertragen.
+- Beispiel: Diffie–Hellman (DH): beide berechnen denselben geheimen Wert $K=g^{xy}$.
+
 1. Diffie-Hellman Schlüsselaustausch (**DH**):
    <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
-- Ziel: Zwei Parteien erzeugen einen gemeinsamen Sitzungsschlüssel, ohne ihn direkt zu senden.
-   1. Alice wählt $x$, sendet $X=g^x$.
-   2. Bob wählt $y$, sendet $Y=g^y$.
-   3. Beide berechnen denselben Schlüssel:
-      \[
-      K = g^{xy} \quad\text{(Alice: }Y^x,\; Bob:\; X^y\text{)}.
-      \]
-- DH alleine bietet **keine Authentizität** → anfällig für **Man-in-the-Middle**, wenn man nicht zusätzlich authentifiziert (z.B. Signaturen/Zertifikate).
+   - Ziel: Zwei Parteien erzeugen einen gemeinsamen Sitzungsschlüssel, ohne ihn direkt zu senden.
+   Die Parteien einigen sich auf Primzahl $p$ (damit Gruppe $G=\mathbb{Z}_p$) sowie Generator $g$ von $\mathbb{Z}_p^\* = \{1,\dots,p-1\}$.
+   1. A wählt privat $a$ zufällig (mit $0<a<p$) und sendet $g^a \bmod p$ an B.  
+   2. B wählt privat $b$ zufällig (mit $0<b<p$) und sendet $g^b \bmod p$ an A.  
+   3. A berechnet $(g^b)^a \bmod p$.  
+   4. B berechnet $g^{ab} \bmod p$.  
+   Da $(g^b)^a = g^{ab}$ gilt, erhalten beide denselben Schlüssel. 
+   
+   - DH alleine bietet **keine Authentizität** → anfällig für **Man-in-the-Middle**, wenn man nicht zusätzlich authentifiziert (z.B. Signaturen/Zertifikate).
+
+2. Needham–Schroeder-Schlüsselaustausch (symmetrisch)
+   Protokoll:
+   $A \rightarrow T: A, B, N_A$  
+   $T \rightarrow A: N_A, K, B, \{K, A\}_{K_B}, \{K, A\}_{K_A}$  
+   $A \rightarrow B: \{K, A\}_{K_B}$  
+   $B \rightarrow A: \{N_B\}_K$  
+   $A \rightarrow B: \{N_B - 1\}_K$  
+   
+   Dabei sind $N_A, N_B$ Nonces (“number used once”), d.h. zufällig generierte Zahlen, die unter keinen Umständen zweimal verwendet werden sollen. 
+   
+   - Unsicher bei Replay, falls ein Angreifer einen alten Schlüssel $K'$ gebrochen und alte Nachrichten gespeichert hat.
+
+3. Needham–Schroeder (asymmetrisch)
+   Seien $K_{P_A}, K_{P_B}$ die öffentlichen Schlüssel von A bzw. B, sowie $K_{S_T}$ der private Signaturschlüssel von T.
+   
+   $A \rightarrow T: A, B$  
+   $T \rightarrow A: K_{P_B}, \{B\}_{K_{S_T}}$  
+   $A \rightarrow B: \{N_A, A\}_{K_{P_B}}$  
+   $B \rightarrow T: B, A$  
+   $T \rightarrow B: K_{P_A}, \{A\}_{K_{S_T}}$  
+   $B \rightarrow A: \{N_A, N_B\}_{K_{P_A}}$  
+   $A \rightarrow B: \{N_B\}_{K_{P_B}}$ 
+
+**Sicherheit DH gegen passive Angreifer: Computational Diffi-Hellman (CDH)**
+Angreifer kennt $G, g, g^a, g^b$, aber nicht $a,b$.  
+Er muss $g^{ab}$ bestimmen → Instanz des CDH-Problems.
+   - Input: $g, g^a, g^b$  
+   - Output: $g^{ab}$  
+Anmerkungen: CDH gilt als schwer (Basis von ElGamal); DH kann in jeder zyklischen Gruppe implementiert werden. 
+
+**Sicherheit gegen MitM-Angriff auf DH**
+- Problem: MitM: “Simultane” Ausführung zweier DH-Protokolle → A und B erhalten verschiedene Schlüssel, E kennt beide.
+- Lösung: Nachrichten müssen signiert werden → authenticated DH (oder *Station-to-Station-Protokoll*)
   
+**Station-to-Station-Protokoll - STS**
+   Annahme: Beide Parteien haben Signaturschlüssel $sk_A$, $sk_B$; die Zertifikate sind beiden bekannt.
+   
+   $A \rightarrow B: g^a$  
+   $B \rightarrow A: g^b,\ \mathrm{sig}_{sk_B}(g^a,g^b)_{K}$, wobei $K=g^{ab}$ der DH-Schlüssel ist.  
+   $A \rightarrow B: \mathrm{sig}_{sk_A}(g^a,g^b)_{K}$ 
+   
+   Anmerkungen:  
+      - Die Signatur erlaubt einen Test der Integrität von $g^a$ und $g^b$.  
+      - A und B können die Signatur nur dann entschlüsseln, wenn $K$ korrekt ist. 
+
+**Schlüsselverteilung (Key distribution):**
+- Ein Schlüssel wird von einer Instanz erzeugt und an die Kommunikationspartner verteilt.
+- Beispiel: ein zentraler Server/KDC verteilt Sitzungsschlüssel (Kerberos-Idee).
+
 Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung - KEM-DEM** eingesetzt: Sie kombiniert einen asymmetrischen Schlüsselaustausch (**KEM - Key Encapsulation**) mit der effizienten symmetrischen Verschlüsselung der Daten (**DEM - Data Encapsulation**).
   - Schema:
     1. Erzeuge zufälligen Sitzungsschlüssel $k$
@@ -406,7 +459,7 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
          3. Ausgabe 1 iff v = r, sonst Ausgabe 0
    2. Digital Signature Algorithm (DSA)
       - Setup:
-        + Wähle Primzahlen $p,q$ mit $q \mid (p-1)$ und einen Generator $g$ der Untergruppe der Ordnung $q$ in $\mathbb{Z}_p^\*$.
+        + Wähle Primzahlen $p,q$ mit $q \mid (p-1)$ und einen Generator $g$ der Untergruppe der Ordnung $q$ in $\mathbb{Z}_p^\*$; $q$ soll eine große Primzahl sein (160 Bit, 224 Bit oder 256 Bit).
         + Typisch: $g = h^{(p-1)/q} \bmod p$ für ein geeignetes $h$.
         + privater Schlüssel $x \in \{1,\dots,q-1\}$, öffentlicher Schlüssel $y = g^x \bmod p$
       - Signieren: einer Nachricht $m$:
@@ -439,7 +492,69 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
     Der Nonce $k$ muss pro Signatur **frisch, gleichverteilt und geheim** sein.
 Wenn $k$ wiederverwendet wird oder vorhersagbar ist, kann der private Schlüssel $x$ geleakt werden.
 
-**Zertifikate**
+Auch wenn die Kryptographie-Algorithmen sicher sind, bleibt das System unsicher, wenn
+- Schlüssel nicht geheim bleiben oder
+- Schlüssel schlecht erzeugt wurden (z.B. RSA-Modul $N$ leicht faktorisierbar).
+
+### Arten von Schlüsseln
+1. Langzeitschlüssel (*long-term keys*):
+  - lange Gültigkeit (z.B. Monate/Jahre)
+  - häufig für **Authentifizierung** (z.B. Zertifikate/Signaturschlüssel)
+  - sollten besonders gut geschützt werden
+
+2. Kurzzeitschlüssel / Sitzungsschlüssel (*short-term / session keys*):
+  - gültig nur für eine Sitzung (z.B. ein Verbindungsaufbau / Download / Anruf)
+  - Vorteil: weniger Daten pro Schlüssel → weniger Risiko bei Kompromittierung
+  - effizient für symmetrische Verschlüsselung (AES/ChaCha)
+
+### Zertifikate
+Asymmetrische Kryptographie löst das Key-Distribution-Problem, aber schafft ein neues Problem:
+**Wie weiß ich, dass ein öffentlicher Schlüssel wirklich zur richtigen Identität gehört?**
+→ Ohne diese Bindung sind Man-in-the-Middle-Angriffe möglich.
+
+Es gibt zwei grundsätzliche Ansätze:
+1. Zentralisierter Ansatz: X.509-Zertifikate (PKI)
+   - **Zentraler / hierarchischer Ansatz**: Vertrauen wird in einer Hierarchie organisiert.
+   - Eine **Zertifizierungsstelle (CA)** signiert öffentliche Schlüssel und bindet sie an Identitäten.
+   - Typisch entsteht eine **Zertifikatskette**:
+     + End-Entity-Zertifikat (z.B. Serverzertifikat) wird von einer Intermediate CA signiert
+     + Intermediate CA wird von einer höheren CA signiert
+     + Oben steht ein **Root-Zertifikat** (Root CA), dem der Client bereits vertraut (Trust Store)
+
+**Idee:** Wenn ich der Root-CA vertraue, kann ich über die Kette auch dem Serverzertifikat vertrauen.
+
+**Wichtig:** Das größte praktische Problem asymmetrischer Kryptographie ist oft nicht der Algorithmus, sondern die **PKI** (Vertrauensanker, Zertifikatsverwaltung, Fehlkonfigurationen, kompromittierte CAs).
+
+2. Dezentraler Ansatz: Web of Trust (PGP)
+   - Kein zentraler Trust-Anker (keine „eine“ CA).
+   - Nutzer verwalten **Keyrings/Schlüsselbünde**:
+     + eigener Schlüssel
+     + Signaturen/Zertifikate anderer öffentlicher Schlüssel
+   - Parteien können sich gegenseitig **zertifizieren** (Schlüssel signieren).
+   - Vertrauen ist **graduell** (verschiedene Vertrauensstufen).
+   - Problem/Frage: Ist Vertrauen **transitiv**?
+     + Wenn ich B vertraue, vertraue ich dann automatisch auch C, wenn B C „zertifiziert“?
+
+**Vergleich PKI/X.509 und Web of Trust**
+- PKI/X.509: zentral, hierarchisch, gut für globale Skalierung (z.B. Web/TLS), aber starke Abhängigkeit von CAs/Trust Stores.
+- Web of Trust: dezentral, nutzergetrieben, gut für Communities, aber schwieriger zu skalieren und zu evaluieren, weil Vertrauen nicht eindeutig ist.
+
+**Schlüsselverlust und -kompromittierung**
+- Schlüsselverlust kann es machen, dass Nachrichten nicht mehr lesbar sind
+- Schlüsselkompromittierung kann es machen, dass Nachrichten nicht mehr geheim sind
+- Um diese zu vermeiden, die ungültigen Schlüsseln sollen dadurch wiedergeruft werden:
+  + Ablaufdatum: X.509, Web of Trus
+  + Widerrufszertifikate:
+    - X.509: durch CA
+    - Web of Trust: durch Benutzer oder angegebene Partei
+
+**Typischer Ablauf: Zertifikatsprüfung**
+Ein Client akzeptiert ein Serverzertifikat nur, wenn u.a.:
+- die Signaturen der Zertifikatskette gültig sind (bis zu einem vertrauenswürdigen Root)
+- das Zertifikat zeitlich gültig ist (NotBefore/NotAfter)
+- der Name passt (Domainname in SubjectAltName)
+- das Zertifikat nicht widerrufen ist (CRL/OCSP, je nach Modell)
+
 1. Zertifizierungshierarchie:
 ```mermaid
    flowchart TB
@@ -461,11 +576,31 @@ Wenn $k$ wiederverwendet wird oder vorhersagbar ist, kann der private Schlüssel
       - Es gibt viele Vorteile:
         + Echtzeitabfrage
         + Kürzer & effizienter
+**Was tun mit widerrufenen Zertifikaten?** (certificate revocation list) 
+   - Alle speichern alles? Ineffizient, Updates müssen alle erreichen.  
+   - Zentralisierter Server? Vertrauen, Erreichbarkeit (Flaschenhals).  
 
 Jetzt unterscheiden wir uns die folgenden Begriffe:
 1. Identifizierung: Identität feststellen
 2. Authentisierung: Identität bestätigen
 3. Autorisierung: bestimmen, was gegenüber machen darf nach bestandener Kontrolle
+
+**Dolev–Yao-Angreifermodell**
+
+Angreifer hat volle Kontrolle über den Kommunikationskanal und kann: 
+   - Nachrichten abfangen  
+   - Übermittlung verzögern  
+   - Nachrichten unterdrücken  
+   - Nachrichten ersetzen  
+   - unter falscher Identität senden  
+
+Aber: Angreifer kann kryptographische Primitive nicht brechen (“perfekte Kryptographie”).
+
+Unterscheidung:  
+   - passive Angreifer (nur abhören)  
+   - aktive Angreifer (Kanal beeinflussen)
+
+
 
 ## Authentisierung
 ### 3 Faktoren zur Authentisierung – Übersicht
