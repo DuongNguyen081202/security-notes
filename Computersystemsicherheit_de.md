@@ -320,8 +320,7 @@ Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung - KEM-DE
 *Digitale Signaturen* erlauben:
 - einen Test auf *Authentizität* und *Integrität* einer Nachricht,
 - sowie (in der Praxis) *Nicht-Abstreitbarkeit* des Absenders.
-Grundlage ist asymmetrische Kryptographie: Es wird mit dem privaten
-Schlüssel signiert und mit dem öffentlichen Schlüssel verifiziert.
+Grundlage ist asymmetrische Kryptographie: Es wird mit dem privaten Schlüssel signiert und mit dem öffentlichen Schlüssel verifiziert.
 
 ```mermaid
 flowchart LR
@@ -331,6 +330,7 @@ flowchart LR
     E[Öffentlicher Schlüssel] --> D
     D --> F[1 = `akzeptieren` oder 0 = `verwerfen`]
 ```
+
 - Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: einmalig Schlüssel authentisieren => anschließend beliebig viele Nachrichten signiert prüfen.
   + Algorithmen: (Gen, Sig, Ver)
     <img width="595" height="182" alt="Bildschirmfoto 2025-10-15 um 21 42 56" src="https://github.com/user-attachments/assets/f16ca8eb-2528-48a7-a0eb-d36b373673da" />
@@ -358,19 +358,36 @@ Die EU-Verordnung **eIDAS** (in Deutschland u.a. durch das **Vertrauensdienstege
 - Wird mit einer *qualifizierten Signaturerstellungseinheit* erzeugt (z.B. Smartcard).
 - EU-weit anerkannt, wenn sie auf einem qualifizierten Zertifikat eines Mitgliedstaats beruht.
 
-Bis jetzt kennen wir 3 Arten für Datenintegrität: Koolisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen**, und **Diskreter-Logarithmus-basiert**; beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
+Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen**, und **Diskreter-Logarithmus-basierte Signaturen**; beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
 - Hash-and-Sign-Prinzip ermöglicht das Signieren von beliebig langen Nachrichten, und Hashfunktion trägt zut Sicherheit des Verfahren bei.
   <img width="1322" height="474" alt="image" src="https://github.com/user-attachments/assets/b6e6eb51-cf32-4487-807c-f9ce0b63c565" />
+
+**Sicherheitsbegriff**
+1. Wissen des Angreifers:
+   1. Key-Only Attack: Angreifer kennt nur den öffentlichen Schlüssel
+   2. Known Signature Attack: Angreifer kennt (mehrere) Paare von Nachrichten und zugehörigen Signaturen
+   3. Chosen Message Attack: Angreifer kann (im Voraus) für beliebig viele selbstgewählte Nachrichten zugehörige Signature bekommen
+   4. Adaptive Chosen Message Attack: Angreifer kann (auch während des Angriffs selbst) für beliebig viele selbstgewählte Nachrichten zugehörige Signaturen bekommen
+2. Ziele des Angreifers:
+   1. Existential Forgery: ein neues gültiges Nachricht/Signatur-Paar
+   2. Selective Forgery: gültige Signatur zu einzelnen neuen Nachrichten. dabei sind die Nachrichten schon vor dem Angriff bestimmt
+   3. Universal Forgery: gültige Signatur zu jedem beliebigem Dokument
+   4. Total Break: Angreifer bestimmt den geheimen Schlüssel
+      
 1. RSA-basiert Signaturen:
+   - RSA Schlüsselgenerierung:
+     + öffentlicher Schlüssel *(e,n)* und privater Schlüssel *(d,n)*
+     + eine Hashfunktion h mit Bild zwischen 0 und n ist auch benötigt
    - RSA Signieren: hier wird sk = (N,d) verwendet
      1. Hashe Nachricht m auf H(m)
-     2. Kodiere "kurzen" Hashwert auf RSA-Länge
-     3. "Kern"-Signaturverfahren: wende RSA-Schlüssel $\{(·)\}^\{d\} mod N$ an
+     2. Kodiere "kurzen" Hashwert auf RSA-Länge: $s = D(H(m), (d,n)) \bmod n$
+     3. "Kern"-Signaturverfahren: wende RSA-Schlüssel $\{(H(m))\}^\{d\} \bmod n$ an
    - RSA Verifizieren: hier wird pk = (N,e) verwendet
      1. Hashe Nachricht m auf H(m)
-     2. Kodiere "kurzen" Hashwert auf RSA-Länge
+     2. Kodiere "kurzen" Hashwert auf RSA-Länge: $ E(s,(e,n)) \equiv \{(s)\}^\{e\} \bmod n$
      3. Vergleiche Signatur $\{s\}^\{e\} mod N$ mit Encode(H(m))
 <img width="433" height="210" alt="Bildschirmfoto 2025-10-17 um 02 43 05" src="https://github.com/user-attachments/assets/c72e5563-d6c0-43c0-a935-ec3344a8fbdf" />
+
 
 2. Diskrete-Logarithmus-basiert Signaturen: hier betrachten wir **Schnorr-Signaturen**:
    - Setup:
