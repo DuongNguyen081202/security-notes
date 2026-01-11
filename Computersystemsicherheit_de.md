@@ -358,7 +358,7 @@ Die EU-Verordnung **eIDAS** (in Deutschland u.a. durch das **Vertrauensdienstege
 - Wird mit einer *qualifizierten Signaturerstellungseinheit* erzeugt (z.B. Smartcard).
 - EU-weit anerkannt, wenn sie auf einem qualifizierten Zertifikat eines Mitgliedstaats beruht.
 
-Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen**, und **Diskreter-Logarithmus-basierte Signaturen**; beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
+Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfunktion, digitale Signaturen, MACs. Weiter werden wir uns mit **Signaturverfahren** beschäftigen. Es gibt 2 Arten von Signaturverfahren: **RSA-basierte Signaturen** (RSA-Familie), und **Diskreter-Logarithmus-basierte Signaturen** (DLog-Familie z.B DSA/ECDSA, Schnorr); beide Verfahren folgen dem sogenannten *"Hash-and-Sign"-Prinzip*
 - Hash-and-Sign-Prinzip ermöglicht das Signieren von beliebig langen Nachrichten, und Hashfunktion trägt zut Sicherheit des Verfahren bei.
   <img width="1322" height="474" alt="image" src="https://github.com/user-attachments/assets/b6e6eb51-cf32-4487-807c-f9ce0b63c565" />
 
@@ -373,7 +373,8 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
    2. Selective Forgery: gültige Signatur zu einzelnen neuen Nachrichten. dabei sind die Nachrichten schon vor dem Angriff bestimmt
    3. Universal Forgery: gültige Signatur zu jedem beliebigem Dokument
    4. Total Break: Angreifer bestimmt den geheimen Schlüssel
-      
+**Stärkster Sicherheitsbegriff: Existential forgery under adaptive chosen message attacks (EUF-CMA)
+
 1. RSA-basiert Signaturen:
    - RSA Schlüsselgenerierung:
      + öffentlicher Schlüssel *(e,n)* und privater Schlüssel *(d,n)*
@@ -389,20 +390,55 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
 <img width="433" height="210" alt="Bildschirmfoto 2025-10-17 um 02 43 05" src="https://github.com/user-attachments/assets/c72e5563-d6c0-43c0-a935-ec3344a8fbdf" />
 
 
-2. Diskrete-Logarithmus-basiert Signaturen: hier betrachten wir **Schnorr-Signaturen**:
-   - Setup:
-     + Gruppe G zyklisch, Primordnung q, Generator g
-     + Schlüssel: privat $\{x\} \in {1,...,q-1}$, öffentlich $\{y\} = \{g\}^\{x\}$
-   - Signieren:
-     1. Wähle *zufällige Nonce k* $\in {1,...,q-1}$
-     2. $\{R\} = \{g\}^\{k\}$, Challenge r = H(R||m)
-     3. s = k + r*x*(mod q)
-     4. Signatur: (r,s)
-   - Verifikation
-     1. $\{R'\} = \{g\}^\{s\}*\{y\}^\{-r\}$
-     2. v = H(R'||m)
-     3. Ausgabe 1 iff v = r, sonst Ausgabe 0
-    
+2. Diskrete-Logarithmus-basiert Signaturen:
+   1. **Schnorr-Signaturen**:
+      - Setup:
+        + Gruppe G zyklisch, Primordnung q, Generator g
+        + Schlüssel: privat $\{x\} \in {1,...,q-1}$, öffentlich $\{y\} = \{g\}^\{x\}$
+      - Signieren:einer Nachricht $m$:
+         1. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$.
+         2. Berechne $R = g^k$ und $r = H(R \,\|\, m)$.
+         3. Berechne $s = k + r x \pmod q$.
+         4. Signatur ist $(r,s)$.
+      - Verifikationvon $(r,s)$ zu $m$:
+         1. Berechne $R' = g^s \cdot y^{-r}$.
+         2. Berechne $v = H(R' \,\|\, m)$.
+         3. Ausgabe 1 iff v = r, sonst Ausgabe 0
+   2. Digital Signature Algorithm (DSA)
+      - Setup:
+        + Wähle Primzahlen $p,q$ mit $q \mid (p-1)$ und einen Generator $g$ der Untergruppe der Ordnung $q$ in $\mathbb{Z}_p^\*$.
+        + Typisch: $g = h^{(p-1)/q} \bmod p$ für ein geeignetes $h$.
+        + privater Schlüssel $x \in \{1,\dots,q-1\}$, öffentlicher Schlüssel $y = g^x \bmod p$
+      - Signieren: einer Nachricht $m$:
+         1. Berechne $h = H(m)$ (und reduziere ggf. modulo $q$).
+         2. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$.
+         3. Berechne
+            \[
+            r = (g^k \bmod p) \bmod q.
+            \]
+            Falls $r=0$, wähle neues $k$.
+         4. Berechne
+            \[
+            s = k^{-1}(h + x r) \bmod q.
+            \]
+            Falls $s=0$, wähle neues $k$.
+         5. Signatur ist $(r,s)$.
+      - Verifikation: von $(r,s)$ zu $m$:
+         1. Prüfe $0<r<q$ und $0<s<q$, sonst reject.
+         2. Berechne $h = H(m)$ und
+            \[
+            w = s^{-1} \bmod q,\quad
+            u_1 = hw \bmod q,\quad
+            u_2 = rw \bmod q.
+            \]
+         3. Berechne
+            \[
+            v = ((g^{u_1}\cdot y^{u_2}) \bmod p) \bmod q.
+            \]
+         4. Akzeptiere gdw. $v = r$.
+    Der Nonce $k$ muss pro Signatur **frisch, gleichverteilt und geheim** sein.
+Wenn $k$ wiederverwendet wird oder vorhersagbar ist, kann der private Schlüssel $x$ geleakt werden.
+
 **Zertifikate**
 1. Zertifizierungshierarchie:
 ```mermaid
