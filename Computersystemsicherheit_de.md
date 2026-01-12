@@ -632,13 +632,31 @@ Es existiert 2 **Arten von Token**: *Software*- (bsp. Web-Cookies) und *Hardware
   + oft leicht zu fälschen
 
 **Single-Sign-On (SSO)**
+- ist eine Authentifizierungsmethode. Sie ermöglicht es einem Benutzer, sich mit einem einzigen Satz von Anmeldeinformationen bei mehreren unabhängigen Softwaresystemen anzumelden
+- Idee: ein zentraler, vertrauenwürdiger Anbieter bestätigt unsere Identität gegeüber allen anderen Diensten, auf die wir zugreifen möchten. Wir melden sich einmal an und haben Zugriff auf alles.
 - Vorteile:
-  + Nur ein Passwort notwendig
-  + Phishing-Attacken schwerer, da einzelne Login-Stelle leichter auf Korrektheit überprüft werden kann
+  + Nur ein starkes Passwort notwendig
+  + Erhöhte Sicherheit: bessere Kontrolle über den Zugriff von Ressourcen
+  + Einfachheit und Komfort: kein ständiges Suchen nach Passwörter oder Zurücksetzen vergessener Zugangsdaten
   + IT-Sicherheitmaßnahmen fokussieren sich auf zentrale Stelle
- - Nachteil: Verfügbarkeit von Dienst hängt von Verfügbarkeit des SSO ab
- - Ein Beispiel für ein SSO-Protokoll ist Kerberos (v.a. im Unternehmensumfeld). Andere verbreitete Varianten nutzen SAML oder OpenID Connect.
+ - Nachteil:
+   + Verfügbarkeit von Dienst hängt von Verfügbarkeit des SSO ab
+   + Wenn das SSO-login kompromittiert wird, kann ein Angreifen nun als das Opfer auf
+Ressourcen und Diensten zugreifen
+ - Ein Beispiel für ein SSO-Protokoll ist **Kerberos** (v.a. im Unternehmensumfeld). Andere verbreitete Varianten nutzen SAML oder OpenID Connect.
    <img width="695" height="144" alt="Bildschirmfoto 2025-10-17 um 12 34 28" src="https://github.com/user-attachments/assets/0f4b5f7b-bd8b-4385-89a5-569348e38e78" />
+   + Ziele von Kerberos:
+     - Authentifizierung von Subjekten, genannt **Principals**: unter anderem Benutzer, PC/Laptop, Server
+     - Austausch von Sitzungs-Schlüsseln für Principals basierend auf Needham-Schroeder
+     - SSO für Dienste in einer administrativen Domäne
+   + Ziel eines SSO-Konzepts: Benutzeer authentisiert sich einmal, keine separate Authentisierung bei Dienstnutzung mehr erforderlich
+   + Design: pro Domäne (Realm) ein **Key Distribution Center (KDC)**
+   + Aufgabe des KDC:
+     - Authentifizierung der Clients (Pricipals) seiner Domäne => **Authentication Server (AS)**
+     - Ausstellen von Tickets als Identitätsausweise => **Ticket Granting Server (TGS)**
+   + Authentifizierung eines Pricipals:
+     + Pre-Shared Secrets zwischen KDC und Principal
+     + Der KDC kennt die Secrets aller Netzwerkteilnehmer
 
 ## Autorisierung
 - Autorisierung heißt, dass wir die Rechten für jemand auf jede Datei zuweisen werden (Zugriffkontrolle)
