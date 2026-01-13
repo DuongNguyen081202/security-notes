@@ -738,7 +738,7 @@ $\forall (l,c) \in SC : (l,c) \le (l',c') \iff l \le l' \land c \subseteq c'$
 - Semantik: Bedeutung der Kommunikation
 
 **Netzwerk-schichtenmodelle**
-1. OSI Modell: Kommunikation zwischen 2 OSI Modell:
+1. Open System Interconnection (OSI Modell): Kommunikation zwischen 2 OSI Modell:
 <img width="593" height="237" alt="Bildschirmfoto 2026-01-13 um 20 43 48" src="https://github.com/user-attachments/assets/4130e334-1958-4635-9887-42bbdfca0ce3" />
 
 2. TCP/IP Modell: Kommunikation zwischen 2 TCP/IP Modell:
@@ -752,7 +752,6 @@ $\forall (l,c) \in SC : (l,c) \le (l',c') \iff l \le l' \land c \subseteq c'$
 **TCP/IP Modell**
 
 <img width="360" height="145" alt="Bildschirmfoto 2026-01-13 um 20 48 25" src="https://github.com/user-attachments/assets/ff923e68-5cde-4ff4-923b-1028d5eaaff1" />
-
 
 1. **Link Layer**:
    - Bietet an: Übertragung zwischen 2 Punkten inklusive Konvertierung in physikalische Signale
@@ -788,7 +787,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
            + Monitoring, IDS
            + DHCP Snooping
            + Verwendung von Schutzmechanism aus höheren Ebenen
-
+   
  2. **Internet Layer**:
     - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
     - erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
@@ -841,8 +840,8 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
             - Gegenmaßnahmen:
               + Nutze Protokolle in höherer Schicht, um Angriffe zu verhindern
               + Zufällige Wahl der ISN schützt vor Off-Path Angreifer
-         2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden. Es wird manchmal von Zensur- oder Filter-Systeme benutzt; ein Dritter fälscht ein TCP-Segment mit RST-Flag, so beide Enpunkte glauben, der Peer habe die Verbindung zurückgestzt, führt dazu, dass Verbindung abbricht (DoS-Angriff)
-       2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (DoS Angriff)
+         2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden. Es wird manchmal von Zensur- oder Filter-Systeme benutzt; ein Dritter fälscht ein TCP-Segment mit RST-Flag, so beide Enpunkte glauben, der Peer habe die Verbindung zurückgestzt, führt dazu, dass Verbindung abbricht (**DoS-Angriff**)
+       2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (**DoS Angriff**)
           - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren: $\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})$. So, nur wenn $\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\\mathrm{Port\_C}) + 1,$ dann wird Speicher reserviert.
 
 4. **Application Layer**:
@@ -946,7 +945,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            - Gegenmaßnahmen:
              + Bailiwick-Überprüfung: der Resolver akzeptiert nur Records von Nameservern, die für angefragte Zone verantwortlich sind
              + DNSSEC
-       7. DNS Reflection Angriff: eine Art von DDoS Angriff, macht Endsystem/Zwischensystemen überlastet
+       7. DNS Reflection Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
           - Funktionsweise:
             + Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Addresse DNS-Anfragen an Server
             + Amplification: Antworten von Server an Opfer sind deutlich größer als Anfragen
@@ -970,7 +969,58 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             + Client codiert Daten in angefragten Namen
             + Resolver leiten Daten an autoritaativen Server weiter
           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
-         
+
+Was macht OSI Modell unterschiedlich:
+1. **Physical Layer** :
+   - Datrn werden in physikalische Signale konvertiert und zwischen 2 Geräte übertragen
+   - Datenformat:
+     + Elektrische Impule (Kupferkabel)
+     + Lichtimpulse (Glasfaser)
+     + Funksignale (Wifi)
+2. **Data Link Layer** funktionert so wie Link Layer:
+   - sorgt für die Verbindung zwischen 2 Netzwerkgeräte im selben Netzwerk
+   - Entscheiden anhand der MAC-Adresse ob Paket durchgeleitet wird
+   - Hardware; Switches
+3. **Network Layer** funktionert so wie Internet Layer:
+   - Zuweisung eindeutiger Adressen an jedes Gerät, die als logische Adressen bezeichnet werden
+   - Eindeutige Identifikation von Geräten mittels IP Adresse
+   - Leitet Paketen netzwerkübergreifend ans Ziel
+   - IP ist ein unzuverlässiges Protokoll
+   - Hardware: Routers
+4. **Transport Layer**
+5. **Session Layer**:
+   - Authentifizierung und Authorisierung von Benutzern
+   - Erstellt und beendet Sitzungen
+   - Verschlüsselt/Entschlüsselt die Daten
+6. **Presentation Layer**:
+   - Konvertiert die Daten in ein für alle Seiten verständliches Format
+   - Komprimiert die Daten
+   - Verschlüsselt/Entschlüsselt die Daten
+7. **Application Layer**:
+   - Stellt Funktionen für netzbasierte Software zur Verfügung
+   - Es sind nicht die Anwendung selbst gemeint
+   - Adressierung erfolgt mittles Ports
+
+### Netwerschutzmechanism
+1. **Firewalls**
+   - ist ein Netzwerksicherheitssystem, das den Datenverkehr zwischen dem lokalen Netzwerk und dem Internet überwacht und Verbindungen gemäß vordefinierter Regeln filtert. Sie ermöglicht:
+     + Überwachung und Filterung des Netzwerkverkehrs
+     + Schutz vor feindlichen Infiltrationen
+     + Schutz vor unbefugtem Zugriff
+     + Einhaltung regulatorischer Vorschriften
+     + Netzwerksegmentierung
+2. **Intrusion Detection System (IDS)**
+   - ist Passive Beobachter, die den Netzwerkverkejr auf Muster bösartiger Aktivitäten überwachen
+     + Beobachtet den gesamten ein- und ausgehenden Netzwerkverkehr
+     + Nicht direkt in den Verkehrsfluss eingebunden
+     + Rechenintensiv
+     + Alarmiert Administratoren im Falle von bösartigen Aktivitäten
+3. **Intrusion Prevention System (IPS)**
+   - Analysiert den Netzwerkverkehr in Echtzeit un ergreift präventive Maßnahmen, um Angriffe zu stoppen
+     + Direkt in den Verkehrsfluss integriert
+     + Blockiert/verwirft aktiv Verbindungen bei bösartigen Aktivitäten
+     + Alarmiert Administratoren im Falle von bösartigen Aktivitäten
+
 ### WLAN Sicherheit
 - Typische Komponenten eines WLAN Netzwerkes:
   + Access point: ein Gerät, das die Verbindung zum Netzwerk ermöglicht
