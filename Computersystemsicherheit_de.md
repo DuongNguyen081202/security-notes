@@ -377,11 +377,12 @@ Grundlage ist asymmetrische Kryptographie: Es wird mit dem privaten Schlüssel s
 
 ```mermaid
 flowchart LR
-    A[Geheimer Schlüssel sk] -→ B[Sig]
-    B -→ C[Signatur]
-    C -→ D[Ver]
-    E[Öffentlicher Schlüssel] -→ D
-    D -→ F[1 = `akzeptieren` oder 0 = `verwerfen`]
+    A["Geheimer Schlüssel sk"] --> B["Sig"]
+    B --> C["Signatur"]
+    C --> D["Ver"]
+    E["Öffentlicher Schlüssel"] --> D
+    D --> F["1 = akzeptieren oder 0 = verwerfen"]
+
 ```
 
 - Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: einmalig Schlüssel authentisieren => anschließend beliebig viele Nachrichten signiert prüfen.
@@ -558,14 +559,14 @@ Ein Client akzeptiert ein Serverzertifikat nur, wenn u.a.:
 1. Zertifizierungshierarchie:
 ```mermaid
    flowchart TB
-    root[Root-CA]
-    inter[übergeordnete CA]
-    ca[CA]
-    holder[Schlüsselinhaber]
+    root["Root-CA"]
+    inter["Übergeordnete CA"]
+    ca["CA"]
+    holder["Schlüsselinhaber"]
 
-    root -→|Zertifiziert mittels Signatur| inter
-    inter -→|Zertifiziert mittels Signatur| ca
-    ca -→|Zertifiziert mittels Signatur| holder
+    root -->|"Zertifiziert mittels Signatur"| inter
+    inter -->|"Zertifiziert mittels Signatur"| ca
+    ca -->|"Zertifiziert mittels Signatur"| holder
 ```
 
 2. Zertifikate revozieren
@@ -738,14 +739,15 @@ $\forall (l,c) \in SC : (l,c) \le (l',c') \iff l \le l' \land c \subseteq c'$
 
 **Netzwerk-schichtenmodelle**
 1. OSI Modell: Kommunikation zwischen 2 OSI Modell:
-<img width="687" height="323" alt="Bildschirmfoto 2025-10-19 um 13 14 54" src="https://github.com/user-attachments/assets/1cda487c-3b02-4908-9b8c-dac333ebb55e" />
+<img width="593" height="237" alt="Bildschirmfoto 2026-01-13 um 20 43 48" src="https://github.com/user-attachments/assets/4130e334-1958-4635-9887-42bbdfca0ce3" />
+
 2. TCP/IP Modell: Kommunikation zwischen 2 TCP/IP Modell:
-   <img width="652" height="324" alt="Bildschirmfoto 2025-10-19 um 13 17 58" src="https://github.com/user-attachments/assets/4c7ada62-c844-4bb0-9c65-635ad4d493c5" />
+   <img width="593" height="237" alt="Bildschirmfoto 2025-10-19 um 13 17 58" src="https://github.com/user-attachments/assets/4c7ada62-c844-4bb0-9c65-635ad4d493c5" />
 
 ### Protokolle auf jedem Layer
 <img width="878" height="318" alt="Bildschirmfoto 2025-10-19 um 13 20 45" src="https://github.com/user-attachments/assets/84f61329-8c11-4d26-9ed3-d855abcec57c" />
 
-1. Link Layer:
+1. **Link Layer**:
    - Bietet an: Übertragung zwischen 2 Punkten inklusive Konvertierung in physikalische Signale
    - Beispiele: Ethernet, WiFi, Address Resolution protocol (ARP)
    - Die kommunikation muss beinhalten: Senderadresse, Zieladresse, und Daten
@@ -780,7 +782,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
            + DHCP Snooping
            + Verwendung von Schutzmechanism aus höheren Ebenen
 
- 2. Internet Layer:
+ 2. **Internet Layer**:
     - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
     - erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
     - Pakete beinhalten: Sender-, Zieladdresse, Daten; Pakete mitgleicher Sender-, Zieladdresse können unterschiedliche Routen nehmen
@@ -795,7 +797,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
     - **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
       + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
     
-3. Transport Layer:
+3. **Transport Layer**:
    - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
    - Protokolle: TCP, UDP, und QUIC
      ## TCP vs. UDP – Übersicht
@@ -836,7 +838,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
        2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (DoS Angriff)
           - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren: $\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})$. So, nur wenn $\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\\mathrm{Port\_C}) + 1,$ dann wird Speicher reserviert.
 
-4.  Application Layer:
+4. **Application Layer**:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
    - Adressierung der Anwendung mittels Ports
    - Protokolle:
