@@ -745,7 +745,14 @@ $\forall (l,c) \in SC : (l,c) \le (l',c') \iff l \le l' \land c \subseteq c'$
    <img width="593" height="237" alt="Bildschirmfoto 2025-10-19 um 13 17 58" src="https://github.com/user-attachments/assets/4c7ada62-c844-4bb0-9c65-635ad4d493c5" />
 
 ### Protokolle auf jedem Layer
-<img width="878" height="318" alt="Bildschirmfoto 2025-10-19 um 13 20 45" src="https://github.com/user-attachments/assets/84f61329-8c11-4d26-9ed3-d855abcec57c" />
+**OSI Modell**
+
+<img width="358" height="248" alt="Bildschirmfoto 2026-01-13 um 20 48 04" src="https://github.com/user-attachments/assets/ee280fe2-1d0b-4ec7-9581-bd1690bcd198" />
+
+**TCP/IP Modell**
+
+<img width="360" height="145" alt="Bildschirmfoto 2026-01-13 um 20 48 25" src="https://github.com/user-attachments/assets/ff923e68-5cde-4ff4-923b-1028d5eaaff1" />
+
 
 1. **Link Layer**:
    - Bietet an: Übertragung zwischen 2 Punkten inklusive Konvertierung in physikalische Signale
