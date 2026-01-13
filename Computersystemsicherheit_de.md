@@ -142,7 +142,7 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 - Ver- und Entschlüsselung können parallelisiert werden
 - CTR ist eine OTP Konstruktion mit der Blockchiffre als Pseudozufallsgenerator.
   
-- **Nonce vs. IV**: Nonce wird benutzt, da CTR nur Einzigartigkeit benögtigt, Nonce kann auch deterministisch sein (-> uniqueness matters), aber IV betonnt auch die Unvorhersagbarkeit (-> unpredicablity matters). So Nonce verhindert die Wiederverwendung von Schlüsselströmen, während IV das Durchsickern von Informationen aus gewähltern Klartext verhindert.
+- **Nonce vs. IV**: Nonce wird benutzt, da CTR nur Einzigartigkeit benögtigt, Nonce kann auch deterministisch sein (→ uniqueness matters), aber IV betonnt auch die Unvorhersagbarkeit (→ unpredicablity matters). So Nonce verhindert die Wiederverwendung von Schlüsselströmen, während IV das Durchsickern von Informationen aus gewähltern Klartext verhindert.
 
 ### Stromchiffren
 - Stromchiffren können beliebig lange Bitketten verschlüsseln
@@ -377,11 +377,11 @@ Grundlage ist asymmetrische Kryptographie: Es wird mit dem privaten Schlüssel s
 
 ```mermaid
 flowchart LR
-    A[Geheimer Schlüssel sk] --> B[Sig]
-    B --> C[Signatur]
-    C --> D[Ver]
-    E[Öffentlicher Schlüssel] --> D
-    D --> F[1 = `akzeptieren` oder 0 = `verwerfen`]
+    A[Geheimer Schlüssel sk] -→ B[Sig]
+    B -→ C[Signatur]
+    C -→ D[Ver]
+    E[Öffentlicher Schlüssel] -→ D
+    D -→ F[1 = `akzeptieren` oder 0 = `verwerfen`]
 ```
 
 - Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: einmalig Schlüssel authentisieren => anschließend beliebig viele Nachrichten signiert prüfen.
@@ -563,9 +563,9 @@ Ein Client akzeptiert ein Serverzertifikat nur, wenn u.a.:
     ca[CA]
     holder[Schlüsselinhaber]
 
-    root -->|Zertifiziert mittels Signatur| inter
-    inter -->|Zertifiziert mittels Signatur| ca
-    ca -->|Zertifiziert mittels Signatur| holder
+    root -→|Zertifiziert mittels Signatur| inter
+    inter -→|Zertifiziert mittels Signatur| ca
+    ca -→|Zertifiziert mittels Signatur| holder
 ```
 
 2. Zertifikate revozieren
@@ -615,7 +615,7 @@ Unterscheidung:
 1. Naive: einfacher Abgleich mit im Klartext gespeicherten Passwörtern
 2. Verschlüsselung: Speichere Passwärter verschlüsselt, Sever hat zusätzlich Schlüsselpaar (sk, pk). Hier sind die Einwegfunktionen benötigt.
 3. Hashen: Speichere Passwörter als Hash
-4. Rainbow Table: benutzen Hashfunktion H: Passwort -> Hash und Reduktionsfunktion R: Hash -> Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
+4. Rainbow Table: benutzen Hashfunktion H: Passwort → Hash und Reduktionsfunktion R: Hash → Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
 5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speichere H(S||pwd) in Passwort.
 6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten (nicht zusammen mit den Hashes in der DB steht.
 
@@ -648,37 +648,83 @@ Ressourcen und Diensten zugreifen
    + Ziele von Kerberos:
      - Authentifizierung von Subjekten, genannt **Principals**: unter anderem Benutzer, PC/Laptop, Server
      - Austausch von Sitzungs-Schlüsseln für Principals basierend auf Needham-Schroeder
-     - SSO für Dienste in einer administrativen Domäne
+     - SSO für Dienste innerhalb einer administrativen Domäne (Realm): Benutzer authentisiert sich einmal zentral, danach keine separate Authentisierung pro Dienst nötig
    + Ziel eines SSO-Konzepts: Benutzeer authentisiert sich einmal, keine separate Authentisierung bei Dienstnutzung mehr erforderlich
-   + Design: pro Domäne (Realm) ein **Key Distribution Center (KDC)**
+   + Design: pro Domäne (Realm) gibt es ein **Key Distribution Center (KDC)**
    + Aufgabe des KDC:
-     - Authentifizierung der Clients (Pricipals) seiner Domäne => **Authentication Server (AS)**
-     - Ausstellen von Tickets als Identitätsausweise => **Ticket Granting Server (TGS)**
-   + Authentifizierung eines Pricipals:
-     + Pre-Shared Secrets zwischen KDC und Principal
-     + Der KDC kennt die Secrets aller Netzwerkteilnehmer
+     - Authentifizierung der Clients (Principals) seiner Domäne => **Authentication Server (AS)**
+     - Ausstellen von Tickets als Identitätsausweise => **Ticket Granting Server (TGS)**:
+       + ein Ticket ist nur für einen Client C und einen Server S
+       + das Ticket, das vom AS für die Nutzung des TGS ausgestellt wird, heißt **Ticket Granting Ticket (TGT)**: $T_{C,S} = (S, C, addr, timestamp, lifetime, K_{C,S})$; Ablauf eines Kerberos: Login (lokal am Client): Benutzer gibt Password ein, daraus wird ein Schlüssel generiert: $K_{\text{Bob}} := \mathrm{Hash}(\text{Passwort})$
+         1. Bob → AS: Cleint verschlüsselt aktuellen Timestamp mit $K_{\text{Bob}}$ und sendet ihn mit Nonce ${\text{Bob}}_1 + Ziel {\text{TGS}}$
+         2. AS → Bob: AS entschlüsselt mit dem in der Schlüsseldatenbank hinterlegten $K_{\text{Bob}}$ und stellt nur dann ein TGT aus, wenn der Timestamp “frisch” ist
+         3. Bob → TGS: Bob beantragt beim TGS ein Ticket für einen konkreten Service (z.B. SMB) und sendet dafür u.a das TGT und einen Authenticator $A_{\text{Bob}} = (\text{Bob}, \mathit{IP\_Addr}, timestamp)$
+         4. TGS → Client: TGS prüft TGT + Authenticator und stellt ein Service-Ticket (z.B. für SMB) aus, inkl. Sitzungsschlüssel $K_{\text{Bob,SMB}}$
+         5. Client → Service (SMB): Bob nutzt das Ticket beim SMB-Server (Ticket + Authenticator)
+   + Authentifizierung eines Principals:
+     - **Pre-Shared Secrets** zwischen KDC und Principal
+     - Der KDC kennt die Secrets aller Netzwerkteilnehmer
+   + Angriffe auf Kerberos:
+     1. Pass-the-Hash:
+        - Grundprinzip: Angreifer stiehlt das PAssword-Hash
+        - Ziel: Hashes werden aus dem Arbeitsspeicher eines bereits kompromittierten Computers extrahiert
+        - Angriffsablauf: Angreifer verwendet diesen gestohlenen Hash direkt, um sich beim KDC zu authentifizieren
+        - Ergebnis: KDC glaubt, dass der Angreifer sei der legitime Benutzer und stellt ihm ein TGT aus
+        - Auswirkung: Angreifer kann sich im Netzwerk als Benutzer ausgeben, Ressourcen, Ressourcen zugreifen und sich seitlich im Netzwerk bewegen
+     2. Golden Ticket:
+        - Definition: Golden Ticket ist ein komplett gefälschtes TGT
+        - Voraussetzung: Angreifer hat bereits höchste Privilegien und erlangt den Passwort-Hash des KRBTGT-Kontos
+        - Ziel: der Passwort-Hash des KRB-TGT-Kontos
+        - Bedeutung des KRBTGT: ist ein Dienstkonto, dessen Schlüssel vom KDC verwendet wird, um alle legitimen TGTs in der Dömane kryptographisch zu signieren und zu verschlüsseln
+        - Angriffablauf: mit dem gestohlenen KRBTGT-Schlüssel kann der Angreifer sein eigenes TGT "offline" erstellen
+        - Macht des Tickets: der Angreifer kann dabei festlegen:
+          1. für welchen Benutzer es gilt
+          2. welche Berechtigungen es enthält
+          3. wie lang es gültig ist
+        - Auswirkung: der Angreifer erhält langfristigen und uneingeschränkten Zugriff auf alle Ressourcen in der Dömane
 
 ## Autorisierung
-- Autorisierung heißt, dass wir die Rechten für jemand auf jede Datei zuweisen werden (Zugriffkontrolle)
+- Autorisierung kontroliert wer darf was auf welcher Ressource (**Zugriffkontrolle**)
 - Schutzziel: Integrität und Vertraulichkeit
 - Es gibt 2 Arten der Autorisierung:
-  1. Rechtfestsetzung:
-     1. Discretionary Access Control (DAC): Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest
-     2. Mandatory Access Control (MAC): Autorität setzt Zugriffsrechte fest
-  2. Granularität der Zuweisung:
-     1. Role-based Acess Control (RBAC): Zugriffsrecht durch Rolle festgelegt 
-     2. Attribute-based Access Control (ABAC): feinere Zugriffsrecht gemäß logischer Formel
+  1. Rechtfestsetzung - Nach wer die Policy festlegt:
+     1. **Discretionary Access Control (DAC)**: Benutzerbestimmbare Zugriffskontrolle: Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest
+     2. **Mandatory Access Control (MAC)**: Systembestimmte Zugriffskontrolle: Autorität setzt Zugriffsrechte fest
+  2. Zuweisungsprinzip - Nach wie die Policy modelliert wird:
+     1. **Role-based Acess Control (RBAC)**: Zugriffsrecht durch Rolle festgelegt 
+     2. **Attribute-based Access Control (ABAC)**: feinere Zugriffsrecht gemäß logischer Formel
 
 Beisiele für **DAC**: 
 1. Acces Matrix Model
 <img width="714" height="159" alt="Bildschirmfoto 2025-10-17 um 12 42 03" src="https://github.com/user-attachments/assets/5b9a8df0-cdd6-48e7-a0a7-b8b0ae06a674" />
 2. Acces Control List
    <img width="590" height="151" alt="Bildschirmfoto 2025-10-17 um 12 44 43" src="https://github.com/user-attachments/assets/ad05fa86-c941-4696-a1a2-2d60810f360d" />
+- Vorteile:
+  + sehr einfach und intuitiv nutzbar, flexibel einsetzbar
+  + einfach zu implementieren
+- Nachteile:
+  + keine formale Garantien für Informationsfluss
+  + kann dynamische Rechte nicht gut abbilden
+  + Rechtevergabe und -rücknahme relativ komplex
+  + trojanische Pferde: Programme, mit ungewolltem Zugriffsmuster
+  + Beschränkter Zugriff, z.B. Änderung des eigenen Passworts in der Passwortdatei schwierig zu implementieren
 
-Für **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Vertraulichkeit in Multi-Level Security. Dieses Model regelt die Informationsflüsse in eine Hierarchie: 
-- No-Read-Up Regel: Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
-- No-Write-Down Regel: Erzeugung von Objekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
+Beispiel von **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Vertraulichkeit in Multi-Level Security. Dieses Model regelt die Informationsflüsse in eine Hierarchie: 
+- **No-Read-Up Regel**: Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
+- **No-Write-Down Regel**: Erzeugung von Objekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
 So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (*Clearance*), und jedem Objekt wird eine Sicherheitsklasse $\{SC(o)\} \in \{SC\}$ zugewiesen (*Classification*)
+
+Auf Sicherheitsklasse SC wird eine partielle Ordung $\le$ definiert:
+$\forall (l,c) \in SC : (l,c) \le (l',c') \iff l \le l' \land c \subseteq c'$
+
+- Nachteile:
+  + Information/Objekte werden sukzessive immer höher eingestuft
+  + Blindes Schreiben: Subjekt darf Umständen Objekte schreiben aber nicht mehr lesen (Problem der Integrität)
+  + Keine Modellierung von "covert channels"
+- Vorteile:
+  + einfach zu implementierendes Modell
+  + gut geeignet zum Nachbilden hierarchischer Informationsflüsse
+  + einige UNIX-Betriebsysteme bieten BLP-Erweiterungen an
 
 ### Netzwerksicherheit
 **WLAN vs. WAN**
@@ -1078,7 +1124,7 @@ Jetzt lernen wir kennen, wie Angreifer die Bausteine von dem Web und der Webseit
      - Server akzeptiert y.B nur Requests, deren Origin oder Referer auf sicherer Webseite zeigt
      - Nachteile: Datenschutz, Header ist optional, Angreifer kann fehlen lassen
   3. SameSite-Cookie-Attribut:
-     - Setze ″SameSite = Strict″, werden Cookies nur bei gleichen Domain-Kontexten gesendet
+     - Setze "SameSite = Strict", werden Cookies nur bei gleichen Domain-Kontexten gesendet
      - erschwert CSRF, aber muss korrekt konfiguriert sein
 
 **XSS**
