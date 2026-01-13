@@ -860,11 +860,18 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
      + Metrik für Paket Routing:
        1. Länge des Präfix
        2. Bei mehreren Routen zum selben Ziel wird die kürzeste Route gewählt
-     + BGP Hijacking: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen
-        * Gegenmaßnahmen:
+     + BGP Hijacking: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen. Dies ist typischerweise ein MitM Angriff, was bedeutet, dass der Angreifer die kompplette Kommunikation des Opfers sieht, dies ermöglicht weitere Angriffe wie DoS, Ausleiten von Login-Daten, Mitlesen von Email-Nachrichten
+       1. Sub-prefix Hijack: Announcen eines spezifischeren Prefix betrifft prinzipiell alle Netze im Internet
+       2. Same-prefix Hijack: Announcen des selben Prefix betrifft nur Netze welche eine kürzere Route zum Angreifer haben als Ziel
+       3. AS_PATH Fälschung: Angeifer fügt den tatsächlichen AS-Path in seinen eigenen AS-Pfad ein, um die Route legitimer erscheinen zu lassen und die Detektion zu erschweren
+        - Gegenmaßnahmen:
          1. Überwachung des Internetverkehrs
-         2. RIR speichern wem welche Präfixe gehören
-         3. Nutzen Resource Public Key Infrastructure (RPKI): Kryptographische Absicherung von BGP Bekanntmachungen
+         2. **Regional Internet Registries (RIRs)** speichern wem welche Präfixe gehören; RIRs betreiben **Internet Routing Registries (IRRs)**, dort kann eingetragen werden wem welche Präfixe gehören.
+            - IRR ist ein Netzwerk verteilter Datenbanken, die von den RIRs, anderen Dienstanbietern und dritten gepflegt werden
+            - Das IRR hostet Daten, die notwendig sind, um die Inhalte von BGP-Ankündigungen zu validieren und Netzwerke den Ursprungs-ASes zuzuordnen
+            - Das IRR ist bekanntermaßen ungenau, da es ständig manuell aktualisiert werden muss
+            - es wird gelegentlich noch als sekundäre Informationsquellen genutzt, ist aber nicht das primäre Instrumentarium zur BGP-Verteidigung
+         3. Nutzen **Resource Public Key Infrastructure (RPKI)**: Kryptographische Absicherung von BGP Bekanntmachungen
    - Hier werden wir genauer betrachten, was **TLS** ist:
      + TLS ist ein Sicherheitsprotokoll, das oberhalb von TCP arbeitet und oft als Teil der Anwendungsshicht betrachtet wird
      + Dies ermöglicht sichere Kommunikationskanäle für das Internet:
