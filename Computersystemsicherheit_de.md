@@ -855,12 +855,12 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + DNS (Domain Name System): über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
         + DNSSEC: Signiert DNS-Records für Integrität und Authentizität
      3. SMTP: E-Mail-Übertragung: über Ports 25 (Server nach Server), 587 (Submission mit STATTLS), und 465 (SMTPS/ TLS-wrapped)
-   - Protokoll für Routing: Border Gateway Protokoll (BGP)
+   - Protokoll für Routing: **Border Gateway Protokoll (BGP)**
      + Jedes AS teilt seine aktuellen Routen mit seinen Nachbarn
      + Metrik für Paket Routing:
        1. Länge des Präfix
        2. Bei mehreren Routen zum selben Ziel wird die kürzeste Route gewählt
-     + BGP Hijacking: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen. Dies ist typischerweise ein MitM Angriff, was bedeutet, dass der Angreifer die kompplette Kommunikation des Opfers sieht, dies ermöglicht weitere Angriffe wie DoS, Ausleiten von Login-Daten, Mitlesen von Email-Nachrichten
+     + **BGP Hijacking**: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen. Dies ist typischerweise ein MitM Angriff, was bedeutet, dass der Angreifer die kompplette Kommunikation des Opfers sieht, dies ermöglicht weitere Angriffe wie DoS, Ausleiten von Login-Daten, Mitlesen von Email-Nachrichten
        1. Sub-prefix Hijack: Announcen eines spezifischeren Prefix betrifft prinzipiell alle Netze im Internet
        2. Same-prefix Hijack: Announcen des selben Prefix betrifft nur Netze welche eine kürzere Route zum Angreifer haben als Ziel
        3. AS_PATH Fälschung: Angeifer fügt den tatsächlichen AS-Path in seinen eigenen AS-Pfad ein, um die Route legitimer erscheinen zu lassen und die Detektion zu erschweren
@@ -871,7 +871,28 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
             - Das IRR hostet Daten, die notwendig sind, um die Inhalte von BGP-Ankündigungen zu validieren und Netzwerke den Ursprungs-ASes zuzuordnen
             - Das IRR ist bekanntermaßen ungenau, da es ständig manuell aktualisiert werden muss
             - es wird gelegentlich noch als sekundäre Informationsquellen genutzt, ist aber nicht das primäre Instrumentarium zur BGP-Verteidigung
-         3. Nutzen **Resource Public Key Infrastructure (RPKI)**: Kryptographische Absicherung von BGP Bekanntmachungen
+         3. Nutzen **Resource Public Key Infrastructure (RPKI)**: Kryptographische Absicherung von BGP Bekanntmachungen:
+            - Ziel von RPKI: Kryptographisch prüfbare Bindung zwischen **Internetressourcen** (IP-Präfixe, AS-Nummern) und deren **rechtmäßigem Inhaber**, um Routing sicherer zu machen
+            - Architektur:
+              + RPKI ist eine PKI, die die Zuteilungshierarchie von IP-Adressen und ASNs abbildet (IANA → RIRs → LIRs/Provider → Kunden). RPKI liefert die "Root of Trust"
+              + Die RPKI-Datenobjekte werden in verteilten Repositories veröffentlicht und von **"Relying Parties" (RP)** geladen/validiert
+            - **Route Origin Authorization (ROA)** (für Origin) ist ein dignierte Dokument innerhalb von RPKI, das krytographisch signierte Aussage (*Dieses Präfix darf von diesem Origin-AS angekündigt werden* (+ optional **max. Präfixlänge**)) ausgibt.
+            - **Route Origin Validation (ROV)** (Prüfung) ist die Prüfung/Validierung durch Router/Provider: sie vergleicht BGP-Announcements mit ROAs und bewertet die Route. **Typische Validitätszustände** (ROV-Ergebnis):
+              1. **VALID**: Announcement passt zu einer ROA
+              2. **INVALID**: ROA existiert, aber Origin-AS oder Präfixlänge passt nicht (kann Hijack oder Fehlkonfig sein)
+              3. **UNKNOWN / NOT FOUND**: keine passende ROA vorhanden 
+            - Was RPKI leistet:
+              + primäre Schutz gegen falsche *Origin*-Ankündigungen, aber es löst nicht automatisch das ganze BGP-Problem
+            - Herausforderungen: Deployment/Abdeckung, Fehlkonfigurationen (falsche ROAs) und Policy-Entscheidung, wie man mit INVALID umgeht (filtern vs. depriorisieren)
+        4. **BGPSec** sichert zusätzlich den AS-Path:
+           - BGPSec erweitert BGP um ein optionales Attribut, in dem jede AS, die das Update weiterleitet, eine digitale Signatur über den relevanten Update-Inhalt hinzufügt. Dadurch kann der Empfänger prüfen, dass der AS-Path nicht manipuliert wurde.
+           - BGPSec nutzt RPKI auch für Router-Zertifikat, damit Router überhaupt Schlüssel/Identität haben, um diese Pfad-Signaturen zu erzeugen und zu prüfen
+           - Erschränkungen:
+             + Hoher Rechenaufwand: Kryptografische Funktionen für große Routing-Tabellen müssen von den Routern ausgeführt werden
+             + Verwaltungskomplexität: Es gibt keine zentrale Instanz (Autorität) für die Verwaltung von Präfixen und Zertifikaten
+             + Abhängigkeit von RPKI: RPKI ist noch nicht vollständig flächendeckend im Einsatz
+             + Aktive Forschung: Es existieren viele verschiedene Variationen dieses Protokolls
+             + Schrittweise Einführung von BGPSec unmöglich: Geräte auf dem Pfad, die kein BGPSec sprechen, führen zum Verlust aller vorherigen BGPSec-Informationen (die Kette bricht ab)
    - Hier werden wir genauer betrachten, was **TLS** ist:
      + TLS ist ein Sicherheitsprotokoll, das oberhalb von TCP arbeitet und oft als Teil der Anwendungsshicht betrachtet wird
      + Dies ermöglicht sichere Kommunikationskanäle für das Internet:
