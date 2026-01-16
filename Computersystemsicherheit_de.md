@@ -977,9 +977,11 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
          - Gegenmaßnahme: TLS 1.3 oder höher (kein Kompression mehr)
       6. DNS Cache Poisoning & Spoofing:
-         1. Cache Poisoning Angriff: Angerifer speichert bösartige DNS Records bei einem DNS Server
+         1. Cache Poisoning Angriff: Angreifer speichert bösartige DNS Records bei einem DNS Server
             - Cache des DNS Servers wird dann vergiftet durch
             - DNS nutzt UDP und keine Verifikation der Authentizität
+            - Off-Path DNS Cache Poisoning:
+              + Angreifermodell: Angreifer kann nur beliebige Nachrichten senden, aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken 
           2. Cache Spoofing Angriff: ermöglicht durch Cache Poisoning Angriff: Anfragen an eine Domäne werden an die IP-Adresse des Angreifers weitergeleitet (da DNS Server falsche Daten speichert)
            - Gegenmaßnahmen:
              + Bailiwick-Überprüfung: der Resolver akzeptiert nur Records von Nameservern, die für angefragte Zone verantwortlich sind
@@ -993,7 +995,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
                - Kapazitätsreserven an Netz und Systemen bereitstellen
                - Filterung von gespooften IP-Paketen (aufwändig)
             2. Gegen Missbrauchter DNS-Dienst:
-               - Minimierung der Antwortgröße, um Amplification-Fakto
+               - Minimierung der Antwortgröße, um Amplification-Faktor 
                - Filterung von gespooften IP-Paketen
             3. Gegen den Angreifer:
                - Eliminierung von Paketen mit gespoofter IP-Adresse im Ursprungsnetzwerke
