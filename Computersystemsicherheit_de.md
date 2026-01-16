@@ -852,7 +852,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + HTTP: über TCP 80, zustandlos
         + HTTPS: HTTP über TLS, meist TCP 443
      2. DNS/DNSSEC: Namensauflösung
-        + DNS (Domain Name System): über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
+        + DNS (Domain Name System)
         + DNSSEC: Signiert DNS-Records für Integrität und Authentizität
      3. SMTP: E-Mail-Übertragung: über Ports 25 (Server nach Server), 587 (Submission mit STATTLS), und 465 (SMTPS/ TLS-wrapped)
    - Protokoll für Routing: **Border Gateway Protokoll (BGP)**
@@ -914,6 +914,13 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
          <img width="471" height="112" alt="Bildschirmfoto 2025-10-27 um 10 40 34" src="https://github.com/user-attachments/assets/fa06e7cb-0f3a-43e1-87ba-b3535a9c7131" />
       + Cipher Suites: gehören zu TLS, legen fest, mit welchen Algorihmen eine TLS-Verbindung arbeitet. Es gibt Unterschied unter die Versions von TLS,a aber allgemein bestimmt eine Cipher Suite: Schlüsselaustausch, Authentisierung/Signaturverfahren, Verschlüsselung, Integrität, Hashfunktion
    - DNS:
+     + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“)
+     + Subdomain: sich in der Hierarcchie unter einem aneren Namen befindliche Domain (z.B. „scholar.google.com.“ von „google.com.“)
+     + Zone: von einer einzigen Autorität verwaltete Domain, exklusive fremd verwalteter Subdomains; Autorität ist z.B. Domain Registrar oder Unternehmen in Eigenregion
+     + 3 Bestandteile von DNS-Nachrichtenübermitteilung:
+       1. Kommunikationsmodell: Client/Server-Modell: Client stellt Anfrage, Server antwortet auf Client
+       2. Servertypen: Authoritative Server und Resolver
+       3. Transport: über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
      + Schritte:
        - Rechner muss IP von Webseite suchen
        - DNS Server kennt entweder IP-Adresse oder fragt Root-Server zu zuständigem Name-Server
@@ -923,8 +930,12 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
      
 | Name | Type | Class | TTL | RDLength | RData |
 |------|------|--------|-----|-----------|-------|
-| Fully Qualified Domain Name | Datentypbezeichner | Klassenbezeichner | Time to Live – Verfallsdatum | Länge des Data-Felds in Bytes | Der im Record abgelegte Wert zum Schlüssel |<img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
+| Fully Qualified Domain Name | Datentypbezeichner | Klassenbezeichner | Time to Live – Verfallsdatum | Länge des Data-Felds in Bytes | Der im Record abgelegte Wert zum Schlüssel |
 
+**DNS Record-Type**
+<img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
+      + **Resource Record Set (RRset)**: ist Menge  von DNS Records (>=1) mit selben Werten in (Name, Type, Class, TTL)
+      
    - DNSSEC:
      + bietet noch Integrität bei der Antwort an, damit Cache-Poisoning-Angriffe verhindert wird.
      + DNS über TLS? kann auch eine Möglichkeit sein, aber wir möchte DNS schnell und leicht, während TLS langsam ist, ansonsten hilft TLS nicht beim Caching (aber DNS-Rekord muss zwischengespeichert werden), und auch nicht gegen bösartifen Nameservern. So sichert TLS den Kommunikationskanal, aber ermöglicht nicht Vertrauenswürdigkeit der Daten zu prüfen.
