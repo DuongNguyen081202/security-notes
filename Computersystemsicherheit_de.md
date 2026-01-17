@@ -977,16 +977,30 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
          - Gegenmaßnahme: TLS 1.3 oder höher (kein Kompression mehr)
       6. DNS Cache Poisoning & Spoofing:
-         1. Cache Poisoning Angriff: Angreifer speichert bösartige DNS Records bei einem DNS Server
+         1. Cache Poisoning Angriff: Angreifer speichert bösartige DNS Records bei einem DNS Server; 
             - Cache des DNS Servers wird dann vergiftet durch
             - DNS nutzt UDP und keine Verifikation der Authentizität
-            - Off-Path DNS Cache Poisoning:
-              + Angreifermodell: Angreifer kann nur beliebige Nachrichten senden, aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken 
+            - **Off-Path DNS Cache Poisoning**:
+              + Angreifermodell: Angreifer kann beliebige Nachrichten senden, muss 16-bit Transaction-ID im DNS-Header erraten, und 16-bit UDP Zielport der gefälschen Antwort muss dem UDP Quellport der Anfrage des Resolvers an den autoriativen Server gleichen. Angreifer kann aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken
+              + **Kaminskys Angriff**: *Kaminsky’s Trick* sind die zwei konkreten Kniffe/Technik innerhalb des Angriffs:
+                1. Viele Anfragen auf zufällige, nicht-existierende Subdomains der Opferdomain (DoS-Angriff)
+                2. Gefälschte Antwort vergiftet nicht nur A-Record, sondern setzt NS-Delegation (und macht eine Weiterleitung als die Antwort möglich)
+              + Angriff:
+                1. Sende Anfrage an den Resolver
+                2. Sende Antwort nach Format „/[nonce/].vict.im IN A? von der Opfer-IP-Adresse aus (**Schrotflintenprinzip**)
+                3. Bei Misserfolg, wiederholt bei 1.
+              + Gegenmaßnahmen: Randomisierung des UDP-Quellports (16 bit) oder zufälligen Transaction-ID (16 bit)
+            - MitM DNS Cache Poisoning
+              + Angrifermodell: Angreifer kann beliebige Nachrichten senden, alle Details der Nachrichten lesen, modifizieren, duplizieren oder unterdrücken, kann aber keine Kryptographie brechen
+              + Mögliche Angriffe: MitM Angriff auf rekursive Resolver im Internet (benötigt i.d.R Angreifer mit vielen Ressourcen), MitM Angriff auf Stub-Resolver im lokalen Netz (benötigt wenige Ressourcen und ist mit üblicher Hard- und Software zu bewerksstelligen
+            
           2. Cache Spoofing Angriff: ermöglicht durch Cache Poisoning Angriff: Anfragen an eine Domäne werden an die IP-Adresse des Angreifers weitergeleitet (da DNS Server falsche Daten speichert)
            - Gegenmaßnahmen:
              + Bailiwick-Überprüfung: der Resolver akzeptiert nur Records von Nameservern, die für angefragte Zone verantwortlich sind
-             + DNSSEC
-       7. DNS Reflection Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
+             + DNSSEC (auch für MitM DNS Cache Poisoning, aber kann nicht Vertraulichkeit schützen, und es kostet etwas Performance, kann damit Verfügbarkeit stärker stressen, aber das Konzept Authenticated Denial of Existence kann mit Verfügbarkeit helfen). Aber es gibt auch einige Nachteile: Antworten werden deutlich größer, Server und Client müssen es beide unterstützen, damit es effektiv ist, und erhöhter Verwaltungsaufwand bei Domain-Betreibern für die Schlüssel
+             + DoT: ist sicherer Transport von DNS-Nachrichten über TLS (TCP Port 853) oder DTLS (UDP Port 853)
+             + DoH: ist sicherer Transport von DNS-Nachrichten über HTTPS (TCP Port 443)
+       7. DNS Reflection (Amplification) Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
           - Funktionsweise:
             + Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Addresse DNS-Anfragen an Server
             + Amplification: Antworten von Server an Opfer sind deutlich größer als Anfragen
@@ -1002,7 +1016,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
                - Stilllegung von Botnetzen
        9. DNS Tunneling:
           - verdecktes Übertragen von beliebigen Daten über DNS-Anfragen, damit die folgenden möglich werden:
-            + Extraktion von ausspionierten Informationen aus einem kompromitierten Netzwerk
+            + Exfiltration von ausspionierten Informationen aus einem kompromitierten Netzwerk
             + Umgehung von Netzsperren und Firewalls
             + Verdeckte Kommunikation von Bots mit ihrem Master
           - Funktionsweise:
@@ -1010,7 +1024,29 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             + Client codiert Daten in angefragten Namen
             + Resolver leiten Daten an autoritaativen Server weiter
           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
+       10. Zone Enumeration:
+           - Ausspähen und auflisten der vorhandenen Subdomain-Namen für Vorbereitung zu Angriff
+           - Funktionsweise: Anfragen an übliche Domainnamen aus Wörternuch und Registrieren der Antwort, ob es diesen Namen gibt
+           - Gegenmaßnahmen:
+             + NSEC3: der Server hasht alle Domains und sortiert die Hashes, aber kann nicht gegen Offline-Cracking,
+             + Live Signing/DNSSEC White Lies/Black Lies: erzeugt einen gefälschten NSEC, der nur ganz knapp den angefragten Namen abdeckt.
+       12. Domain Hijacking (auf DNS)
+           - Übernahme von Nutzerkonten bei Domain-Registraren
+           - Angreifer kann dann legitimiert Werte im autoritativen Server anpassen
+       13. Flooding-Angriff gegen DNS-Server
+           - Üblicherweise durch kompromittierte Computer in einem Botnetz: Bot Master instruiert die Bots, den Zielserver mit Anfragen zu fluten bis aufgrund von Überlast der Dienst versagt
+       14. Zensur des DNS
+           - Üblicherweise durch staatliche Stellen, um unliebsame Dienste zu sperren: Betreiber von Resolvern werden gezwungen Werte zu filtern, dann Resolver macht eins von diesen Dingen: NXDOMAIN zurückgeben, oder falsche IP zurückgeben, oder keine Antwort/Timeout
 
+**Weitere Sicherheitsmechanismen**
+1. DKIM: Verhinderung von E-Mail-Spoofing mittels Signierung von E-Mail durch Absende-Server und Eintrag des öffentlichen Schlüssels im DNS
+2. Domain Validation: ermöglicht automatisierte Ausstellung von TLS-Zertifikaten an Domain-Inhaber; TLS-Zertifikate binden öffentlichen Schlüssel an Domain-Namen
+3. DANE: erlaubt Nachweis der Echtheit von TLS-Zertifikaten einer Domain durch deren Referenzierung im DNS; es benötigt DNSSEC
+**Sender Policy Framework (SPF)**
+- Für Verhinderung von unautorisiert versendeter E-Mail für eine Absender-Domain
+- Funktionsweise:
+  + Domain-Betreiber spezifiziert in seinen DNS-Einträgen, wer E-Mail von dieser Domain aussenden darf
+  + Empfangender Mail Server holt sich beim Eingang einer Mail diesen Record, und lehnt diese E-Mail ab, falls der Sender darin nicht autorisiert ist
 Was macht OSI Modell unterschiedlich:
 1. **Physical Layer** :
    - Datrn werden in physikalische Signale konvertiert und zwischen 2 Geräte übertragen
