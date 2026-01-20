@@ -26,7 +26,7 @@ Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: 
 
 Die Sicherheit von klassicher Chiffre basiert häufig auf der Geheimhaltung des Algorithmus selbst (Security by Obscurity), nutzte mechanische oder manuelle Methoden.
 
-Sie Sicherheit von moderner Chiffre basiert aus Mathematik und Komplexitätstheorie, und beruht ausschließlich auf der Geheimhaltung des Schlüssels.
+Die Sicherheit von moderner Chiffre basiert aus Mathematik und Komplexitätstheorie, und beruht ausschließlich auf der Geheimhaltung des Schlüssels.
 
 ### Kryptographische primitive
 
