@@ -24,6 +24,10 @@ Es gibt 2 Arten von Kryptographie: Symmetrie (gleicher Schlüssel zum Ver- und E
 
 Es gibt auch 2 Arten von Chiffren: **klassische** Chiffren (bsp. Shift-Chiffre: Caesars Chiffre, Substitution-Chiffre, Vigenere-chiffre, OTP) und **moderne** Chiffren. Moderne Chiffre enthält 3 zu merkende Dinge: Formale Definitionen, systematisches Design, und sehr sichere kryptographische Konstruktionen mit Sicherheitsbeweisen (beim Sicherheitsbeweis gibt ansonsten kryptographische Annahme: wäre Annahme falsch, wäre Verfahren nicht mehr sicher).
 
+Die Sicherheit von klassicher Chiffre basiert häufig auf der Geheimhaltung des Algorithmus selbst (Security by Obscurity), nutzte mechanische oder manuelle Methoden.
+
+Sie Sicherheit von moderner Chiffre basiert aus Mathematik und Komplexitätstheorie, und beruht ausschließlich auf der Geheimhaltung des Schlüssels.
+
 ### Kryptographische primitive
 
 |                     | **Symmetrische Kryptoprimitive**                                   | **Asymmetrische Kryptoprimitive**               |
