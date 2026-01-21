@@ -64,7 +64,11 @@ Formell gilt bei perfekter Sicherheit für alle Klartexte m und alle Ciphertexte
   + Gen: Ausgabe zufälliger Schlüssel $k \overset{\mathrm{R}}{\gets} \{0,1\}^n$.
   + Enc: für m ∈ M: Ausgabe Enc(k, m) = k ⊕ m.
   + Dec: für c ∈ C: Ausgabe Dec(k, c) = k ⊕ c.
-- Sicherheit: mit dem Annahme: Schlüssel darf nur einmal verwendet werden
+- Sicherheit:
+  + Der Schlüssel darf nur einmal verwendet werden
+  + Der Schlüssel muss echt zufällig generiert sein
+  + Der Schlüssel muss mindestens so lang sein wie die Nachricht
+  + Der Schlüssel muss absolut geheim gehalten und sicher ausgetauscht werden
 
 ### Block-Chiffre
 - Blockchiffren sind Kryptosysteme, die nur Blöcke fester Länge verschlüsseln können
