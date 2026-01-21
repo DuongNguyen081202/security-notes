@@ -14,7 +14,7 @@ Kryptographie liefert 3 **Ziele**:
 1. Vertraulichkeit: Angreifer kann Inhalt der Nachrichten nicht lernen
 2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bemerkt wird
 3. Authentizität: Angreifer kann nicht behaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
-4. nicht-Abstreitbarkeit
+4. nicht-Abstreitbarkeit: Angreifer kann nicht das Senden einer Nachricht später nicht leugnen
 
 Es gibt 2 Arten von Kryptographie: Symmetrie (gleicher Schlüssel zum Ver- und Entschlüsseln) und Asymmetrie (2 Schlüssel zum Ver- und Entschlüsseln).
 
