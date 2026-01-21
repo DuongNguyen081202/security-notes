@@ -10,7 +10,7 @@ Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 5. Authentizität von Dateien
 6. Anonymität von Benutzern
    
-Kryptographie liefert 3 **Ziele**:
+Kryptographie liefert 4 **Ziele**:
 1. Vertraulichkeit: Angreifer kann Inhalt der Nachrichten nicht lernen
 2. Integrität: Angreifer kann Nachricht nicht ändern, ohne die Änderung bemerkt wird
 3. Authentizität: Angreifer kann nicht behaupten, dass eine Nachricht von jemand kam, die diese nicht gesendet hat
