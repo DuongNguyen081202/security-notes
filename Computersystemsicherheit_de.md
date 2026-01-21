@@ -115,7 +115,7 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 
 <img width="370" height="273" alt="Bildschirmfoto 2025-10-06 um 21 33 11" src="https://github.com/user-attachments/assets/19370868-6fb7-4a9b-be48-7d88b2212405" />
 
-- Der Klartext muss um ein Padding eingefügt werden, wenn |m| kein Vielfaches der Blocklänge ist
+- Der Klartext muss um ein Padding eingefügt werden, wenn |m| kein Vielfaches der Blocklänge ist (Padding Funktion / Auffüllungsfunktion). Randomisieren des Inputs zum Verhindern bestimmter Angriffe.
 - Vorteile:
   + Einfache Bedienung: Implementierung ist unkompliziert, Jeder Block wird unabhängig bearbeitet
   + Schnelligkeit: Ver- und Entschlüsselung parallelisierbar
