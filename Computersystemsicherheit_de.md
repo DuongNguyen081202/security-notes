@@ -230,7 +230,7 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
   + $\mathcal{K} \subset \mathcal{K}_s \times \mathcal{K}_p$ ist Menge von Schlüsselpaaren
   + $\mathcal{C}$ ist Menge von Shiffretexten
   + $e$ ist Verschlüsselungsfunktion: $\mathcal{M} \times \mathcal{K}_p \rightarrow \mathcal{C}$
-  + $e$ ist Entschlüsselungsfunktion: $\mathcal{C} \times \mathcal{K}_s \rightarrow \mathcal{M}$
+  + $d$ ist Entschlüsselungsfunktion: $\mathcal{C} \times \mathcal{K}_s \rightarrow \mathcal{M}$
 
 - Algorithmen: (Gen, Enc, Dec)
 
