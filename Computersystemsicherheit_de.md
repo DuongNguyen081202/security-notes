@@ -54,6 +54,10 @@ Die Sicherheit von moderner Chiffre basiert aus Mathematik und Komplexitätstheo
 - Gefahr: Chosen Ciphertext Angriff, bsp. Padding Orakel Angriff
 4. IND-CCA: Angreifer bekommt Zugang zu Orakel, das ausgewählte Chiffretexte entschlüsseln kann. Aber die Gewinnwahrscheinlichkeit des Angreifers liegt immer bei gegen <sup>1</sup>/<sub>2</sub>
 
+**Perfekte Sicherheit**
+
+Formell gilt bei perfekter Sicherheit für alle Klartexte m und alle Ciphertexte c die Gleichung P[m|c] = P[m].
+
 **One-Time-Pad (OTP)** kann auch Vernam Chiffre genannt werden
 - OTP zur Verschlüsselung von Bitstrings der Länge n
 - Formal definition:
