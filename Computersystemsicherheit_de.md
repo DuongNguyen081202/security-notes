@@ -214,7 +214,7 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
 
 **Authentifizierte Verschlüsselung** kombinieren Verschlüsselung und Integritätsschutz, um Ziele: Vertraulichkeit, Integrität, und Authentizität der Nachricht zu gewährleisten.
 1. Encrypt-then-MAC
-   1. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m)$ (nonce hier kann auch IV sein)
+   1. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m)$(nonce hier kann auch IV sein)
    2. Authentisieren: t= $\mathrm{MAC}_{k_M}(\text{AAD} || c)$
    - Sende: (nonce, c, t)
    - Empfang: Tag prüfen, und entschlüsseln nur bei Erfolg
@@ -245,23 +245,22 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
    - Wähle 2 große *Primzahlen* p, q mit p ≠ q, und gleicher Länge
    - Setze $N = pq$ und $\varphi(N) = (p-1)(q-1)$
    - Wähle $e$ mit $1 < e < \varphi(N)$ und $\gcd(e,\varphi(N))=1$.
-   - Berechne $d$ als multiplikatives Inverses von $e$ modulo $\varphi(N)$:
-   \[
-   ed \equiv 1 \pmod{\varphi(N)}.
-   \]
+   - Berechne $d$ als multiplikatives Inverses von $e$ modulo $\varphi(N)$ :
+     
+   $ed \equiv 1 \pmod{\varphi(N)}.$
    - Öffentlicher Schlüssel: $pk=(N,e)$, privater Schlüssel: $sk=(N,d)$
    - Ausgabe: (N,e,d) = GenRSA(n)
      
    <img width="273" height="180" alt="Bildschirmfoto 2025-10-12 um 02 50 24" src="https://github.com/user-attachments/assets/9b6389df-14b0-45fe-ae6b-3c6e622eec64" />
 
 2. Textbuch RSA
-   \[
-   \text{Enc}(N,e,m)=m^e \bmod N,\qquad \text{Dec}(N,d,c)=c^d \bmod N
-   \]
+
+   $\text{Enc}(N,e,m)=m^e \bmod N,\qquad \text{Dec}(N,d,c)=c^d \bmod N$
+   
    **Achtung:** Textbook RSA ist **nicht sicher** (deterministisch, malleable, keine IND-CPA/CCA-Sicherheit).
    - Textbuch RSA ist homomorph, da $(m_0^{\,e} \bmod N)\cdot (m_1^{\,e} \bmod N) \equiv (m_0\cdot m_1)^{e} \pmod N.$
 
-3. RSA-OAEP:
+4. RSA-OAEP:
 In der Praxis benutzt man RSA **mit sicherem Padding**, typischerweise **RSA-OAEP**.
 - Ziel: Randomisierung + Schutz gegen viele strukturelle Angriffe
 - Für CCA-Sicherheit nutzt man heute häufig **KEM-DEM** bzw. direkt moderne Protokolle/AEAD.
@@ -279,30 +278,24 @@ ElGamal arbeitet in einer zyklischen Gruppe $G$ der Ordnung $q$ mit Generator $g
 Für Nachricht $m \in G$:
 1. Wähle zufällig $r \in \{1,\dots,q-1\}$ und setze $R=g^r$.
 2. Berechne gemeinsamen Schlüssel:
-   \[
-   K=A^r=g^{ar}
-   \]
+   $K=A^r=g^{ar}$
 3. Setze $C=m \circ K$.
 4. Ciphertext: $(R,C)$.
 
 **Entschlüsselung (Alice)**
 1. Berechne
-   \[
-   K = R^a = g^{ra}
-   \]
+   $K = R^a = g^{ra}$
 2. Ausgabe:
-   \[
-   m = C \circ K^{-1}.
-   \]
+   $m = C \circ K^{-1}.$
 
 **Sicherheitsintuition:** ElGamal ist (unter passenden Gruppenannahmen) **IND-CPA-sicher**, weil $r$ frisch random ist. Typisch: IND-CPA unter der **DDH-Annahme** (je nach Setting).
 
 **Diskrete Logarithmus Annahme**
-Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$.
+Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$ .
 
-- **DLog-Annahme:** gegeben $h\in G$, finde $x$ mit $g^x=h$ (schwer).
-- **CDH-Annahme:** gegeben $g^x, g^y$, berechne $g^{xy}$ (schwer).
-- **DDH-Annahme:** gegeben $(g^x, g^y, T)$, entscheide ob $T=g^{xy}$ oder zufällig (schwer).
+- **DLog-Annahme:** gegeben $h\in G$ , finde $x$ mit $g^x=h$ (schwer).
+- **CDH-Annahme:** gegeben $g^x, g^y$ , berechne $g^{xy}$ (schwer).
+- **DDH-Annahme:** gegeben $(g^x, g^y, T)$ , entscheide ob $T=g^{xy}$ oder zufällig (schwer).
        
 #### Schlüsselaustausch
 - Beide Parteien erzeugen gemeinsam einen Schlüssel, ohne ihn direkt zu übertragen.
@@ -311,43 +304,54 @@ Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$.
 1. Diffie-Hellman Schlüsselaustausch (**DH**):
    <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
    - Ziel: Zwei Parteien erzeugen einen gemeinsamen Sitzungsschlüssel, ohne ihn direkt zu senden.
-   Die Parteien einigen sich auf Primzahl $p$ (damit Gruppe $G=\mathbb{Z}_p$) sowie Generator $g$ von $\mathbb{Z}_p^\* = \{1,\dots,p-1\}$.
+   Die Parteien einigen sich auf Primzahl $p$(damit Gruppe $G=\mathbb{Z}_p$) sowie Generator $g$ von $\mathbb{Z}_p^\* = \{1,\dots,p-1\}$ .
    1. A wählt privat $a$ zufällig (mit $0<a<p$) und sendet $g^a \bmod p$ an B.  
    2. B wählt privat $b$ zufällig (mit $0<b<p$) und sendet $g^b \bmod p$ an A.  
-   3. A berechnet $(g^b)^a \bmod p$.  
-   4. B berechnet $g^{ab} \bmod p$.  
+   3. A berechnet $(g^b)^a \bmod p$ .  
+   4. B berechnet $g^{ab} \bmod p$ .  
    Da $(g^b)^a = g^{ab}$ gilt, erhalten beide denselben Schlüssel. 
    
    - DH alleine bietet **keine Authentizität** → anfällig für **Man-in-the-Middle**, wenn man nicht zusätzlich authentifiziert (z.B. Signaturen/Zertifikate).
 
 2. Needham–Schroeder-Schlüsselaustausch (symmetrisch)
    Protokoll:
-   $A \rightarrow T: A, B, N_A$  
-   $T \rightarrow A: N_A, K, B, \{K, A\}_{K_B}, \{K, A\}_{K_A}$  
-   $A \rightarrow B: \{K, A\}_{K_B}$  
-   $B \rightarrow A: \{N_B\}_K$  
-   $A \rightarrow B: \{N_B - 1\}_K$  
+   
+   1. A → T: A, B, N_A
+   
+   2. T → A: N_A, K, B, {K, A}_K_B, {K, A}_K_A
+   
+   3. A → B: {K, A}_K_B
+   
+   4. B → A: {N_B}_K
+   
+   5. A → B: {N_B - 1}_K
    
    Dabei sind $N_A, N_B$ Nonces (“number used once”), d.h. zufällig generierte Zahlen, die unter keinen Umständen zweimal verwendet werden sollen. 
    
    - Unsicher bei Replay, falls ein Angreifer einen alten Schlüssel $K'$ gebrochen und alte Nachrichten gespeichert hat.
 
-3. Needham–Schroeder (asymmetrisch)
+4. Needham–Schroeder (asymmetrisch)
    Seien $K_{P_A}, K_{P_B}$ die öffentlichen Schlüssel von A bzw. B, sowie $K_{S_T}$ der private Signaturschlüssel von T.
    
-   $A \rightarrow T: A, B$  
-   $T \rightarrow A: K_{P_B}, \{B\}_{K_{S_T}}$  
-   $A \rightarrow B: \{N_A, A\}_{K_{P_B}}$  
-   $B \rightarrow T: B, A$  
-   $T \rightarrow B: K_{P_A}, \{A\}_{K_{S_T}}$  
-   $B \rightarrow A: \{N_A, N_B\}_{K_{P_A}}$  
-   $A \rightarrow B: \{N_B\}_{K_{P_B}}$ 
-
+   1. A → T: A, B
+   
+   2. T → A: K_P_B, {B}_K_S_T
+   
+   3. A → B: {N_A, A}_K_P_B
+   
+   4. B → T: B, A
+   
+   5. T → B: K_P_A, {A}_K_S_T
+   
+   6. B → A: {N_A, N_B}_K_P_A
+   
+   7. A → B: {N_B}_K_P_B
+   
 **Sicherheit DH gegen passive Angreifer: Computational Diffi-Hellman (CDH)**
-Angreifer kennt $G, g, g^a, g^b$, aber nicht $a,b$.  
+Angreifer kennt $G, g, g^a, g^b$, aber nicht $a,b$ .  
 Er muss $g^{ab}$ bestimmen → Instanz des CDH-Problems.
-   - Input: $g, g^a, g^b$  
-   - Output: $g^{ab}$  
+   - Input: $g, g^a, g^b$ 
+   - Output: $g^{ab}$ 
 Anmerkungen: CDH gilt als schwer (Basis von ElGamal); DH kann in jeder zyklischen Gruppe implementiert werden. 
 
 **Sicherheit gegen MitM-Angriff auf DH**
@@ -355,12 +359,14 @@ Anmerkungen: CDH gilt als schwer (Basis von ElGamal); DH kann in jeder zyklische
 - Lösung: Nachrichten müssen signiert werden → authenticated DH (oder *Station-to-Station-Protokoll*)
   
 **Station-to-Station-Protokoll - STS**
-   Annahme: Beide Parteien haben Signaturschlüssel $sk_A$, $sk_B$; die Zertifikate sind beiden bekannt.
+   Annahme: Beide Parteien haben Signaturschlüssel $sk_A$, $sk_B$ ; die Zertifikate sind beiden bekannt.
    
-   $A \rightarrow B: g^a$  
-   $B \rightarrow A: g^b,\ \mathrm{sig}_{sk_B}(g^a,g^b)_{K}$, wobei $K=g^{ab}$ der DH-Schlüssel ist.  
-   $A \rightarrow B: \mathrm{sig}_{sk_A}(g^a,g^b)_{K}$ 
+   A → B: g^a
+   B → A: g^b, Sig_{sk_B}(g^a, g^b)
+   A → B: Sig_{sk_A}(g^a, g^b)
    
+   where K = g^(ab) is the DH shared key.
+
    Anmerkungen:  
       - Die Signatur erlaubt einen Test der Integrität von $g^a$ und $g^b$.  
       - A und B können die Signatur nur dann entschlüsseln, wenn $K$ korrekt ist. 
@@ -372,8 +378,8 @@ Anmerkungen: CDH gilt als schwer (Basis von ElGamal); DH kann in jeder zyklische
 Zur Verbesserung der Praxistauglichkeit wird **hybride Verschlüsselung - KEM-DEM** eingesetzt: Sie kombiniert einen asymmetrischen Schlüsselaustausch (**KEM - Key Encapsulation**) mit der effizienten symmetrischen Verschlüsselung der Daten (**DEM - Data Encapsulation**).
   - Schema:
     1. Erzeuge zufälligen Sitzungsschlüssel $k$
-    2. $c_1 = \text{Enc}^{\text{sym}}_k(m)$  (z.B. AES-GCM / ChaCha20-Poly1305)
-    3. $c_2 = \text{Enc}^{\text{pk}}(pk, k)$  (z.B. RSA-OAEP oder (EC)DH-basierter KEM)
+    2. $c_1 = \text{Enc}^{\text{sym}}_k(m)$ (z.B. AES-GCM / ChaCha20-Poly1305)
+    3. $c_2 = \text{Enc}^{\text{pk}}(pk, k)$ (z.B. RSA-OAEP oder (EC)DH-basierter KEM)
     4. Sende $(c_1, c_2)$
        
   - Verschlüsselung: <img width="717" height="287" alt="Bildschirmfoto 2025-10-15 um 17 28 09" src="https://github.com/user-attachments/assets/2cec1d23-6f5a-4d2b-b299-59e5a8c7a796" />
@@ -451,7 +457,7 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
      3. "Kern"-Signaturverfahren: wende RSA-Schlüssel $\{(H(m))\}^\{d\} \bmod n$ an
    - RSA Verifizieren: hier wird pk = (N,e) verwendet
      1. Hashe Nachricht m auf H(m)
-     2. Kodiere "kurzen" Hashwert auf RSA-Länge: $ E(s,(e,n)) \equiv \{(s)\}^\{e\} \bmod n$
+     2. Kodiere "kurzen" Hashwert auf RSA-Länge: $E(s,(e,n)) \equiv \{(s)\}^\{e\} \bmod n$
      3. Vergleiche Signatur $\{s\}^\{e\} mod N$ mit Encode(H(m))
 <img width="433" height="210" alt="Bildschirmfoto 2025-10-17 um 02 43 05" src="https://github.com/user-attachments/assets/c72e5563-d6c0-43c0-a935-ec3344a8fbdf" />
 
@@ -462,46 +468,39 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
         + Gruppe G zyklisch, Primordnung q, Generator g
         + Schlüssel: privat $\{x\} \in {1,...,q-1}$, öffentlich $\{y\} = \{g\}^\{x\}$
       - Signieren:einer Nachricht $m$:
-         1. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$.
-         2. Berechne $R = g^k$ und $r = H(R \,\|\, m)$.
-         3. Berechne $s = k + r x \pmod q$.
-         4. Signatur ist $(r,s)$.
+         1. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$ .
+         2. Berechne $R = g^k$ und $r = H(R \,\|\, m)$ .
+         3. Berechne $s = k + r x \pmod q$ .
+         4. Signatur ist $(r,s)$ .
       - Verifikationvon $(r,s)$ zu $m$:
-         1. Berechne $R' = g^s \cdot y^{-r}$.
-         2. Berechne $v = H(R' \,\|\, m)$.
+         1. Berechne $R' = g^s \cdot y^{-r}$ .
+         2. Berechne $v = H(R' \,\|\, m)$ .
          3. Ausgabe 1 iff v = r, sonst Ausgabe 0
    2. Digital Signature Algorithm (DSA)
       - Setup:
         + Wähle Primzahlen $p,q$ mit $q \mid (p-1)$ und einen Generator $g$ der Untergruppe der Ordnung $q$ in $\mathbb{Z}_p^\*$; $q$ soll eine große Primzahl sein (160 Bit, 224 Bit oder 256 Bit).
-        + Typisch: $g = h^{(p-1)/q} \bmod p$ für ein geeignetes $h$.
-        + privater Schlüssel $x \in \{1,\dots,q-1\}$, öffentlicher Schlüssel $y = g^x \bmod p$
+        + Typisch: $g = h^{(p-1)/q} \bmod p$ für ein geeignetes $h$ .
+        + privater Schlüssel $x \in \{1,\dots,q-1\}$ , öffentlicher Schlüssel $y = g^x \bmod p$
       - Signieren: einer Nachricht $m$:
-         1. Berechne $h = H(m)$ (und reduziere ggf. modulo $q$).
-         2. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$.
-         3. Berechne
-            \[
-            r = (g^k \bmod p) \bmod q.
-            \]
+         1. Berechne $h = H(m)$ (und reduziere ggf. modulo $q$ ).
+         2. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$ . 
+         3. Berechne $r = (g^k \bmod p) \bmod q.$
             Falls $r=0$, wähle neues $k$.
-         4. Berechne
-            \[
-            s = k^{-1}(h + x r) \bmod q.
-            \]
-            Falls $s=0$, wähle neues $k$.
+         4. Berechne $s = k^{-1}(h + x r) \bmod q.$
+            Falls $s=0$ , wähle neues $k$ .
          5. Signatur ist $(r,s)$.
-      - Verifikation: von $(r,s)$ zu $m$:
-         1. Prüfe $0<r<q$ und $0<s<q$, sonst reject.
+      - Verifikation: von $(r,s)$ zu $m$ :
+         1. Prüfe $0<r<q$ und $0<s<q$ , sonst reject.
          2. Berechne $h = H(m)$ und
-            \[
-            w = s^{-1} \bmod q,\quad
-            u_1 = hw \bmod q,\quad
-            u_2 = rw \bmod q.
-            \]
-         3. Berechne
-            \[
-            v = ((g^{u_1}\cdot y^{u_2}) \bmod p) \bmod q.
-            \]
-         4. Akzeptiere gdw. $v = r$.
+
+            $w = s^{-1} \bmod q,\quad$
+            
+            $u_1 = hw \bmod q,\quad$
+            
+            $u_2 = rw \bmod q.$
+            
+         4. Berechne $v = ((g^{u_1}\cdot y^{u_2}) \bmod p) \bmod q.$
+         5. Akzeptiere gdw. $v = r$.
     Der Nonce $k$ muss pro Signatur **frisch, gleichverteilt und geheim** sein.
 Wenn $k$ wiederverwendet wird oder vorhersagbar ist, kann der private Schlüssel $x$ geleakt werden.
 
@@ -725,6 +724,7 @@ Beisiele für **DAC**:
 Beispiel von **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Vertraulichkeit in Multi-Level Security. Dieses Model regelt die Informationsflüsse in eine Hierarchie: 
 - **No-Read-Up Regel**: Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
 - **No-Write-Down Regel**: Erzeugung von Objekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
+  
 So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (*Clearance*), und jedem Objekt wird eine Sicherheitsklasse $\{SC(o)\} \in \{SC\}$ zugewiesen (*Classification*)
 
 Auf Sicherheitsklasse SC wird eine partielle Ordung $\le$ definiert:
@@ -854,7 +854,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
               + Zufällige Wahl der ISN schützt vor Off-Path Angreifer
          2. RST-Injektion: Spoofing eines RST-Pakets, um eine Verbindung zwangsweise zu beenden. Es wird manchmal von Zensur- oder Filter-Systeme benutzt; ein Dritter fälscht ein TCP-Segment mit RST-Flag, so beide Enpunkte glauben, der Peer habe die Verbindung zurückgestzt, führt dazu, dass Verbindung abbricht (**DoS-Angriff**)
        2. TCP Flooding: nutzt die Wahrheit aus, dass SYN Speicher nur beschränkte Anzahl an 'nicht abgeschlossenen' TCP Verbindung speichert; Angreifer sende viele SYN-Anfragen, ohne SYN-ACK mit ACK zu beantworten (**DoS Angriff**)
-          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren: $\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})$. So, nur wenn $\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\\mathrm{Port\_C}) + 1,$ dann wird Speicher reserviert.
+          - Gegenmaßnahme: SYN Cookies: Da man alle Werte aus später ampfangenen Werten extrahieren kann, bis auf SeqNr_S. so wir können TCP-Buffer erst an bei abgeschlossenem Handshake legen, dies macht den Angriff teuer; es gibt aber Problem, weil SeqNr_S nicht vorhersagbar sein darf. Aber wir können Speicher mit SYN-Cookie reservieren: $\mathrm{SeqNr\_S} := H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\ \mathrm{Port\_C})$ . So, nur wenn $\mathrm{SeqNr\_S} + 1 = H(k_s,\ \mathrm{SeqNr\_C},\ \mathrm{IP\_C},\\mathrm{Port\_C}) + 1,$ dann wird Speicher reserviert.
 
 4. **Application Layer**:
    - Bietet an: Funktion für netzbasierte Software; bsp. HTTP/HTTPS für Webseite, FTP für Filesharing, usw.
