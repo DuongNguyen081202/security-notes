@@ -317,13 +317,14 @@ Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$ .
 
 $$
 \begin{aligned}
-\text{i.}\ & A \rightarrow T : A, B, N_A \\
-\text{ii.}\ & T \rightarrow A : N_A, K, B, \{K, A\}_{K_B}, \{K, A\}_{K_A} \\
-\text{iii.}\ & A \rightarrow B : \{K, A\}_{K_B} \\
-\text{iv.}\ & B \rightarrow A : \{N_B\}_K \\
-\text{v.}\ & A \rightarrow B : \{N_B - 1\}_K
+\text{i.}\ & A \rightarrow T: \quad A, B, N_A \\
+\text{ii.}\ & T \rightarrow A: \quad \{(N_A, K, B, \{(K,A)\}_{K_B})\}_{K_A} \\
+\text{iii.}\ & A \rightarrow B: \quad \{(K,A)\}_{K_B} \\
+\text{iv.}\ & B \rightarrow A: \quad \{(N_B)\}_{K} \\
+\text{v.}\ & A \rightarrow B: \quad \{(N_B - 1)\}_{K}
 \end{aligned}
 $$
+
 
    Dabei sind $N_A, N_B$ Nonces (“number used once”), d.h. zufällig generierte Zahlen, die unter keinen Umständen zweimal verwendet werden sollen. 
    
@@ -335,12 +336,12 @@ $$
 $$
 \begin{aligned}
 \text{i.}\ & A \rightarrow T: A, B \\
-\text{ii.}\ & T \rightarrow A: K_{P_B}, \{B\}_{K_{S_T}} \\
-\text{iii.}\ & A \rightarrow B: \{N_A, A\}_{K_{P_B}} \\
+\text{ii.}\ & T \rightarrow A: K_{PB}, \{B\}_{K_{ST}} \\
+\text{iii.}\ & A \rightarrow B: \{(N_A, A)\}_{K_{PB}} \\
 \text{iv.}\ & B \rightarrow T: B, A \\
-\text{v.}\ & T \rightarrow B: K_{P_A}, \{A\}_{K_{S_T}} \\
-\text{vi.}\ & B \rightarrow A: \{N_A, N_B\}_{K_{P_A}} \\
-\text{vii.}\ & A \rightarrow B: \{N_B\}_{K_{P_B}}
+\text{v.}\ & T \rightarrow B: \{(K_{PA}, A)\}_{K_{ST}} \\
+\text{vi.}\ & B \rightarrow A: \{(N_A, N_B)\}_{K_{PA}} \\
+\text{vii.}\ & A \rightarrow B: \{(N_B)\}_{K_{PB}}
 \end{aligned}
 $$
 
