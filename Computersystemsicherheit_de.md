@@ -313,40 +313,37 @@ Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$ .
    
    - DH alleine bietet **keine Authentizität** → anfällig für **Man-in-the-Middle**, wenn man nicht zusätzlich authentifiziert (z.B. Signaturen/Zertifikate).
 
-2. Needham–Schroeder-Schlüsselaustausch (symmetrisch)
-   Protokoll:
-   
-   1. A → T: A, B, N_A
-   
-   2. T → A: N_A, K, B, {K, A}_K_B, {K, A}_K_A
-   
-   3. A → B: {K, A}_K_B
-   
-   4. B → A: {N_B}_K
-   
-   5. A → B: {N_B - 1}_K
-   
+2. Needham–Schroeder-Schlüsselaustausch (symmetrisch) Protokoll:
+
+$$
+\begin{aligned}
+\text{i.}\ & A \rightarrow T : A, B, N_A \\
+\text{ii.}\ & T \rightarrow A : N_A, K, B, \{K, A\}_{K_B}, \{K, A\}_{K_A} \\
+\text{iii.}\ & A \rightarrow B : \{K, A\}_{K_B} \\
+\text{iv.}\ & B \rightarrow A : \{N_B\}_K \\
+\text{v.}\ & A \rightarrow B : \{N_B - 1\}_K
+\end{aligned}
+$$
+
    Dabei sind $N_A, N_B$ Nonces (“number used once”), d.h. zufällig generierte Zahlen, die unter keinen Umständen zweimal verwendet werden sollen. 
    
    - Unsicher bei Replay, falls ein Angreifer einen alten Schlüssel $K'$ gebrochen und alte Nachrichten gespeichert hat.
 
-4. Needham–Schroeder (asymmetrisch)
+7. Needham–Schroeder (asymmetrisch)
    Seien $K_{P_A}, K_{P_B}$ die öffentlichen Schlüssel von A bzw. B, sowie $K_{S_T}$ der private Signaturschlüssel von T.
    
-   1. A → T: A, B
-   
-   2. T → A: K_P_B, {B}_K_S_T
-   
-   3. A → B: {N_A, A}_K_P_B
-   
-   4. B → T: B, A
-   
-   5. T → B: K_P_A, {A}_K_S_T
-   
-   6. B → A: {N_A, N_B}_K_P_A
-   
-   7. A → B: {N_B}_K_P_B
-   
+$$
+\begin{aligned}
+\text{i.}\ & A \rightarrow T: A, B \\
+\text{ii.}\ & T \rightarrow A: K_{P_B}, \{B\}_{K_{S_T}} \\
+\text{iii.}\ & A \rightarrow B: \{N_A, A\}_{K_{P_B}} \\
+\text{iv.}\ & B \rightarrow T: B, A \\
+\text{v.}\ & T \rightarrow B: K_{P_A}, \{A\}_{K_{S_T}} \\
+\text{vi.}\ & B \rightarrow A: \{N_A, N_B\}_{K_{P_A}} \\
+\text{vii.}\ & A \rightarrow B: \{N_B\}_{K_{P_B}}
+\end{aligned}
+$$
+
 **Sicherheit DH gegen passive Angreifer: Computational Diffi-Hellman (CDH)**
 Angreifer kennt $G, g, g^a, g^b$, aber nicht $a,b$ .  
 Er muss $g^{ab}$ bestimmen → Instanz des CDH-Problems.
@@ -361,11 +358,13 @@ Anmerkungen: CDH gilt als schwer (Basis von ElGamal); DH kann in jeder zyklische
 **Station-to-Station-Protokoll - STS**
    Annahme: Beide Parteien haben Signaturschlüssel $sk_A$, $sk_B$ ; die Zertifikate sind beiden bekannt.
    
-   A → B: g^a
-   B → A: g^b, Sig_{sk_B}(g^a, g^b)
-   A → B: Sig_{sk_A}(g^a, g^b)
+   $A \rightarrow B: g^a$
    
-   where K = g^(ab) is the DH shared key.
+   $B \rightarrow A: g^b, \mathrm{Sig_{sk_B}(g^a, g^b)}$
+   
+   $A \rightarrow B: \mathrm{Sig_{sk_A}(g^a, g^b)}$
+   
+   where $K = g^(ab)$ is the DH shared key.
 
    Anmerkungen:  
       - Die Signatur erlaubt einen Test der Integrität von $g^a$ und $g^b$.  
