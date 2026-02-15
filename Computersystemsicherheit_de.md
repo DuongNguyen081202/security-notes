@@ -789,7 +789,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         - Protokoll: A stellt die Anfrage via Broadcast, so Angreifer sendet daher gefälschte ARP-Replies, damit A die MAC Adresse von Angreifer in Cache speichern.
         - Gegenmaßnahmen:
           + durch Monitoring erkennen
-          + Verschlüsselung des Datenverkehrs aufhöheren Schichten (IPSec, TLS) gegen MitM-Angriff
+          + Verschlüsselung des Datenverkehrs auf höheren Schichten (IPSec, TLS) gegen MitM-Angriff
           + Nutzt stattdessen IPv6 für Neighbor Discovery Protocol (NDP)
     
       4. DHCP Spoofing (Dynamic Host Configuration Protocol Spoofing):
