@@ -148,7 +148,7 @@ ECB, CBC, CTR sind Betriebsmodi (Modes of Operation), die eine Blockchiffre verw
 
 <img width="539" height="247" alt="Bildschirmfoto 2025-10-07 um 10 55 29" src="https://github.com/user-attachments/assets/ff798999-8976-4fa0-8841-f81628158493" />
 
-- Nonce kommt aus einer **randomisierte Zählfunktion**, was einen Zufallswert (Nonce) und eine natürliche Zahl (Counter) auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Binärdarstellung der natürlich Zahl mit 0-Padding (LSB- oder MSB-Kodierung). **Problem** ist, dass ein randomisierter Zähler kann nie injektiv sein, so kann man die Periode nur so lang wie möglich wählen.
+- Nonce kommt aus einer **randomisierte Zählfunktion**, was einen Zufallswert (Nonce) und eine natürliche Zahl (Counter) auf eine Bitkette fester Länge an. Eine einfache Implementierung benutzt die Binärdarstellung der natürlich Zahl mit 0-Padding (LSB- oder MSB-Kodierung). **Problem** ist, dass ein randomisierter Zähler dürfen sich nie wiederholen, da der Counter wegen fester Blocklänge nur endlich Werte hat, muss Overflows/Wiederverwendung verhindern bzw. die maximale Periode groß wählen.
   
 - Die Länge von der Kombination von Nonce und Counter hängt von der Größe des Blocks. diese Länge definiert den maximale Werte von Nonce und Counter.
 - Ver- und Entschlüsselung können parallelisiert werden
@@ -216,14 +216,14 @@ $\text{HMAC}_K(m) = H\bigl((K' \oplus \text{opad}) \ \|\ H((K' \oplus \text{ipad
 1. Encrypt-then-MAC
    1. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m)$(nonce hier kann auch IV sein)
    2. Authentisieren: t= $\mathrm{MAC}_{k_M}(\text{AAD} || c)$
-   - Sende: (nonce, c, t)
-   - Empfang: Tag prüfen, und entschlüsseln nur bei Erfolg
-   - Probleme: anfällig für Padding/Timing- Orakel in bestimmten Modi (TLS-CBC: Lucky-13, Padding-Orakel); IND-CCA sicher durch Authentifizierung
+      - Sende: (nonce, c, t)
+      - Empfang: Tag prüfen, und entschlüsseln nur bei Erfolg
+      - Probleme: anfällig für Padding/Timing- Orakel in bestimmten Modi (TLS-CBC: Lucky-13, Padding-Orakel); IND-CCA sicher durch Authentifizierung
 2. Mac-then-Encrypt:
    1. Authentisieren: t= $\mathrm{MAC}_{k_M}(\text{m})$
    2. Verschlüsseln: c= $\mathrm{Enc}_{k_E}(\text{nonce}, m||t)$
-   - Sende: (nonce, c)
-   - Empfang: Erst entschlüsseln, dann Tag prüfen
+      - Sende: (nonce, c)
+      - Empfang: Erst entschlüsseln, dann Tag prüfen
 
 ### Asymmetrische Kryptographie
 - Es gibt stattdessen ein Schlüsselpaar (pk, sk), dies macht es möglich, dass kein Schlüsselaustausch notwendig ist, dies folgt auch, dass nur n Schlüsselpaare gebraucht sind, statt <sup>n(n-1)</sup>/<sub>2</sub>
@@ -987,7 +987,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
 
 **DNS Record-Type**
 <img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
-      + **Resource Record Set (RRset)**: ist Menge  von DNS Records (>=1) mit selben Werten in (Name, Type, Class, TTL)
+      + **Resource Record Set (RRset)**: ist Menge aller Resource Records mit gleichem (Name, Type, Class, TTL)
       
    - DNSSEC:
      + bietet noch Integrität bei der Antwort an, damit Cache-Poisoning-Angriffe verhindert wird.
