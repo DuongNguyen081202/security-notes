@@ -524,6 +524,11 @@ Asymmetrische Kryptographie löst das Key-Distribution-Problem, aber schafft ein
 **Wie weiß ich, dass ein öffentlicher Schlüssel wirklich zur richtigen Identität gehört?**
 → Ohne diese Bindung sind Man-in-the-Middle-Angriffe möglich.
 
+### Trust-Modelle 
+**Direct Trust (z.B. SSH / TOFU)**:
+- Öffentlicher Schlüssel/Fingerprint wird direkt ausgetauscht (oder beim ersten Verbindungsaufbau gespeichert – *Trust On First Use*).
+- Problem: Wenn der Fingerprint beim ersten Kontakt nicht verifiziert wird, ist ein MitM beim ersten Kontakt möglich.
+
 Es gibt zwei grundsätzliche Ansätze:
 1. Zentralisierter Ansatz: X.509-Zertifikate (PKI)
    - **Zentraler / hierarchischer Ansatz**: Vertrauen wird in einer Hierarchie organisiert.
@@ -533,9 +538,19 @@ Es gibt zwei grundsätzliche Ansätze:
      + Intermediate CA wird von einer höheren CA signiert
      + Oben steht ein **Root-Zertifikat** (Root CA), dem der Client bereits vertraut (Trust Store)
 
+**Chain Validation (WebPKI in der Praxis)**:
+- Server sendet sein Zertifikat + Intermediate-Zertifikate (meist ohne Root).
+- Client prüft Signaturkette bis zu einem Root-Zertifikat im lokalen **Trust Store** (Browser/OS).
+- Nur wenn die Kette zu einem vertrauten Root führt, wird das Serverzertifikat akzeptiert.
+
 **Idee:** Wenn ich der Root-CA vertraue, kann ich über die Kette auch dem Serverzertifikat vertrauen.
 
 **Wichtig:** Das größte praktische Problem asymmetrischer Kryptographie ist oft nicht der Algorithmus, sondern die **PKI** (Vertrauensanker, Zertifikatsverwaltung, Fehlkonfigurationen, kompromittierte CAs).
+
+**CA-Vertrauensproblem (Governance)**:
+- Eine kompromittierte/böswillige CA kann Zertifikate für fremde Domains ausstellen → WebPKI als Ganzes gefährdet.
+- Welche CAs vertraut werden, bestimmen Browser/OS-Hersteller (Trust Store) + Regeln/Audits (z.B. CA/Browser Forum).
+- In der Praxis dominieren wenige große CAs den Markt.
 
 2. Dezentraler Ansatz: Web of Trust (PGP)
    - Kein zentraler Trust-Anker (keine „eine“ CA).
@@ -588,9 +603,35 @@ Ein Client akzeptiert ein Serverzertifikat nur, wenn u.a.:
       - Es gibt viele Vorteile:
         + Echtzeitabfrage
         + Kürzer & effizienter
+      - **Praktische Probleme**:
+        + OCSP wird oft **soft-fail/open-fail** behandelt: wenn der OCSP-Responder nicht erreichbar ist, akzeptieren Clients das Zertifikat häufig trotzdem.
+        + Trend: statt Widerruf stärker auf **kurze Zertifikatslaufzeiten** setzen (schnelleres „Auslaufen“ reduziert Schaden).
+       
+### Validierungsarten von Zertifikaten (DV/OV/EV)
+- **DV (Domain Validation)**: nur Kontrolle über die Domain wird geprüft.
+- **OV (Organization Validation)**: zusätzlich wird die Organisation geprüft.
+- **EV (Extended Validation)**: stärkere/strengere Organisationsprüfung (historisch stärker hervorgehoben, heute weniger UI-Effekt).
+
+**Typische DV-Methoden**:
+- HTTP-Challenge (z.B. Datei/Token unter einer URL bereitstellen)
+- DNS-Challenge (TXT-Record setzen)
+- E-Mail-Challenge (Mail an Domain-Kontakt)
+
+**Angriffe auf DV**:
+- DNS-Manipulation (z.B. Cache Poisoning / on-path)
+- BGP Hijacking (Traffic/Validierung umleiten)
+- Server/Account Takeover (Webspace/DNS-Provider kompromittiert)
+Gegenidee in der Praxis: verteilte/zufällige Validierungspunkte (erschwert gezielte Umleitung).
+
 **Was tun mit widerrufenen Zertifikaten?** (certificate revocation list) 
    - Alle speichern alles? Ineffizient, Updates müssen alle erreichen.  
    - Zentralisierter Server? Vertrauen, Erreichbarkeit (Flaschenhals).  
+
+### Certificate Transparency (CT)
+- Idee: Zertifikate werden in öffentliche, append-only Logs geschrieben.
+- CA holt/erstellt einen **SCT (Signed Certificate Timestamp)** vom Log als Nachweis.
+- Browser können verlangen, dass ein Zertifikat CT-Nachweise (SCTs) enthält.
+- Monitoring: Dritte können Logs überwachen und falsch ausgestellte Zertifikate entdecken.
 
 Jetzt unterscheiden wir uns die folgenden Begriffe:
 1. Identifizierung: Identität feststellen
@@ -951,6 +992,11 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
    - DNSSEC:
      + bietet noch Integrität bei der Antwort an, damit Cache-Poisoning-Angriffe verhindert wird.
      + DNS über TLS? kann auch eine Möglichkeit sein, aber wir möchte DNS schnell und leicht, während TLS langsam ist, ansonsten hilft TLS nicht beim Caching (aber DNS-Rekord muss zwischengespeichert werden), und auch nicht gegen bösartifen Nameservern. So sichert TLS den Kommunikationskanal, aber ermöglicht nicht Vertrauenswürdigkeit der Daten zu prüfen.
+     + **Vergleich Trust Chain**:
+       - WebPKI: Kette von Zertifikaten bis Root im Trust Store.
+       - DNSSEC: Kette über Delegation/Signaturen im DNS-Baum bis zum Root-Trust-Anchor.
+       - Single Trust Root ist mächtig, aber auch ein Single Point of Failure.
+
      + DNS nutzt stattdessen
        1. Kryptographie um zu beweisen, dass zurückgegebenen Antworten korrekt sind (mit digitale Signaturen von Nameservern), und
        2. hierarchisches, verteiles Vertrauenssytem (bsp. Root-Nameserver) zur Identifikation, um vor bösartigem Nameserver zu schützen
