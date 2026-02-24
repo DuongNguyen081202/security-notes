@@ -1100,6 +1100,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
 1. DKIM: Verhinderung von E-Mail-Spoofing mittels Signierung von E-Mail durch Absende-Server und Eintrag des öffentlichen Schlüssels im DNS
 2. Domain Validation: ermöglicht automatisierte Ausstellung von TLS-Zertifikaten an Domain-Inhaber; TLS-Zertifikate binden öffentlichen Schlüssel an Domain-Namen
 3. DANE: erlaubt Nachweis der Echtheit von TLS-Zertifikaten einer Domain durch deren Referenzierung im DNS; es benötigt DNSSEC
+
 **Sender Policy Framework (SPF)**
 - Für Verhinderung von unautorisiert versendeter E-Mail für eine Absender-Domain
 - Funktionsweise:
