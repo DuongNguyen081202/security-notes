@@ -552,7 +552,7 @@ Es gibt zwei grundsätzliche Ansätze:
 - Welche CAs vertraut werden, bestimmen Browser/OS-Hersteller (Trust Store) + Regeln/Audits (z.B. CA/Browser Forum).
 - In der Praxis dominieren wenige große CAs den Markt.
 
-2. Dezentraler Ansatz: Web of Trust (PGP)
+2. Dezentraler Ansatz: **Web of Trust** (PGP)
    - Kein zentraler Trust-Anker (keine „eine“ CA).
    - Nutzer verwalten **Keyrings/Schlüsselbünde**:
      + eigener Schlüssel
@@ -629,9 +629,13 @@ Gegenidee in der Praxis: verteilte/zufällige Validierungspunkte (erschwert gezi
 
 ### Certificate Transparency (CT)
 - Idee: Zertifikate werden in öffentliche, append-only Logs geschrieben.
-- CA holt/erstellt einen **SCT (Signed Certificate Timestamp)** vom Log als Nachweis.
-- Browser können verlangen, dass ein Zertifikat CT-Nachweise (SCTs) enthält.
-- Monitoring: Dritte können Logs überwachen und falsch ausgestellte Zertifikate entdecken.
+- Ablauf:
+  + User fragt Zertifikat bei CA an
+  + Zertifikat wird dem Log hinzugefügt
+  + CA sendet Zertifikat und einen **SCT (Signed Certificate Timestamp)** an User ( SCT attestiert dass Zertifikat geloggt wurde
+  + Webserver sendet Zertifikat and User bei Aufruf der Page
+  + User verifiziert Zertifikat
+  + Monitoring: ist Dritte, die Logs überwachen und alarmieren CA bei Änderung/Problemen können
 
 Jetzt unterscheiden wir uns die folgenden Begriffe:
 1. Identifizierung: Identität feststellen
