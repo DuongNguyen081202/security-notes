@@ -1039,7 +1039,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             - Cache des DNS Servers wird dann vergiftet durch
             - DNS nutzt UDP und keine Verifikation der Authentizität
             - **Off-Path DNS Cache Poisoning**:
-              + Angreifermodell: Angreifer kann beliebige Nachrichten senden, muss 16-bit Transaction-ID im DNS-Header erraten, und 16-bit UDP Zielport der gefälschen Antwort muss dem UDP Quellport der Anfrage des Resolvers an den autoriativen Server gleichen. Angreifer kann aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken
+              + Angreifermodell: Angreifer kann beliebige Nachrichten senden, muss aber 16-bit Transaction-ID im DNS-Header erraten, ansonsten muss 16-bit UDP Zielport der gefälschen Antwort dem UDP Quellport der Anfrage des Resolvers an den autoriativen Server gleichen. Angreifer kann aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken
               + **Kaminskys Angriff**: *Kaminsky’s Trick* sind die zwei konkreten Kniffe/Technik innerhalb des Angriffs:
                 1. Viele Anfragen auf zufällige, nicht-existierende Subdomains der Opferdomain (DoS-Angriff)
                 2. Gefälschte Antwort vergiftet nicht nur A-Record, sondern setzt NS-Delegation (und macht eine Weiterleitung als die Antwort möglich)
