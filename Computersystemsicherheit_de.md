@@ -849,17 +849,28 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
     - Bietet an: Sendung von Paketen von jedem Quellgerät zu jedm Zielgerät
     - erlaubt die Kommunikation über verschiedene LANs hinweg mittels globaler Adressierung
     - Pakete beinhalten: Sender-, Zieladdresse, Daten; Pakete mitgleicher Sender-, Zieladdresse können unterschiedliche Routen nehmen
+
       **Internet Protocol (IP)**:
-      - is die Protokoll zur Kommunikatio zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
+    - is die Protokoll zur Kommunikatio zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
       1. IPv4: 32 Bit Adresse der Form: 120.19.22.00
       2. IPv6: 128 Bit Adresse der Form: 2607:f140:8801::1:23
-      - Probleme von IP: is **unzuverlässig**:
+   - Probleme von IP: is **unzuverlässig**:
         + Pakete können verloren gehen
         + Pakete können Fehler aufweisen
         + Pakete können in falscher Ordnung beim Empfänger eintreffen
-    - **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
-      + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
-    
+   - **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
+     + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
+   - IPSec:
+     + ist ein Protokoll auf Internet-Layer zur Absicherung von IPv4 und IPv6
+     + **Internet Key Exchange (IKE)** ist das Kontrollprotokoll von IPSec, dient zur beidsseitigen Authentifizierung und dem Schlüsselaustausch
+     + Sicherheitsziele:
+       * Vertraulichkeit der IP-Payload Datenübertragung
+       * Integrität
+       * Zugriffskontrolle
+       * Authentizität des DAtensprungs
+     + 
+   - 
+   
 3. **Transport Layer**:
    - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
    - Protokolle: TCP, UDP, und QUIC
@@ -873,7 +884,8 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
      + TCP teilt beim Sender die Nachricht in kleinere Pakete auf und setzt diese beim Empfönger wieder zusammen
      + Verwendung von **Sequenznummern**, um Ordnung beim Empfänger wieder herzustellen; jeder TCP-Verbindung erfordert 2 Arten von Sequenznummnern: isn für Nachrichten vom Client an den Server (client_isn) und isn für Nachrichten vom Server an den Client (server_isn) und ISNs ist zufällig für jede neue Verbindung für Verhinderung von TCP hijacking)
      + Empfänger antwortet mit Empfangsbestätigung **ACK**. Wenn ACK nicht beim Sender eintrifft, sendet das Paket erneut
-     + Weiterhin gibt es ein kryptografisches Protokoll oberhalb von TCP: TLS (Transport Layer Security), das per Handshake Sitzungsschlüssel aushandelt und danach Anwendungsadten vertraulich und integritätgeschützt überträgt
+     + Weiterhin gibt es ein kryptografisches Protokoll oberhalb von TCP: **TLS - Transport Layer Security**, das per Handshake Sitzungsschlüssel aushandelt und danach Anwendungsadten vertraulich und integritätgeschützt überträgt.
+       
      Datenübertragung mit TCP:
        <img width="636" height="292" alt="Bildschirmfoto 2025-10-25 um 22 28 52" src="https://github.com/user-attachments/assets/270876a6-a61b-4df9-8a26-c151faa7f07e" />
    - TCP Flags:
@@ -953,9 +965,13 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
    - Hier werden wir genauer betrachten, was **TLS** ist:
      + TLS ist ein Sicherheitsprotokoll, das oberhalb von TCP arbeitet und oft als Teil der Anwendungsshicht betrachtet wird
      + Dies ermöglicht sichere Kommunikationskanäle für das Internet:
-       * Vertraulichkeit: Angreifer kann Kommunikation nicht mitlesen
+       * Vertraulichkeit der Payload-Daten: Angreifer kann Kommunikation nicht mitlesen
        * Integrität: Verhindert Abänderung der Kommunikation
-       * Authentizität: Client komuniziert mit dem legitimen Server
+       * Authentizität der Kommunikationspartner: Client komuniziert mit dem legitimen Server
+     + anbietet:
+         - Unterstützung verschiedener Verfahren für Schlüsselaustausch und Signaturen
+         - Schutz vor Replay-Angriffen mittels Nonce
+         - (Perfect) Forward Secrecy: die Veröffentlichung älterer privater Schlüssel führt nicht zu einer Kompromitterung neuerer Verbindungen
      + Der Aufbau von TLS:
        * Handshake:
          + ist Aushandlung kryptographischer Verfahren/Parameter
@@ -969,7 +985,26 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
 $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MAC), der die Integrität von übertragenen Daten schützt
        * Record Layer: Dateverschlüsselung und Authentifizierung mit Schlüssel k
          <img width="471" height="112" alt="Bildschirmfoto 2025-10-27 um 10 40 34" src="https://github.com/user-attachments/assets/fa06e7cb-0f3a-43e1-87ba-b3535a9c7131" />
-      + Cipher Suites: gehören zu TLS, legen fest, mit welchen Algorihmen eine TLS-Verbindung arbeitet. Es gibt Unterschied unter die Versions von TLS,a aber allgemein bestimmt eine Cipher Suite: Schlüsselaustausch, Authentisierung/Signaturverfahren, Verschlüsselung, Integrität, Hashfunktion
+      + **Cipher Suites**: gehören zu TLS, legen fest, mit welchen Algorihmen eine TLS-Verbindung arbeitet. Es gibt Unterschied unter die Versions von TLS,a aber allgemein bestimmt eine Cipher Suite: Schlüsselaustausch, Authentisierung/Signaturverfahren, Verschlüsselung, Integrität, Hashfunktion. Folgender Bild ist ein Beispiel:
+        <img width="500" height="163" alt="Bildschirmfoto 2026-02-25 um 01 20 29" src="https://github.com/user-attachments/assets/b21b9c0f-b3eb-4030-a5e9-4968c141d7c0" />
+        * Unterstützte Signaturalgorithmen: RSA, DSA, ECDSA, Ed25519, Ed448
+        * Unterstützte Hashalg.: MD5, SHA-1, SHA-224, SHA-256, SHA-284, SHA-512, (none), (intrinsic)
+        * Cipher Suites können bspw. auch ohne Zertifikate, Authentifizierung oder Verschlüsselung sein
+      + TLS 1.1: Explizite IV-Auswahl und Änderungen bei Padding-Fehlern zur Absicherung gegen CBC- Angriffe
+      + TLS 1.2:
+        * Neue Cipher Suites
+        * Unterstützung von AEAD (Authenticated Encryption with Associated Data)
+        * Upgrade auf SHA-256 im Handshake
+        * Full Handshake:
+          1. Einseitige oder wechselseitige Authentifikation durch X.509-Zertifikate
+          2. Aushandlung der Cipher Suite
+          3. Generierung neuer Schlüssel für symmetrische Verschlüsselung und Perfect Forward Secrecy
+<img width="652" height="249" alt="Bildschirmfoto 2026-02-25 um 01 31 30" src="https://github.com/user-attachments/assets/99c71b6f-0bc2-4f23-aee0-e4e18a951603" />
+      + TLS 1.3:
+        * Neu: 1-RTT und o-RTT Handshake für bessere Performanz
+        * Verbesserung der Sicherheit durch Deprecation veralteter Algorithmen
+        * Statische RSA und DH Cipher Suites wurde entfernt, Perfect Forward Secrecy
+      + 
    - DNS:
      + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“)
      + Subdomain: sich in der Hierarcchie unter einem aneren Namen befindliche Domain (z.B. „scholar.google.com.“ von „google.com.“)
@@ -1007,15 +1042,23 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
    - TOR - The Onion Router:
      + ist ein Overlay/AnonymisierungsNetzwerk auf Applikation Layer, das IP-Verbindung anonymisiert, indem der Client sein Traffic (IP-Pakete) durch mehrere Replay-Knoten (Entry - Middle - Exit) leitet
    - Angriffe: (1-5 sind auf TLS)
-     1. Cipher Suite Rollback Angriff:
+     1. Cipher Suite Rollback Angriff (Cipher-Suite-Downgrade):
         + ein MiTM-Angreifer ändert die Liste der Cipher Suites in der ClientHello Nachricht
         + er löscht alle starken Cipher Suites, so muss der Server eine schwache Cipher Suite wählen
+        + Beispiel: FREAK ist ein klassischer Fall: der Client wird dazu gebracht, RSA_EXPORT zu akzeptieren
      2. ChangeCipherSpec Message Drop Angriff: grifft auf SSL 2.0 oder vorige Versionen an:
         + der MiTM-Angreifer fängt die ChangCipherSpec Nachrichten ab und verwirft sie, dann werden sie niemals auf verschlüsselte Übertragung umgeschltet, alle Daten werden dann im Klartext übertragen
      3. Version Rollback Angriff:
         + MiTM-Angreifer modifiziert die SSL 3.0 ClientHello Nachricht, sodass sie wie ein SSL 2.0 ClientHello aussieht. Dies zwingt den Server angreifbares SSL 2.0 zu benutzen
+        + Beispiel: POODLE: Padding Oracle On Downgrade Legacy Encryption: Downgrade von TLS auf SSL 3.0
         + Gegenmaßnahmen: Im Padding bei RSA-Ciphersuites integriert der Client eine SSL-Versionsnummer, der Server wird dann prüfen, ob die Versionsnummer korrekt ist
-     4. Bleichenbachers Angriff auf TLS-RSA
+     4. Algorithmus/Hash-Downgrade (gehört zu **Transcript-Manipulation**. Dies ermöglicht Cipher-Suite Downgrade):
+        + Beispiel: SLOTH zeigt, dass veraltete/verkürzte Hashes im TLS-Handshake ausgenutzt werden können, um Authentisierung zu brechen
+        + nutzt die Schwäche von Hashfunktion aus
+        + Beispiel TLS 1.0/1.1 Cipher Suite Downgrade:
+<img width="730" height="258" alt="Bildschirmfoto 2026-02-25 um 01 53 18" src="https://github.com/user-attachments/assets/d26c6f78-f383-4d09-b289-7b25012dfb6d" />
+        + eine weitere Art von Transcript-Manipulation ist **Transcript-Collision-Attacks**: TLS 1.2 Client Authentication durch Chosen-Prefix Attack auf MD5, TLS 1.2 Server Authentication durch Collision Attack auf MD5, und TLS 1.0/1.1/1.2 Channel Binding durch Collision Attack auf HMAC, diese erlauben Brechen der Authentifikation und damit vollständige MitM-Angriffe
+     5. Bleichenbachers Angriff auf TLS-RSA
         - Ausnutzen die Fakt, dass TLS-RSA RSA-PKCS#1 v1.5 Encryption anwendet (vor TLS 1.3)
         - RSA-PKCS#1 v1.5 Encryption:
           1. Sei pre_master_secret (pms) ein Bit String (46 zufällige Bytes + 2 Buyte Versionsnr.
@@ -1027,7 +1070,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         - Gegenmaßnahmen: aber kann nicht ganz gegen anderen Angriffen
           + Wählen neues Premaster-Secret, wenn Padding von pms nicht korrekt
           + ein wenig mehr Zeit für Extra-Schritt (Constannt-Time Implementation)
-      5. Der Crime Angriff: *C*ompression *R*atio *I*nfo-leak *M*ade *E*asy Angriff; ist der Angriff auf Verschlüsselung + Kompression, um HTTP Cookies aus dem Browser wobei Cookies für Webseiten dienne zu klauen. Genauer gesagt, CRIME ist ein seiteneffekt-/Compression-Oracle-Angriff auf Verbindungen, bei denen Daten vor der Verschlüsselung komprimiert werden; durch Beobachtung der verschlüsselten Payload-Länge kann ein Angreifer geheime Werte/Cookie rekonstruieren.
+      6. Der Crime Angriff: *C*ompression *R*atio *I*nfo-leak *M*ade *E*asy Angriff; ist der Angriff auf Verschlüsselung + Kompression, um HTTP Cookies aus dem Browser wobei Cookies für Webseiten dienne zu klauen. Genauer gesagt, CRIME ist ein seiteneffekt-/Compression-Oracle-Angriff auf Verbindungen, bei denen Daten vor der Verschlüsselung komprimiert werden; durch Beobachtung der verschlüsselten Payload-Länge kann ein Angreifer geheime Werte/Cookie rekonstruieren.
          - Voraussetzungen:
            1. Client greift auf unsichere Verbindung zu und macht Anfrage auf korrekter Webseiten
            2. Angreifer kann verschlüsselte Kommunikation abhören
@@ -1038,7 +1081,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Angreifer beobachtet die Größe der komprimierten Anfragen, während der Veränderung des schickenden Text bis das verrateten Text zu Geheimnis passt (komprimierte Text wird kürzer)
            + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
          - Gegenmaßnahme: TLS 1.3 oder höher (kein Kompression mehr)
-      6. DNS Cache Poisoning & Spoofing:
+      7. DNS Cache Poisoning & Spoofing:
          1. Cache Poisoning Angriff: Angreifer speichert bösartige DNS Records bei einem DNS Server; 
             - Cache des DNS Servers wird dann vergiftet durch
             - DNS nutzt UDP und keine Verifikation der Authentizität
@@ -1062,7 +1105,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
              + DNSSEC (auch für MitM DNS Cache Poisoning, aber kann nicht Vertraulichkeit schützen, und es kostet etwas Performance, kann damit Verfügbarkeit stärker stressen, aber das Konzept Authenticated Denial of Existence kann mit Verfügbarkeit helfen). Aber es gibt auch einige Nachteile: Antworten werden deutlich größer, Server und Client müssen es beide unterstützen, damit es effektiv ist, und erhöhter Verwaltungsaufwand bei Domain-Betreibern für die Schlüssel
              + DoT: ist sicherer Transport von DNS-Nachrichten über TLS (TCP Port 853) oder DTLS (UDP Port 853)
              + DoH: ist sicherer Transport von DNS-Nachrichten über HTTPS (TCP Port 443)
-       7. DNS Reflection (Amplification) Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
+       8. DNS Reflection (Amplification) Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
           - Funktionsweise:
             + Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Addresse DNS-Anfragen an Server
             + Amplification: Antworten von Server an Opfer sind deutlich größer als Anfragen
@@ -1117,7 +1160,7 @@ Was macht OSI Modell unterschiedlich:
      + Elektrische Impule (Kupferkabel)
      + Lichtimpulse (Glasfaser)
      + Funksignale (Wifi)
-2. **Data Link Layer** funktionert so wie Link Layer:
+2. **Data Link Layer** mit Physical Layer zusammen funktionert so wie Link Layer:
    - sorgt für die Verbindung zwischen 2 Netzwerkgeräte im selben Netzwerk
    - Entscheiden anhand der MAC-Adresse ob Paket durchgeleitet wird
    - Hardware; Switches
