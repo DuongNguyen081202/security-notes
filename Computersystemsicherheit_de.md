@@ -851,25 +851,53 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
     - Pakete beinhalten: Sender-, Zieladdresse, Daten; Pakete mitgleicher Sender-, Zieladdresse können unterschiedliche Routen nehmen
 
       **Internet Protocol (IP)**:
-    - is die Protokoll zur Kommunikatio zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
-      1. IPv4: 32 Bit Adresse der Form: 120.19.22.00
-      2. IPv6: 128 Bit Adresse der Form: 2607:f140:8801::1:23
-   - Probleme von IP: is **unzuverlässig**:
-        + Pakete können verloren gehen
-        + Pakete können Fehler aufweisen
-        + Pakete können in falscher Ordnung beim Empfänger eintreffen
-   - **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
-     + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
-   - IPSec:
-     + ist ein Protokoll auf Internet-Layer zur Absicherung von IPv4 und IPv6
-     + **Internet Key Exchange (IKE)** ist das Kontrollprotokoll von IPSec, dient zur beidsseitigen Authentifizierung und dem Schlüsselaustausch
-     + Sicherheitsziele:
-       * Vertraulichkeit der IP-Payload Datenübertragung
-       * Integrität
-       * Zugriffskontrolle
-       * Authentizität des DAtensprungs
-     + 
-   - 
+- is die Protokoll zur Kommunikation zwischen Geräten im Internet, hat eindeutige Identifikation von Geräten im Internet mittels **IP Adresse**
+  1. IPv4: 32 Bit Adresse der Form: 120.19.22.00
+  2. IPv6: 128 Bit Adresse der Form: 2607:f140:8801::1:23
+- Probleme von IP: ist **unzuverlässig**:
+  + Pakete können verloren gehen
+  + Pakete können Fehler aufweisen
+   + Pakete können in falscher Ordnung beim Empfänger eintreffen
+- **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
+   + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
+- **IPSec**:
+   + ist ein Protokoll auf Internet-Layer zur Absicherung von IPv4 und IPv6
+   + es sichert Kommunikation auf der Network-/IP-Schicht ab, die Schutz ist unabhängig von TCP/UDP-Anwendung und transparente Abischerung zwischen Hosts oder Gateways
+   + **Internet Key Exchange (IKE)** ist das Kontrollprotokoll von IPSec, dient zur beidsseitigen Authentifikstion zur Etablierung einer IKE SA mit shared secret und Algorithmen für AH/ESP und dem Schlüsselaustausch (Request/Response-Paaren - "exchanges"): *IKE_SA_INIT*: Verhandlung der Sicherheitsparameter für SA, Senden von Nonces und DH-Werten, und *IKE_AUTH*: Übertragung von Identitäten, Authentifizierung, Etablierung der SA
+   + Sicherheitsziele:
+     * Vertraulichkeit der IP-Payload Datenübertragung
+     * Integrität
+     * Zugriffskontrolle
+     * Authentizität des Datensprungs
+   + 2 Betriebsmodi:
+     1. Transportmodus:
+        - Schützt nur die Nutzdaten (Payload)
+        - Der urspüngliche IP-Header bleibt sichtbar
+        - Typisch: Host-to-Host Kommunikation
+        - Struktur: IP-Header | IPsec-Header | verschlüsselte TCP/UDP-Payload
+        - schützt nur die Daten, nicht die Routing-Information
+     2. Tunnelmodus
+        - Schützt das gesamte urspüngliche IP-Paket
+        - Fügt einen neuen äußeren IP-Header hinzu
+        - Typisch: Site-to-Site VPN (Gateway-zu-Gateway)
+        - Struktur: Neuer IP-Header | IPsec-Header | Originales IP-Paket verschlüsselt
+        - verstekt auch die interne Zieladresse
+   + Security Associations (SAs):
+     1. Security Association (SA): unidirektionale Übereinkunft zwischen Kommunikationspartnern über die Sicherheitsziele, -algorithmen, -schlüssel und Policies einer Verbindung
+     2. Security Association Database (SAD): speichert SAs
+     3. Security Policy Database (SPD): speichert Policies, die den Umgang mit Payload-Daten in Verbindung mit ITSec regeln (bspw. discard, allow unprotected, require IPSec)
+   + Protokolle:
+     1. IP Authentication Header (AH)
+        - optional in IPSec-v3
+        - Sichert Integrität der Payload Daten, Authentifikation des Datenursprungs, Zugriffskontrolle und Replay-Schutz
+        - Sichert auch die statischen Bestandteile des äußeren IP-Headers (damit nicht funktional mit NAT)
+<img width="433" height="50" alt="Bildschirmfoto 2026-02-25 um 09 10 14" src="https://github.com/user-attachments/assets/c65a3399-ad10-4961-b3ff-ed031df88914" />
+     2. IP Encapsulating Security Payload (ESP)
+        - Sichert Vertraulichkeit durch Verschlüsselung und/oder Integrität der Payload-Daten
+        - bietet Authentifikation des Datenursprungs, Zugriffskontrolle, und Replayschutz
+        - Keine Absicherung des äußeren IP-Headers
+  <img width="579" height="65" alt="Bildschirmfoto 2026-02-25 um 09 14 05" src="https://github.com/user-attachments/assets/567a0d96-29f6-4cf7-8f16-151732a64d53" />
+   + Probleme: komplex in der Konfiguration von Policies inflexibel für ad-hoc-Verbindung, problematisch bei der Verwendung von Firewalls/NATs
    
 3. **Transport Layer**:
    - Bietet an: Ende-zu-Ende Kommunikation im Internet für verschiedene Dienste, ermöglicht unterschiedliche Anwendung auf einem Host durch **Ports** (120.19.22.00 **:443**)
