@@ -1540,7 +1540,6 @@ Hardware-Schutzmaßnamhen gegen Control-Flow Angriffe: **Control Flow Enforcemen
         
 **Security By Design**:
 Wie man erschwert die Angriffe?
-1. Hardening:
    1. NX (Non-Executable Memory): 
       - Speicherbereiche sind nicht ausführbar
       - Ziel: gegen klassichen Code Injection
@@ -1568,6 +1567,14 @@ Wie man erschwert die Angriffe?
    8. Prozess-Isolation: jeder dienst in eigener Sandbox, nutzt Container, Namespaces
    9. seccomp: System Calls einschränken
    10. shroot/Jail: Dateisystem einschränken
-   11. Defense in Depth
-3. 
+   11. Defense in Depth: mehrere Schutzschichten kombinieren
+   12. Onfuscation: Beispiele: Binary Stripping (Symboltabellen, Debugdaten aus der Binary löschen, Renaming (Variablen oder Funktionsnamen werden randomisiert). So erschwert es, dass Angreifer den Code auslesen, oder Source Code durch Reverse-Engineering rekontruieren 
+
+**Erkennung von Schwachstellen**
+1. Sanitization/Manuelle Analyse - Code Review:
+   - ist Validierung der Funktionalität des Codes zur Laufzeit
+   - Vorteil: versteht Kontext
+   - Nachteile: Zeitaufwendig, Menschen übersehen Dinge
+2. Statische Analyse 
+
 
