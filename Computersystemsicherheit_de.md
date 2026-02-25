@@ -1068,7 +1068,17 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        1. Kryptographie um zu beweisen, dass zurückgegebenen Antworten korrekt sind (mit digitale Signaturen von Nameservern), und
        2. hierarchisches, verteiles Vertrauenssytem (bsp. Root-Nameserver) zur Identifikation, um vor bösartigem Nameserver zu schützen
    - **TOR - The Onion Router**:
-     + ist ein Overlay/AnonymisierungsNetzwerk auf Applikation Layer, das IP-Verbindung anonymisiert, indem der Client sein Traffic (IP-Pakete) durch mehrere Replay-Knoten (Entry - Middle - Exit) leitet
+     + ist ein Overlay/*AnonymisierungsNetzwerk* auf Applikation Layer, das IP-Verbindung anonymisiert, indem der Client sein Traffic (IP-Pakete) durch mehrere Replay-Knoten (Entry - Middle - Exit) leitet
+     + Hidden Server verbindet sich mit "Intro Point" über Tor Replay (Intro Point kenne Server Location nicht)
+     + Signierte Liste von Intro Points wird in Directory hochgeladen:
+       * Server behält volle Kontrolle über Intro Points
+       * User können den Server finden
+       * Server signiert Lister mit Private Key
+     + User erfahren Onion Adresse (Onion Adresse enthält kompletten Base32-encoded Public Key, Version und Checksum) des Services über out-of-band Kanal, und verbinden sich mit Directory (Distributed Hash Table), so können User darüber Intro Points erfahren, Eintrag über Signatur validieren; Validierung nutzt Public Key, der in der Tor Adresse enkodiert ist
+     + Um sich mit einem TOR Hidden Server zu verbinden:
+       1. Client wählt Redezvous Point: Client bestimmt einen TOR Node als Rendezvous Point, dann erstellt einen One-Time-Secret String, und baut Circuit zu diesem Node auf
+       2. Client kontaktiert Service über Intro Points: Client sendet Rendezvous Point, One-Time-Secret und möglichsweise auch Auth-Information an Service über Intro Point, und der Service kann verifizieren ob User vertrauenswürdig ist
+       3. Der Service verbindet sich zum Rendezvous Point: Service baut eigenen Circuit zum gleichen Rendezvous Node, sendet auch einen secret String, und Node vergleicht die Secret 
    - **SSH**:
         + ermöglicht eine sichere Verbindung zwischen Hosts auf Appllication Layer
         + benutzt für Fernsteuerung/Konfiguration von Servern
