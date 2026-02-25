@@ -1488,5 +1488,86 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
   3. physich: durch infiziert Tokens
      + Gegenmaßnahmen: nur vertrauenswürdige Quelle akzeptieren
 
+### Software Security
+**Schwachstellen und Exploits**
+Auswahl von Fehlerklassen nach *Common Weakness Enumeration (CWE)* in Software Security:
+- Fehlerhafte Berechnung CWE-682 (Over-/Underflow, Wrap-around, Precision, Off-by-one, Pointer-Arith)
+- Fehler in der Kontrolle von Ressourcen CWE-664 (Out-of-Bounds, Synchronization, Initialization, Lifetime, Access Control, Typkonvertierung, Pfadfehler, Ressourcenlimits, dynamische Ressourcen)
+- Control-Flow-Management CWE-691 (Unexpected Behaviour, Always Incorrect Control Flow Implementation, Scoping)
+- Unzureichende Neutralisierung CWE-707 (Input/Output Escaping/Sanitization, Encoding)
+- Fehler in Zugriffskontrolle CWE (Lock Bits, Priviledge, Autorisierung)
+- usw.
 
+1. Arithmetik-Fehler:
+   - Idee: Programme rechnen mit festen Integer-Größen, wenn Werte zu groß, zu klein werden oder falsch konvertiert werden, entstehen Logikfehler oder Speicherfehler
+   - Typische Fehlerklassen:
+     1. Integer Overflow/Underflow/Wrap-around: Bei festen Bitbreiten (z.B. 32-bit) „läuft“ der Wert über und beginnt wieder bei 0 bzw. wird negativ. Gegenmaßnahme: Checks können umgangen werden.
+     2. Signed/Unsigned-Konvertierung: Negative Zahlen können als sehr große positive interpretiert werden (oder umgekehrt). Gegenmaßnahme: Längenprüfungen brechen.
+     3. Off-by-one: Ein Index ist um 1 daneben (z. B. schreibt man bei Länge n noch an Position n, obwohl gültig nur 0..n-1 ist)
+     4. Pointer-Arithmetik: Falsche Index-/Offset-Rechnungen führen zu Out-of-Bounds Read/Write
+2. Stack-Based Buffer Overflow:
+   - Idee: ein lokaler Buffer im Stack wird über seine Grenzen beschrieben (Return-Adresse manipulieren und ROP-Angriff starten
+   - Ziel: Erlangt Kontrolle über Programmfluss
+3. Format String Angriffe:
+   - Idee: unkontrollierter Input wird direkt an "printf()" übergeben
+   - Ziel: Information Leak, Canary-Leak, Arbitrary Write
+4. Injection:
+   - Idee: Angreifer schleust ausführbaren Code ein
+   - Ziel: Fremder Code wird ausgrführt, Remote Code Execution (RCE)
+5. Timing Angriffe: 
+   1. Race Conditions/TOCTTOU:
+      - Idee: Check und Nutzung sind zeitlich getrennt
+      - Ziel: Privilege Escalation, Zugriff auf geschützte Dateien
+   2. Time Side Channels
+      - Idee: Ausführungszeit kann Rückschlüsse auf Code erlauben
+7. Code Reuse Angriffe:
+   - Idee: die bedienen sich bereits existierenden Instruktionen, anstatt eigenen Code einzuschleusen
+   - Ziel: Control-Flow-Daten kontrollieren können, obwohl Code-Injections schon verhindert werden
+   - Beispiel: Syscalls, Gadgets
+   - *Return-Oriented Programming (ROP)*:
+     + Kontrolle des Stacks erlaubt Konstruktion von ROP-Chains
+     + Die Instruktionen "ret" am Ende on Funktionen werden als Gadgets wiederverwendet
+     + "ret" nimmt Wert vom Stack und springt zu dieser Adresse
+
+Hardware-Schutzmaßnamhen gegen Control-Flow Angriffe: **Control Flow Enforcement (CET)**
+   1. Shadow Stack (SHSTC):
+      - Control-Flow Daten werden bei Jump/Call Instruktionen auf einem zweiten, separaten Stack gespeichert
+      - Beim Return werden beider Werte verglichen. Wenn sie unterschied sind, Programm wird beendet
+   2. Indirect Branch Tracking (IBT):
+      - Indirekte Sprünge dürfen nur auf spezielle ENDBR-Instruktionen zeigen
+      - Compiler fügt ENDBR an erlaubten Stellen ein
+      - Wenn ein Angreifer versucht, nach irgendwo in Code zu springen, CPU blockiert es
+        
+**Security By Design**:
+Wie man erschwert die Angriffe?
+1. Hardening:
+   1. NX (Non-Executable Memory): 
+      - Speicherbereiche sind nicht ausführbar
+      - Ziel: gegen klassichen Code Injection
+      - Umgehen: ROP
+   2. ASLR (Address Space Layout Randomization): 
+      - Speicher wird zufällig verteilt
+      - Ziel: gegen deterministische Exploits
+      - Umgegehen: Info-Leaks und Brute Force (fork-Server) 
+   3. Stack Canary:
+      - Zufallswert vor Return-Adresse, und wenn Canary verändert, Programm beendet
+      - Ziel: gegen Überschreiben der Return-Adresse
+      - Umgehen: Info-Leak, Byteweises Bruteforcing (fork-Server)
+   4. RELRO
+      - Partial RELRO: teilweise Schutz
+      - Full RELRO: Global Offset Table (GOT) wird read-only
+      - Ziel: gegen GOT Overwirte Exploits
+   5. Position Independent Executable (PIE)
+      - das Hauptbinary wird auch randomisiert
+      - Ziel: schützen Hauptprogramm, der fest im Speicher liegt
+      - Problem: ASLP schützt nur Libraries
+   6. Control-Flow Enforcement Technology
+      - Kombination von Shadow Stack und Indirect Bransch Tracking
+      - Ziel: gegen klassisches ROP
+   7. Least Privilege: Programme laufen nicht als Root
+   8. Prozess-Isolation: jeder dienst in eigener Sandbox, nutzt Container, Namespaces
+   9. seccomp: System Calls einschränken
+   10. shroot/Jail: Dateisystem einschränken
+   11. Defense in Depth
+3. 
 
