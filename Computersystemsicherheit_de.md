@@ -1575,6 +1575,35 @@ Wie man erschwert die Angriffe?
    - ist Validierung der Funktionalität des Codes zur Laufzeit
    - Vorteil: versteht Kontext
    - Nachteile: Zeitaufwendig, Menschen übersehen Dinge
-2. Statische Analyse 
+2. Statische Analyse:
+   - Software wird analysiert, ohne sie auszuführen
+   - Beispiele: clang static analyser, Coverity, SanarQube
+   - Findet:
+     + Null-Pointer-Dereference,
+     + Buffer Overflow Risiken,
+     +  Unsichere Funktionen
+     +  Use-After-Free Pfade
+   - Probleme: viele False Positives, keine Laufzeitinformationen
+3. Dynamische Analyse:
+   - Programm wird ausgeführt und überwacht
+   - Beispiele: AddressSanitizer (ASan), Valgrind, UndefinedBehaviorSanitizer
+   - Findet:
+     + Out-of-bounds
+     + Use-after-free
+     + Memory Leaks
+   - Sehr effektiv bei Memory Bugs
+4. Fuzzing
+   - Idee: Testen vieler falsch formatierter / kaputter Inputs
+   - Beispiele: AFL, libFuzzer, honggfuzz
+   - nutzt Orakel um Fehler zu erkennen und den Fuzzer anzuleiten. Gängige Orakel:
+     + Crash des Programms (weißt immer auf Fehler hin)
+     + Differenzielles Verhalten verschiedener Implementierungen bei gleichem Input (Differential Fuzzing)
+     + Code-Coverage: misst wie viel Code durch bestimmten Input ausgeführt wurde. Der Fuzzer optimiert dann auf Inputs, die möglichst viel Code-Coverage verursachen
+
+| Vorteile | Nachteile |
+|-----------|------------|
+| Erlaubt einfaches automatisiertes Finden von Schwachstellen (wenig Vorwissen zum Ausführen nötig) | Limitierte Anwendbarkeit bei komplexer Logik, stateful Programmen und kryptographischen Programmen |
+| Wenige Falsch-Positive Fehler (je nach Setup) | Alle Findings müssen manuell überprüft und reproduziert werden |
+| Viele mächtige Fuzzing-Tools Open-Source verfügbar (z.B. libFuzzer, AFL) | Effektives Fuzzing benötigt i.d.R. Zugriff auf den Source Code des Programms |
 
 
