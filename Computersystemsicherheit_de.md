@@ -952,16 +952,17 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + DNS (Domain Name System)
         + DNSSEC: Signiert DNS-Records für Integrität und Authentizität
      3. SMTP: E-Mail-Übertragung: über Ports 25 (Server nach Server), 587 (Submission mit STATTLS), und 465 (SMTPS/ TLS-wrapped)
+     4. Secure Shell (SSH): läuft über TCP (Port 22):
    - Protokoll für Routing: **Border Gateway Protokoll (BGP)**
      + Jedes AS teilt seine aktuellen Routen mit seinen Nachbarn
      + Metrik für Paket Routing:
        1. Länge des Präfix
        2. Bei mehreren Routen zum selben Ziel wird die kürzeste Route gewählt
-     + **BGP Hijacking**: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen. Dies ist typischerweise ein MitM Angriff, was bedeutet, dass der Angreifer die kompplette Kommunikation des Opfers sieht, dies ermöglicht weitere Angriffe wie DoS, Ausleiten von Login-Daten, Mitlesen von Email-Nachrichten
+     + **BGP Hijacking**: Angreifer erstellt korrumpiertes AS, was macht falsche Angaben zur Erreichbarkeit von Netzen. Dies ist typischerweise ein MitM Angriff, was bedeutet, dass der Angreifer die kompplette Kommunikation des Opfers sieht, dies ermöglicht weitere Angriffe wie DoS, Ausleiten von Login-Daten, Mitlesen von Email-Nachrichten:
        1. Sub-prefix Hijack: Announcen eines spezifischeren Prefix betrifft prinzipiell alle Netze im Internet
        2. Same-prefix Hijack: Announcen des selben Prefix betrifft nur Netze welche eine kürzere Route zum Angreifer haben als Ziel
        3. AS_PATH Fälschung: Angeifer fügt den tatsächlichen AS-Path in seinen eigenen AS-Pfad ein, um die Route legitimer erscheinen zu lassen und die Detektion zu erschweren
-        - Gegenmaßnahmen:
+     + Gegenmaßnahmen:
          1. Überwachung des Internetverkehrs
          2. **Regional Internet Registries (RIRs)** speichern wem welche Präfixe gehören; RIRs betreiben **Internet Routing Registries (IRRs)**, dort kann eingetragen werden wem welche Präfixe gehören.
             - IRR ist ein Netzwerk verteilter Datenbanken, die von den RIRs, anderen Dienstanbietern und dritten gepflegt werden
@@ -1032,7 +1033,6 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         * Neu: 1-RTT und o-RTT Handshake für bessere Performanz
         * Verbesserung der Sicherheit durch Deprecation veralteter Algorithmen
         * Statische RSA und DH Cipher Suites wurde entfernt, Perfect Forward Secrecy
-      + 
    - DNS:
      + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“)
      + Subdomain: sich in der Hierarcchie unter einem aneren Namen befindliche Domain (z.B. „scholar.google.com.“ von „google.com.“)
@@ -1067,8 +1067,27 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
      + DNS nutzt stattdessen
        1. Kryptographie um zu beweisen, dass zurückgegebenen Antworten korrekt sind (mit digitale Signaturen von Nameservern), und
        2. hierarchisches, verteiles Vertrauenssytem (bsp. Root-Nameserver) zur Identifikation, um vor bösartigem Nameserver zu schützen
-   - TOR - The Onion Router:
+   - **TOR - The Onion Router**:
      + ist ein Overlay/AnonymisierungsNetzwerk auf Applikation Layer, das IP-Verbindung anonymisiert, indem der Client sein Traffic (IP-Pakete) durch mehrere Replay-Knoten (Entry - Middle - Exit) leitet
+   - **SSH**:
+        + ermöglicht eine sichere Verbindung zwischen Hosts auf Appllication Layer
+        + benutzt für Fernsteuerung/Konfiguration von Servern
+        + enthält Mechanismen für Authentifikation
+        + über SSH kann eine Shell aif dem Server gesteuert weden
+        + wie etablieren SSH Session?
+          1. TCP Handahke + DH Key Exchange
+          2. Server schickt Public Key
+          3. Client checkt ob Key vertrauenswürdig
+          4. Client schickt Challenge mit Public Key
+          5. Server beantwortet Challenge
+          6. Client authentifiziert sich
+          7. Session wird aufgebaut
+        + Sicherheitsmaßnahmen zum Schutz von SSH:
+          1. Passwort-based Authentigikation deaktiviert, um SSH Public Key nutzen zu müssen (kryptographische SSH-Keys): "PasswordAuthentication no"
+          2. Root-Login deaktivieren (gegen Privilege Escalation)
+          3. Unnötige User-Logins deaktivieren (Least Privilege)
+          4. Port ändern (z.B 22 nach 2233): reduziert automatisierte Scan-/Bruteforce-Angriff
+          5. Time-outs/Login-Limits setzen: verhinder unendliche Login-Versuche und erschwert Bruteforce-Angriff, bsp. "MaxAuthTries 3" und "LoginGraceTime 30"
    - Angriffe: (1-5 sind auf TLS)
      1. Cipher Suite Rollback Angriff (Cipher-Suite-Downgrade):
         + ein MiTM-Angreifer ändert die Liste der Cipher Suites in der ClientHello Nachricht
