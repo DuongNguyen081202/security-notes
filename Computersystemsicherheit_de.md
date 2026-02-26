@@ -1606,4 +1606,62 @@ Wie man erschwert die Angriffe?
 | Wenige Falsch-Positive Fehler (je nach Setup) | Alle Findings müssen manuell überprüft und reproduziert werden |
 | Viele mächtige Fuzzing-Tools Open-Source verfügbar (z.B. libFuzzer, AFL) | Effektives Fuzzing benötigt i.d.R. Zugriff auf den Source Code des Programms |
 
+### Censorship 
+**Zensur** wird dabei angewendet:
+- Drosselung des Datenverkehrs
+- Blockierung von Verbindung
+- Entfernung von Inhalten
+- (Vollständige) Abschaltung des Internets
+
+1. Drosselung des Datenverkehrs
+   - Eigenschaften:
+     + reduziert die dem Netzwerkverkehr zugewiesene Bandbreite
+     + kann gezielt eingesetzt werden diskreter, weniger sichtbar
+     + schwieriger zu erkennen
+   - Beispiele:
+     + Domain-Entfernung: Behörden können Namenserver dazu zwingen, Domains aus ihren Verzeichnissen zu entfernen
+     + DNS-Manipulation: Behörden fangen DNS-Anfragen für verbotene Domains ab oder schleusen eigene Antworten ein
+     + BGP-Hijacking: Behörden leiten den Internetverkehr für bestimmte Ziel-Präfix oder autonome Systeme um oder blockieren ihn
+     + IP-Blocking: Behörden weisen Internetanbieter an, den Zugriff auf bestimmte IP-Adressen zu blockieren
+   - Angriff:
+     1. Man-on-the-Side (MotS):
+         - der Angreifer hat zugriff auf den Kommunikationskanal, kann jedoch vorbeilaufende Nachrichten weder verändern noch löschen
+         - Angriffablauf:
+           1. Der Client initiert eine legitime HTTP-Anfrage
+           2. Der Zensor fängt die Verbindung ab und injiziert ein TCP-Segment, um den Client auf seinen eigenen Server umzuleiten 
+           3. Der Client landet auf einem bösartigen Webserver mit zensierten Inhalten oder Möglichkeiten zur Malware-Injektion
+         - Beispiel: DNS Manipulation: Injection - hindern Browsers daran, die korrekte IP-Adresse für eine Domain aufzulösen, und Nutzer dazu zwingen, auf einer von Zensoren kontrollierten Webseite zu landen -> Filtering (nicht MotS) - der DNS-Namenserver steht selbst unter der Kontrolle des Zensors, daher ist kein Abfangen und Injizieren erforderlich, der Nameserver liefert direkt die falsche IP-Adresse aus
+     2. IP Blocking:
+         - Wo?:
+           1. auf dem Endgerät geschehen
+           2. vom Internetanbiter durchgeführt werden
+           3. von einem MotS-Angreifer umgesetzt werden
+           4. es kann die vollständige Verbindung zu dieser IP blockieren oder nur dann, wenn bestimmte Schlüsselwörter abgefragt werden
+2. Censorship tools: Deep Packet Inspection (DPI)
+   - Eigenschaftem:
+      + hat vollen Zugriff auf Paket-Header:
+         * nutzt Quell- und Zielports sowie IP-Adresse
+         * kann den Paket-Payload analysieren
+      + sucht nach Mustern und "Fingerabdrücken"
+      + sucht nach verbotenen "Schlüsselwörtern"
+      + erweiterte Steuerung von Datenverkehrsflüssen
+      + nutzt Heuristiken auf Anonalieerkennung
+   - liegt im Datenpfad der Pakete und lässt sie entweder durch oder verwirft sie (abhängig von den benutzerdefinierten Regeln des Netzwerkmanagements)
+   - kann verschlüsselte Payloads nicht entschlüsseln, wenn es nicht über die richtigen Schlüssel verfügt
+   - Nachteile:
+      + Rechenintensiv
+      + Zeitaufwendig
+      + Abhängigkeit von KI/ML erfordert vortrainerte Modelle: unzuverlässig bei unbekannten Angriffen
+
+**Privacy**
+- Begriff: Assurance that the confidentability of, and access to, certain information about an entity is protected
+- domänenübergreifend Anwendung:
+  + Networking (VPN, TOR)
+  + Daten/ -banken (Federated Learning, Differential Privacy)
+  + Cryptography (Homomorphic encryption)
+- Daten/ -banken: 
+
+
+
+
 
