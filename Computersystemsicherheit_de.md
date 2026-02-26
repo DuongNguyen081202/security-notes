@@ -753,9 +753,13 @@ Ressourcen und Diensten zugreifen
 
 Beisiele für **DAC**: 
 1. Acces Matrix Model
+
 <img width="714" height="159" alt="Bildschirmfoto 2025-10-17 um 12 42 03" src="https://github.com/user-attachments/assets/5b9a8df0-cdd6-48e7-a0a7-b8b0ae06a674" />
+
 2. Acces Control List
+
    <img width="590" height="151" alt="Bildschirmfoto 2025-10-17 um 12 44 43" src="https://github.com/user-attachments/assets/ad05fa86-c941-4696-a1a2-2d60810f360d" />
+
 - Vorteile:
   + sehr einfach und intuitiv nutzbar, flexibel einsetzbar
   + einfach zu implementieren
@@ -890,13 +894,14 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
      1. IP Authentication Header (AH)
         - optional in IPSec-v3
         - Sichert Integrität der Payload Daten, Authentifikation des Datenursprungs, Zugriffskontrolle und Replay-Schutz
-        - Sichert auch die statischen Bestandteile des äußeren IP-Headers (damit nicht funktional mit NAT)
-<img width="433" height="50" alt="Bildschirmfoto 2026-02-25 um 09 10 14" src="https://github.com/user-attachments/assets/c65a3399-ad10-4961-b3ff-ed031df88914" />
+        - Sichert auch die statischen Bestandteile des äußeren IP-Headers (damit nicht funktional mit NAT) <img width="433" height="50" alt="Bildschirmfoto 2026-02-25 um 09 10 14" src="https://github.com/user-attachments/assets/c65a3399-ad10-4961-b3ff-ed031df88914" />
+
      2. IP Encapsulating Security Payload (ESP)
         - Sichert Vertraulichkeit durch Verschlüsselung und/oder Integrität der Payload-Daten
         - bietet Authentifikation des Datenursprungs, Zugriffskontrolle, und Replayschutz
         - Keine Absicherung des äußeren IP-Headers
-  <img width="579" height="65" alt="Bildschirmfoto 2026-02-25 um 09 14 05" src="https://github.com/user-attachments/assets/567a0d96-29f6-4cf7-8f16-151732a64d53" />
+        <img width="579" height="65" alt="Bildschirmfoto 2026-02-25 um 09 14 05" src="https://github.com/user-attachments/assets/567a0d96-29f6-4cf7-8f16-151732a64d53" />
+   
    + Probleme: komplex in der Konfiguration von Policies inflexibel für ad-hoc-Verbindung, problematisch bei der Verwendung von Firewalls/NATs
    
 3. **Transport Layer**:
@@ -1027,8 +1032,8 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         * Full Handshake:
           1. Einseitige oder wechselseitige Authentifikation durch X.509-Zertifikate
           2. Aushandlung der Cipher Suite
-          3. Generierung neuer Schlüssel für symmetrische Verschlüsselung und Perfect Forward Secrecy
-<img width="652" height="249" alt="Bildschirmfoto 2026-02-25 um 01 31 30" src="https://github.com/user-attachments/assets/99c71b6f-0bc2-4f23-aee0-e4e18a951603" />
+          3. Generierung neuer Schlüssel für symmetrische Verschlüsselung und Perfect Forward Secrecy <img width="652" height="249" alt="Bildschirmfoto 2026-02-25 um 01 31 30" src="https://github.com/user-attachments/assets/99c71b6f-0bc2-4f23-aee0-e4e18a951603" />
+      
       + TLS 1.3:
         * Neu: 1-RTT und o-RTT Handshake für bessere Performanz
         * Verbesserung der Sicherheit durch Deprecation veralteter Algorithmen
@@ -1112,10 +1117,11 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
      4. Algorithmus/Hash-Downgrade (gehört zu **Transcript-Manipulation**. Dies ermöglicht Cipher-Suite Downgrade):
         + Beispiel: SLOTH zeigt, dass veraltete/verkürzte Hashes im TLS-Handshake ausgenutzt werden können, um Authentisierung zu brechen
         + nutzt die Schwäche von Hashfunktion aus
-        + Beispiel TLS 1.0/1.1 Cipher Suite Downgrade:
-<img width="730" height="258" alt="Bildschirmfoto 2026-02-25 um 01 53 18" src="https://github.com/user-attachments/assets/d26c6f78-f383-4d09-b289-7b25012dfb6d" />
+        + Beispiel TLS 1.0/1.1 Cipher Suite Downgrade: <img width="730" height="258" alt="Bildschirmfoto 2026-02-25 um 01 53 18" src="https://github.com/user-attachments/assets/d26c6f78-f383-4d09-b289-7b25012dfb6d" />
+
         + eine weitere Art von Transcript-Manipulation ist **Transcript-Collision-Attacks**: TLS 1.2 Client Authentication durch Chosen-Prefix Attack auf MD5, TLS 1.2 Server Authentication durch Collision Attack auf MD5, und TLS 1.0/1.1/1.2 Channel Binding durch Collision Attack auf HMAC, diese erlauben Brechen der Authentifikation und damit vollständige MitM-Angriffe
-     5. Bleichenbachers Angriff auf TLS-RSA
+          
+     6. Bleichenbachers Angriff auf TLS-RSA
         - Ausnutzen die Fakt, dass TLS-RSA RSA-PKCS#1 v1.5 Encryption anwendet (vor TLS 1.3)
         - RSA-PKCS#1 v1.5 Encryption:
           1. Sei pre_master_secret (pms) ein Bit String (46 zufällige Bytes + 2 Buyte Versionsnr.
@@ -1127,7 +1133,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         - Gegenmaßnahmen: aber kann nicht ganz gegen anderen Angriffen
           + Wählen neues Premaster-Secret, wenn Padding von pms nicht korrekt
           + ein wenig mehr Zeit für Extra-Schritt (Constannt-Time Implementation)
-      6. Der Crime Angriff: *C*ompression *R*atio *I*nfo-leak *M*ade *E*asy Angriff; ist der Angriff auf Verschlüsselung + Kompression, um HTTP Cookies aus dem Browser wobei Cookies für Webseiten dienne zu klauen. Genauer gesagt, CRIME ist ein seiteneffekt-/Compression-Oracle-Angriff auf Verbindungen, bei denen Daten vor der Verschlüsselung komprimiert werden; durch Beobachtung der verschlüsselten Payload-Länge kann ein Angreifer geheime Werte/Cookie rekonstruieren.
+      7. Der Crime Angriff: *C*ompression *R*atio *I*nfo-leak *M*ade *E*asy Angriff; ist der Angriff auf Verschlüsselung + Kompression, um HTTP Cookies aus dem Browser wobei Cookies für Webseiten dienne zu klauen. Genauer gesagt, CRIME ist ein seiteneffekt-/Compression-Oracle-Angriff auf Verbindungen, bei denen Daten vor der Verschlüsselung komprimiert werden; durch Beobachtung der verschlüsselten Payload-Länge kann ein Angreifer geheime Werte/Cookie rekonstruieren.
          - Voraussetzungen:
            1. Client greift auf unsichere Verbindung zu und macht Anfrage auf korrekter Webseiten
            2. Angreifer kann verschlüsselte Kommunikation abhören
@@ -1138,7 +1144,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
            + Angreifer beobachtet die Größe der komprimierten Anfragen, während der Veränderung des schickenden Text bis das verrateten Text zu Geheimnis passt (komprimierte Text wird kürzer)
            + Durch systematische Änderungen der gesendeten Daten und Beobachtung der Größe der komprimierten Anfrage kann der Angreifer auf den Wert des Cookies schließen
          - Gegenmaßnahme: TLS 1.3 oder höher (kein Kompression mehr)
-      7. DNS Cache Poisoning & Spoofing:
+      8. DNS Cache Poisoning & Spoofing:
          1. Cache Poisoning Angriff: Angreifer speichert bösartige DNS Records bei einem DNS Server; 
             - Cache des DNS Servers wird dann vergiftet durch
             - DNS nutzt UDP und keine Verifikation der Authentizität
@@ -1162,7 +1168,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
              + DNSSEC (auch für MitM DNS Cache Poisoning, aber kann nicht Vertraulichkeit schützen, und es kostet etwas Performance, kann damit Verfügbarkeit stärker stressen, aber das Konzept Authenticated Denial of Existence kann mit Verfügbarkeit helfen). Aber es gibt auch einige Nachteile: Antworten werden deutlich größer, Server und Client müssen es beide unterstützen, damit es effektiv ist, und erhöhter Verwaltungsaufwand bei Domain-Betreibern für die Schlüssel
              + DoT: ist sicherer Transport von DNS-Nachrichten über TLS (TCP Port 853) oder DTLS (UDP Port 853)
              + DoH: ist sicherer Transport von DNS-Nachrichten über HTTPS (TCP Port 443)
-       8. DNS Reflection (Amplification) Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
+       9. DNS Reflection (Amplification) Angriff: eine Art von **DDoS Angriff**, macht Endsystem/Zwischensystemen überlastet
           - Funktionsweise:
             + Reflection: Angreifersysteme senden mit gespoofter Opfer-IP-Addresse DNS-Anfragen an Server
             + Amplification: Antworten von Server an Opfer sind deutlich größer als Anfragen
@@ -1176,7 +1182,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             3. Gegen den Angreifer:
                - Eliminierung von Paketen mit gespoofter IP-Adresse im Ursprungsnetzwerke
                - Stilllegung von Botnetzen
-       9. DNS Tunneling:
+       10. DNS Tunneling:
           - verdecktes Übertragen von beliebigen Daten über DNS-Anfragen, damit die folgenden möglich werden:
             + Exfiltration von ausspionierten Informationen aus einem kompromitierten Netzwerk
             + Umgehung von Netzsperren und Firewalls
@@ -1186,7 +1192,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             + Client codiert Daten in angefragten Namen
             + Resolver leiten Daten an autoritaativen Server weiter
           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
-       10. Zone Enumeration:
+       11. Zone Enumeration:
            - Ausspähen und auflisten der vorhandenen Subdomain-Namen für Vorbereitung zu Angriff
            - Funktionsweise: Anfragen an übliche Domainnamen aus Wörternuch und Registrieren der Antwort, ob es diesen Namen gibt
            - Gegenmaßnahmen:
