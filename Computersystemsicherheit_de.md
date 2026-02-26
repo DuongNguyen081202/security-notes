@@ -1630,7 +1630,7 @@ Wie man erschwert die Angriffe?
            1. Der Client initiert eine legitime HTTP-Anfrage
            2. Der Zensor fängt die Verbindung ab und injiziert ein TCP-Segment, um den Client auf seinen eigenen Server umzuleiten 
            3. Der Client landet auf einem bösartigen Webserver mit zensierten Inhalten oder Möglichkeiten zur Malware-Injektion
-         - Beispiel: DNS Manipulation: Injection - hindern Browsers daran, die korrekte IP-Adresse für eine Domain aufzulösen, und Nutzer dazu zwingen, auf einer von Zensoren kontrollierten Webseite zu landen -> Filtering (nicht MotS) - der DNS-Namenserver steht selbst unter der Kontrolle des Zensors, daher ist kein Abfangen und Injizieren erforderlich, der Nameserver liefert direkt die falsche IP-Adresse aus
+         - Beispiel: DNS Manipulation: Injection - hindern Browsers daran, die korrekte IP-Adresse für eine Domain aufzulösen, und Nutzer dazu zwingen, auf einer von Zensoren kontrollierten Webseite zu landen → Filtering (nicht MotS) - der DNS-Namenserver steht selbst unter der Kontrolle des Zensors, daher ist kein Abfangen und Injizieren erforderlich, der Nameserver liefert direkt die falsche IP-Adresse aus
      2. IP Blocking:
          - Wo?:
            1. auf dem Endgerät geschehen
@@ -1659,7 +1659,45 @@ Wie man erschwert die Angriffe?
   + Networking (VPN, TOR)
   + Daten/ -banken (Federated Learning, Differential Privacy)
   + Cryptography (Homomorphic encryption)
-- Daten/ -banken: 
+- Data Sharing:
+  + Datensind häufig auf viele Parteien verteilt
+  + Wichtige Machine Learning Anwendungen benötigen große Menge vielfältiger Daten aus mehreren Quellen
+    1. Option 1: Alle arbeiten lokal
+       * lokale Datasets können sehr klein sein
+       * okale Datensets können verzerrt sein. Modelle die mit verzerrte Daten trainiert sind können nicht gut generalisieren
+    2. Option 2: Alle Daten werden zentralisiert
+       + Federated Learning (Förderiertes Lernen):
+         * Idee: Federated Learning ist ein dezentrales Machine-Learning-Verfahren, bei dem mehrere Clients gemeinsam ein Modell trainieren, ohne ihre Rohdaten auszutauschen. Die Daten bleiben lokal auf den jeweiligen Geräten oder Institutionen.
+         * Ablauf:
+           1. Der Server verteilt ein globales Modell an die Clients.
+           2. Jeder Client trainiert das Modell lokal mit seinen eigenen Daten.
+           3. Die Clients senden nur Modell-Updates (z. B. Gradienten oder Gewichte) an den Server.
+           4. Der Server aggregiert die Updates (z. B. durch Mittelwertbildung) und erstellt ein neues globales Modell.
+           5. Der Prozess wiederholt sich iterativ.
+             → Daten bleiben lokal, nur Modellparameter werden geteilt.
+         * Vorteile:
+           1. Modell-Updates können Informationen über Trainingsdaten leaken
+           2. Membership-Inference-Angriffe möglich
+           3. Insider-Angreifer können Updates analysieren
+           4. Sequenzielles Training erhöht Angriffsfläche
+         * Gegenmaßnahmen:
+           1. Differential Privacy (Rauschen auf Updates)
+           2. Secure Aggregation (Server sieht nur aggregierte Updates)
+           3. Robust Aggregation gegen manipulierte Updates
+       + Differential Privacy - DP:
+         * ist ein mathematisches Rahmenwerk, das den Einfluss einer einzelnen Person auf das Ergebnis einer Berechnung begrenzt
+         * DP wird erreicht, indem der Beitrag jedes einzelnen Nutzers beschränkt und während des Trainingsprozesses Rauschen hinzugefügt wird, sodass eine Wahrscheinlichkeitsverteilung über die Ausgabemodelle entsteht
+         * Arten:
+           1. Data Suppression-based models: konzentrieren sich auf den Schutz der Privatsphäre der Befragten, indem bestimmte Eigenschaften gelöscht werden
+           2. Data Pertubation-based model: konzentrieren sich auf den Schutz der Privatsphäre sowohl der Befragten als auch der Personen, die nicht im Datensatz enthalten sind, durch hinzufügen von Rauschen oder Ersetzung von Werten
+- Homomorphic Encryption:
+  + ist eine Methode der Kodierung, bei der Daten während der Speicherung, Übertragung und Verarbeitung verschlüsselt bleiben.
+  + Berechnungen können direkt auf den verschlüsselten Daten durchgeführt werden, ohne sie zuvor zu entschlüsseln, wobei die Ergebnisse denen entsprechen, die bei einer vorherigen Entschlüsselung vor der Verarbeitung entstehen würden.
+  + 3 Arten:
+    1. Full homomorphic Encryption (FHE): unterstützt sowohl Additions- als auch Multiplikationsoperationen für eine unbegrenzte Anzahl von Anwendungen. Dies ermöglicht beliebige, komplexe Berechnungen auf verschlüsselten Daten, ist derzeit jedoch sehr ressourcen-intensiv
+    2. Somewhat homomorphic Encryption (SHE): Unterstützt sowohl Addition als auch Multiplikation, jedoch nur für eine begrenzte Anzahl von Operationen. Sie ist schneller als FHE, wird aber durch die Akkumulation von Rauschen im Chiffretext begrenzt.
+    3. Partially homomorphic Encryption (PHE): Unterstützt nur eine Art von Operation (entweder Addition oder Multiplikation) für eine unbegrenzte Anzahl von Anwendungen
+- 
 
 
 
