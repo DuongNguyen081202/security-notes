@@ -1697,7 +1697,46 @@ Wie man erschwert die Angriffe?
     1. Full homomorphic Encryption (FHE): unterstützt sowohl Additions- als auch Multiplikationsoperationen für eine unbegrenzte Anzahl von Anwendungen. Dies ermöglicht beliebige, komplexe Berechnungen auf verschlüsselten Daten, ist derzeit jedoch sehr ressourcen-intensiv
     2. Somewhat homomorphic Encryption (SHE): Unterstützt sowohl Addition als auch Multiplikation, jedoch nur für eine begrenzte Anzahl von Operationen. Sie ist schneller als FHE, wird aber durch die Akkumulation von Rauschen im Chiffretext begrenzt.
     3. Partially homomorphic Encryption (PHE): Unterstützt nur eine Art von Operation (entweder Addition oder Multiplikation) für eine unbegrenzte Anzahl von Anwendungen
-- 
+
+### Forensik
+- Ziel:
+  + primär: Aufklärung:
+    * Untersuchung nach dem Eintritt eines Vorfalls
+    * Finden und Untersuchen von Dateiinhalten als Indiz für illegale/unerlaubte/unerwünschte Handlungen
+    * ggf. Wiederherstellung gelöschter Dateien
+  + sekundär: Vorsorge:
+    * Schutz gegen zukünftige Vorfälle
+    * in Unternehmen: kontinuierlicher Verbesserungsprozess (ISO 27000)
+    * in der Strafverfolgung: Generalprävention
+- Vorgehensmodell: das BSI-Modell besteht aus mehreren Phasen (Ablauf):
+  1. Strategische Vorbereitung
+  2. Operationale Vorbereitung
+  3. Datensammlung
+  4. Untersuchung
+  5. Analyse
+  6. Dokumentation
+  7. Abschlussbericht
+     
+<img width="422" height="279" alt="Bildschirmfoto 2026-02-26 um 12 23 21" src="https://github.com/user-attachments/assets/93788145-aa4a-479c-b576-b085a68c3688" />
+   
+   + Anforderungen:
+     * Akzeptanz: Methoden sind in der Fachwelt anerkannt
+     * Glaubwürdigkeit: Funktionalität der (ggf. neuen) Methoden ist nachweisbar
+     * Wiederholbarkeit: Ergebnisse ist durch Dritte reproduzierbar
+     * Integrität: Spuren werden durch Untersuchung nicht verändert
+     * Ursache und Auswirkungen: Verbindung zwischen digitalen Spuren, Ereignissen und Personen sind herstellbar
+     * Dokumentation: Ermittlungsprozess ist nachvollziehbar dokumentiert
+- Strategische Vorbereitung:
+  + passiert vor einem Vorfall
+  + Organisatorische Maßnahmen:
+    * Prozess für forensische Untersuchung aufbauen
+    * Verantwortlichen benennen
+    * Budget bereitstellen: Personal, Hardware, Software
+    * Kompetenzen aufbauen: für eigene Untersuchungen, und für externe Beauftragungen
+    * Räumlichkeiten schaffen und ausstatten: Zutrittssicherheit, Tresor, usw.
+- Datenträger-Forensik Grundlagen:
+  
+<img width="569" height="304" alt="Bildschirmfoto 2026-02-26 um 12 40 04" src="https://github.com/user-attachments/assets/e8da8faf-39e8-43a6-b3f6-9698411921ab" />
 
 
 
