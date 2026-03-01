@@ -1210,5 +1210,323 @@ New IP Header | IPsec Header | Encrypted Original IP Packet
 - Works with NAT (in tunnel mode)
 
 ---
+3. **Transport Layer**:
+- Provides end-to-end communication on the Internet for different services and enables differentiation between applications via ports
+- Protocols: TCP, UDP, and QUIC
+
+## TCP vs. UDP – Overview
+
+| Protocol | Connection | Reliability | Ordering | Transmission/Overhead | Short Description |
+|----------|------------|------------|----------|-----------------------|-------------------|
+| **TCP** | Connection-oriented (establishes a connection between endpoints) | **Reliable** (guarantees delivery) | **Ordered** | Higher overhead | Used for web (HTTP/HTTPS), email, file transfer |
+| **UDP** | Connectionless | **Unreliable** (no delivery guarantee) | **Unordered** | Low overhead | Used for streaming, DNS, VoIP |
+
+### Properties of TCP:
++ TCP splits messages at the sender into smaller packets and reassembles them at the receiver
++ Uses **sequence numbers** to restore ordering at the receiver; each TCP segment carries a sequence number
++ The receiver responds with acknowledgment **ACK**. If the ACK does not reach the sender, retransmission occurs
++ Additionally, there exists a cryptographic protocol above TCP: **TLS – Transport Layer Security**
+
+Data transmission with TCP:
+
+<img width="636" height="292" alt="Bildschirmfoto 2025-10-25 um 22 28 52" src="https://github.com/user-attachments/assets/..." />
+
+---
+
+### TCP Flags:
+
+1. **ACK**
+   + Indicates that the receiver acknowledges receipt of data
+
+2. **SYN**
+   + Indicates the initiation of a connection
+
+3. **FIN**
+   + Used to terminate a connection
+   + Requires acknowledgment (ACK)
+   + No more packets are sent, but packets may still be received
+
+4. **RST**
+   + Used to immediately terminate a connection
+
+
+## QUIC (Quick UDP Internet Connections)
+
+- Modern transport protocol developed by Google
+- Runs over **UDP**
+- Integrates:
+  + Transport functionality (reliability, congestion control)
+  + Cryptographic protection (TLS 1.3)
+- Goals:
+  + Reduced latency (0-RTT / 1-RTT handshake)
+  + Faster connection establishment compared to TCP + TLS
+  + Improved performance for web applications
+- Used by HTTP/3
+
+Advantages:
++ Faster handshake
++ Built-in encryption
++ Improved handling of packet loss
++ Multiplexing without head-of-line blocking
+
+---
+
+4. **Application Layer**:
+- Provides application-specific network services
+- Protocols define how applications communicate over the network
+- Examples:
+  + HTTP / HTTPS
+  + SMTP
+  + FTP
+  + DNS
+  + SSH
+
+---
+
+# Network Security
+
+## LAN vs. WAN
+
+- **Local Area Network (LAN)**: A set of interconnected local devices that can communicate with each other
+- **Wide Area Network (WAN)**: Connects multiple LANs using routers
+
+<img width="798" height="260" alt="Bildschirmfoto 2025-10-18 um 22 00 43" src="https://github.com/user-attachments/assets/bb4a12aa-5756-43bd-80d4-e40e33d1c7db" />
+
+---
+
+## Protocol
+
+A **protocol** defines how nodes in a network communicate with each other:
+
+- **Syntax**: How communication is structured and specified
+- **Semantics**: Meaning of the communication
+
+---
+
+## Network Layer Models
+
+### 1. Open Systems Interconnection (OSI Model)
+
+<img width="593" height="237" alt="Bildschirmfoto 2026-01-13 um 20 43 48" src="https://github.com/user-attachments/assets/4130e334-1958-4635-9887-42bbdfca0ce3" />
+
+### 2. TCP/IP Model
+
+<img width="593" height="237" alt="Bildschirmfoto 2025-10-19 um 13 17 58" src="https://github.com/user-attachments/assets/4c7ada62-c844-4bb0-9c65-635ad4d493c5" />
+
+---
+
+## Protocols on Each Layer
+
+### OSI Model
+
+<img width="358" height="248" alt="Bildschirmfoto 2026-01-13 um 20 48 04" src="https://github.com/user-attachments/assets/ee280fe2-1d0b-4ec7-9581-bd1690bcd198" />
+
+### TCP/IP Model
+
+<img width="360" height="145" alt="Bildschirmfoto 2026-01-13 um 20 48 25" src="https://github.com/user-attachments/assets/ff923e68-5cde-4ff4-923b-1028d5eaaff1" />
+
+---
+
+1. **Link Layer**:
+   - Provides transmission between two points including conversion into physical signals
+   - Examples: Ethernet, WiFi, Address Resolution Protocol (ARP)
+   - Communication must include: sender address, destination address, and data
+   - Identification via **MAC addresses**:
+     + 6-byte address that every network-capable device on the Internet possesses
+     + Globally unique hardware address (unique per network interface)
+     + Consists of: OUI (first 3 bytes = manufacturer) + device-specific part (last 3 bytes)
+     + Example: 13:37:ca:fe:f0:0d
+
+
+   - Attacks on the Link Layer:
+     These exploit the fact that many LANs use broadcast communication. An attacker can eavesdrop using a network card in **promiscuous mode** or analyze traffic using a **packet sniffer**.  
+     Since the Link Layer uses MAC addresses for identification, this enables several attack techniques:
+
+     1. **MAC addresses as access control mechanisms**
+        - Not strictly an attack, but a weakness of the Link Layer
+        - MAC addresses are easily spoofable
+        - MAC addresses can be modified via software
+
+     2. **MAC Flooding**
+        - Attack in which the attacker fills the MAC address table of a switch with many forged entries
+        - If the table overflows, the switch no longer knows the correct mappings
+        - The switch floods frames to all ports
+        - It effectively behaves like a hub
+
+     3. **ARP Spoofing / ARP Poisoning**
+        - Possible when host A resolves a known IPv4 address via ARP
+        - ARP provides no authentication
+        - Hosts accept unsolicited ARP replies and overwrite their ARP cache
+
+        - Attack principle:
+          If host A wants to send a message to B in a LAN and only knows B’s IP address,
+          A must learn B’s MAC address to use the Link Layer protocol.
+
+        <img width="612" height="247" alt="Bildschirmfoto 2025-10-20 um 10 08 50" src="https://github.com/user-attachments/assets/d32800ce-f54a-4e47-9201-e1e65c9dc84b" />
+
+        - The attacker impersonates another party
+        - Traffic of other users is redirected through the attacker
+        - Consequences:
+          + Man-in-the-Middle attacks
+          + Denial-of-Service attacks
+
+        - Protocol behavior:
+          A sends an ARP request via broadcast
+          The attacker sends forged ARP replies
+          A stores the attacker’s MAC address in its ARP cache
+
+        - Countermeasures:
+          + Detection through monitoring
+          + Encryption on higher layers (IPSec, TLS) to mitigate MitM attacks
+          + Use IPv6 with Neighbor Discovery Protocol (NDP)
+
+     4. **DHCP Spoofing (Dynamic Host Configuration Protocol Spoofing)**
+        - DHCP is technically an Application Layer protocol
+        - It uses UDP (Transport Layer)
+        - Initial communication uses broadcast (Link Layer)
+
+        - Attack principle:
+          The client sends a broadcast request for configuration
+          A DHCP server responds with configuration parameters (e.g., IP address, gateway)
+          An attacker can send a forged offer
+          The client cannot distinguish legitimate from malicious offers
+          The client may accept the attacker’s configuration
+
+        - Summary:
+          DHCP Spoofing is an **attack on the Link Layer with consequences on the Internet Layer**
+          The attacker impersonates a DHCP server on the Link Layer
+          Clients receive incorrect IP, gateway, and DNS settings
+
+        - Countermeasures:
+          + Monitoring / IDS
+          + DHCP Snooping
+          + Protection mechanisms on higher layers
+
+---
+
+2. **Internet Layer**:
+   - Provides packet transmission from any source device to any destination device
+   - Enables communication across multiple LANs via global addressing
+   - Packets contain: source address, destination address, data
+   - Packets with the same source and destination may take different routes
+
+---
+
+### Internet Protocol (IP)
+
+- Protocol for communication between devices on the Internet
+- Provides unique identification via **IP addresses**
+
+1. IPv4: 32-bit address (e.g., 120.19.22.00)
+2. IPv6: 128-bit address (e.g., 2607:f140:8801::1:23)
+
+- IP is **unreliable**:
+  + Packets may be lost
+  + Packets may contain errors
+  + Packets may arrive out of order
+
+---
+
+### Internet Control Message Protocol (ICMP)
+
+- Used by routers and hosts to exchange error and control messages
+- Transmitted directly over IP
+
+- **Ping of Death**:
+  - Intentionally oversized (fragmented) ICMP echo packet
+  - Exceeds IP reassembly limits
+  - Can crash vulnerable systems
+  - Not a normal ping
+
+---
+
+### IPSec
+
+- Protocol on the Internet Layer for securing IPv4 and IPv6
+- Secures communication at the IP layer
+- Protection is independent of TCP/UDP applications
+- Transparent protection between hosts or gateways
+
+- **Internet Key Exchange (IKE)**:
+  - Control protocol of IPSec
+  - Used for mutual authentication
+  - Establishes an IKE Security Association (SA)
+  - Negotiates shared secrets and algorithms for AH/ESP
+  - Exchanges:
+    + **IKE_SA_INIT**:
+      - Negotiation of security parameters
+      - Exchange of nonces
+      - Diffie-Hellman values
+    + **IKE_AUTH**:
+      - Transmission of identities
+      - Authentication
+      - Establishment of Security Associations
+
+- Security goals:
+  + Confidentiality of IP payload data
+  + Integrity
+  + Access control
+  + Authentication of data origin
+
+- Two operating modes:
+
+  1. **Transport Mode**
+     - Protects only the payload
+     - Original IP header remains visible
+     - Typical: host-to-host communication
+     - Structure:
+       IP header | IPSec header | encrypted TCP/UDP payload
+     - Protects data but not routing information
+
+  2. **Tunnel Mode**
+     - Protects the entire original IP packet
+     - Adds a new outer IP header
+     - Typical: site-to-site VPN (gateway-to-gateway)
+     - Structure:
+       New IP header | IPSec header | encrypted original IP packet
+     - Also hides internal destination address
+
+
+- **Security Associations (SAs)**:
+  1. **Security Association (SA)**:
+     - Unidirectional agreement between communication partners
+     - Defines security goals, algorithms, keys, and policies of a connection
+
+  2. **Security Association Database (SAD)**:
+     - Stores active Security Associations
+
+  3. **Security Policy Database (SPD)**:
+     - Stores policies that regulate handling of payload data in connection with IPSec
+     - Example policies:
+       + discard
+       + allow unprotected
+       + require IPSec
+
+---
+
+- **Protocols within IPSec**:
+
+  1. **IP Authentication Header (AH)**
+     - Optional in IPSec-v3
+     - Provides:
+       + Integrity of payload data
+       + Authentication of data origin
+       + Access control
+       + Replay protection
+     - Also protects static parts of the outer IP header
+     - Therefore not compatible with NAT
+
+     <img width="433" height="50" alt="Bildschirmfoto 2026-02-25 um 09 10 14" src="https://github.com/user-attachments/assets/c65a3399-ad10-4961-b3ff-ed031df88914" />
+
+  2. **IP Encapsulating Security Payload (ESP)**
+     - Provides confidentiality through encryption and/or
+       integrity protection of payload data
+     - Provides authentication of data origin
+     - Provides replay protection
+     - Does not protect the outer IP header
+     - More commonly used than AH
+     - Compatible with NAT (especially in tunnel mode)
+
+
 
 # End of Document
