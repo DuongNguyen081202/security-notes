@@ -3,12 +3,12 @@
 - Security: gegenüber böswilligen Handlungen 
 
 Es gibt 5 **Sicherheiteigenschaften** (erweitert):
-1. Vertraulichkeit von Daten/Nachrichten
-2. Integrität von Daten/Berechnungen
-3. Verfügbarkeit von Dienst
+1. Vertraulichkeit (Confidentiality)
+2. Integrität (Integrity)
+3. Verfügbarkeit (Availability)
    (CIA-Triade)
-5. Authentizität von Dateien
-6. Anonymität von Benutzern
+4. Authentizität (Authenticity)
+5. Nicht-Abstreitbarkeit (Non-Repudiation)
    
 Kryptographie liefert 4 **Ziele**:
 1. Vertraulichkeit: Angreifer kann Inhalt der Nachrichten nicht lernen
@@ -1746,7 +1746,89 @@ Wie man erschwert die Angriffe?
   
 <img width="569" height="304" alt="Bildschirmfoto 2026-02-26 um 12 40 04" src="https://github.com/user-attachments/assets/e8da8faf-39e8-43a6-b3f6-9698411921ab" />
 
+ --- 
+More about Security
+### Secure-By-Design
+**Traditional Architectures**: implicitely trust all entities once inside the network
+**Zero-Trust Architecture**: 
+- shift security focus away from protecting networks to protecting data
+- trust no device, user or service inside or outside your infrastructure (reduce attack surface)
+- we use Cyber risk assessment (Risk-Reduction or Return-On-Investment (ROI)) to evaluate whether implementing Zero-Trust architecture is economically justified by comparing risk reduction with implementation cost. The formulas are:
+<img width="413" height="128" alt="Bildschirmfoto 2026-03-01 um 15 06 07" src="https://github.com/user-attachments/assets/9b2ed359-a506-4e41-9e2c-8eca43a91d1a" />
 
+### Advanced Persistent Threats (APTs)
+- are a sophisticated, sustained, covert cyberattack, where the adversary establishes unauthorized access to the target's network and remains undetected for an extended period of time
+- APT Groups: are threat actors capable of launching APT-like sophisticated. Sometimes, they are either directly operated by nation-states or state-sponsored groups
+
+- APT Lifecycle:
+<img width="576" height="208" alt="Bildschirmfoto 2026-03-01 um 15 12 28" src="https://github.com/user-attachments/assets/5b0e7e42-b1d9-4898-a867-9a8d6d84ab3b" />
+
+- Cyber Threat Intelligence (CTI): is actionable knowledge and insight on adversaries and their malicious activities anabling defenders and their organizations to reduce harm through better security decision-making
+
+### Network topology
+<img width="474" height="278" alt="Bildschirmfoto 2026-03-01 um 15 38 42" src="https://github.com/user-attachments/assets/d3f1bbb6-be37-4ae3-abf2-703b451868e0" />
+- Device: switch/hubs (L2) or Router (L3) if the packets are forwarded between networks
+- Addressing in L2 is done via Media Access Control (MAC)
+- Addressing in L3 is using Classless Inter-Domain Routing (CIDR) for notation for IP Addresses, and Internet Assigned Numbers Authority (IANA) for issueing CIDR blocks to Regional Internet Registries (RIR)
+
+**Demilitarized Zone (DMZ)** is a subnetwork that protects an organization's intranet from untrusted external networks by implementing network segmentation, extra layer of security, and barrier between trusted and untrusted networks: Some types of DMZ:
+1. Single Firewall Architecture:
+   - has several network connections, each attached to a different security zone, allowing it to filter traffic between these zones (handle all traffic)
+   - single point of failure
+2. Dual Firewall Architecture:
+   -  The DMZ network hosts and exposes client-facing services to the Internet
+   -  2 firewalls creating an isolated network segment
+   -  Multi-layered defense for internal networks
+   -  enhanced traffic monitoring
+
+<img width="351" height="274" alt="Bildschirmfoto 2026-03-01 um 16 01 12" src="https://github.com/user-attachments/assets/970d4556-6fcd-4a10-8ce9-65070466f433" />
+
+<img width="554" height="152" alt="Bildschirmfoto 2026-03-01 um 16 01 41" src="https://github.com/user-attachments/assets/25b614b3-dce0-4639-b884-fb75715ee9be" />
+
+- Advantages:
+  + Multi-layered access control
+  + Network reconnaissance prevention
+  + Improved security for internal assets
+
+- Disadvantages:
+  + Increased complexity and misconfiguration
+  + Increased cost
+  + False sence of security
+
+**Network Protection**
+1. Firewall: is a network security system that monitors traffic between the local network and the internet, and filters connections according predefined rules. It enables:
+   - Monitoring and filtering of network traffic
+   - Protection from adversarial infiltrations
+   - Protrction from unauthorized access
+   - Regulatory compliance
+   - Network Segmentation
+
+   Types of Firewalls:
+   1.  Stateless: filter traffic packet-per-packet; complex to design, error prone, big tables, lightweight
+   2.  Stateful: filter traffic packet-per-packet, and account for traffic in the decision making; easier to design, fewer rules, smaller tables, resource heavy
+2. Intrustion Detection System (IDS): is passive observers that monitor network traffic for patterns of malicious activity:
+   - Observes all incoming and outgoing network traffic
+   - Computationally heavy
+   - Alert admins in case of malicious activity
+3. Intrusion Prevention System (IPS): analyzes network traffic in real-time and takes preventative measures to stop attacks:
+   - Actively block/drop connections from malicious activity
+   - Alert admins in case of malicious activity
+   - Types:
+     + Host-based intrustion prevention system (HIPS)
+     + Network-based intrustion prevention system (NIPS)
+     + Wireless-based intrustion prevention system (WIPS)
+     + Network behavior analysis (NBA)
+   - Detection Methods:
+     + Signature-based detection
+     + Statistical Anomaly-based detection
+
+**Network Address Translation (NAT)**
+- is a method that maps local IP addresses to a set of glabelly routable IP addresses. They:
+   + address IPv4 scarcity and depletion
+   + conceal IPv4 addresses
+- Types:
+   1. Static NAT: local address converts to a specific public one
+- 
 
 
 
