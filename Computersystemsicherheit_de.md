@@ -6,7 +6,7 @@ Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 1. Vertraulichkeit (Confidentiality)
 2. Integrität (Integrity)
 3. Verfügbarkeit (Availability)
-   (CIA-Triade)
+   (CIA-Triade)the Ava
 4. Authentizität (Authenticity)
 5. Nicht-Abstreitbarkeit (Non-Repudiation)
    
@@ -862,7 +862,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
   + Pakete können verloren gehen
   + Pakete können Fehler aufweisen
    + Pakete können in falscher Ordnung beim Empfänger eintreffen
-- **Internet Control Message Protocol** (ICMP): wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
+- **Internet Control Message Protocol (ICMP)**: wird von Routern und Hosts verwendet, um Fehler- und Steuerungsnachrichten über den IP-Verkehr auszutauschen; er wird direkt über IP übertragen
    + **Ping of Death** bezeichnet ein absichtlich übergroßes (durch Fragmentierung) ICMP-Echo-Paket, das beim Reassemblieren das IP-Limit überschreitet und so Systeme zum Absturz bringen kann – es handelt sich nicht um normale Pings.
 - **IPSec**:
    + ist ein Protokoll auf Internet-Layer zur Absicherung von IPv4 und IPv6
@@ -980,15 +980,22 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
               + RPKI ist eine PKI, die die Zuteilungshierarchie von IP-Adressen und ASNs abbildet (IANA → RIRs → LIRs/Provider → Kunden). RPKI liefert die "Root of Trust"
               + Die RPKI-Datenobjekte werden in verteilten Repositories veröffentlicht und von **"Relying Parties" (RP)** geladen/validiert
             - **Route Origin Authorization (ROA)** (für Origin) ist ein dignierte Dokument innerhalb von RPKI, das krytographisch signierte Aussage (*Dieses Präfix darf von diesem Origin-AS angekündigt werden* (+ optional **max. Präfixlänge**)) ausgibt.
-            - **Route Origin Validation (ROV)** (Prüfung) ist die Prüfung/Validierung durch Router/Provider: sie vergleicht BGP-Announcements mit ROAs und bewertet die Route. **Typische Validitätszustände** (ROV-Ergebnis):
+            - **Route Origin Validation (ROV)** (Prüfung) ist die Prüfung/Validierung durch Router/Provider: sie vergleicht BGP-Announcements mit ROAs und bewertet die Route. ROV analysiert auch das einzigartige Prefix-Origin Paar **Typische Validitätszustände** (ROV-Ergebnis):
               1. **VALID**: Announcement passt zu einer ROA
               2. **INVALID**: ROA existiert, aber Origin-AS oder Präfixlänge passt nicht (kann Hijack oder Fehlkonfig sein)
               3. **UNKNOWN / NOT FOUND**: keine passende ROA vorhanden 
             - Was RPKI leistet:
               + primäre Schutz gegen falsche *Origin*-Ankündigungen, aber es löst nicht automatisch das ganze BGP-Problem
             - Herausforderungen: Deployment/Abdeckung, Fehlkonfigurationen (falsche ROAs) und Policy-Entscheidung, wie man mit INVALID umgeht (filtern vs. depriorisieren)
-        4. **BGPSec** sichert zusätzlich den AS-Path:
-           - BGPSec erweitert BGP um ein optionales Attribut, in dem jede AS, die das Update weiterleitet, eine digitale Signatur über den relevanten Update-Inhalt hinzufügt. Dadurch kann der Empfänger prüfen, dass der AS-Path nicht manipuliert wurde.
+      <img width="645" height="278" alt="Bildschirmfoto 2026-03-01 um 20 46 18" src="https://github.com/user-attachments/assets/885e6d25-cb39-4251-95bb-0ffb4ee9a2c6" />
+      
+            - RPKI Limitations:
+              + Vulnerabilities: The protocol itself can be attacked and the ROV functionality turned off. Full or partial RPKI downgrade
+              + Misconfigurations: They are prevalent in various RPKI deployments, so the operators use outdated software and patch very slowly
+              + Operational Limits: Currently, RPKI only offers route origin protetion (e.g. against Redirection attacks), but Subversion attacks are still possible 
+  
+        5. **BGPSec** sichert zusätzlich den AS-Path (against Subversion attacks):
+           - BGPSec erweitert BGP um ein optionales Attribut, in dem jede AS, die das Update weiterleitet, eine *digitale Signatur* über den relevanten Update-Inhalt hinzufügt. Dadurch kann der Empfänger prüfen, dass der AS-Path nicht manipuliert wurde.
            - BGPSec nutzt RPKI auch für Router-Zertifikat, damit Router überhaupt Schlüssel/Identität haben, um diese Pfad-Signaturen zu erzeugen und zu prüfen
            - Erschränkungen:
              + Hoher Rechenaufwand: Kryptografische Funktionen für große Routing-Tabellen müssen von den Routern ausgeführt werden
@@ -1039,18 +1046,25 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
         * Verbesserung der Sicherheit durch Deprecation veralteter Algorithmen
         * Statische RSA und DH Cipher Suites wurde entfernt, Perfect Forward Secrecy
    - DNS:
-     + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“)
+     + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“). Architektur:
+<img width="581" height="256" alt="Bildschirmfoto 2026-03-01 um 20 58 18" src="https://github.com/user-attachments/assets/f26b1c16-c179-488d-9283-c241a7816b41" />
+
      + Subdomain: sich in der Hierarcchie unter einem aneren Namen befindliche Domain (z.B. „scholar.google.com.“ von „google.com.“)
      + Zone: von einer einzigen Autorität verwaltete Domain, exklusive fremd verwalteter Subdomains; Autorität ist z.B. Domain Registrar oder Unternehmen in Eigenregion
      + 3 Bestandteile von DNS-Nachrichtenübermitteilung:
        1. Kommunikationsmodell: Client/Server-Modell: Client stellt Anfrage, Server antwortet auf Client
-       2. Servertypen: Authoritative Server und Resolver
+       2. Servertypen: Name Server, Authoritative Server und Resolver
        3. Transport: über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
+     + DNS Packet:
+       <img width="521" height="310" alt="Bildschirmfoto 2026-03-01 um 21 54 57" src="https://github.com/user-attachments/assets/b69280a3-7b6e-468b-8a1b-12ebeb2529dd" />
+
      + Schritte:
        - Rechner muss IP von Webseite suchen
        - DNS Server kennt entweder IP-Adresse oder fragt Root-Server zu zuständigem Name-Server
        - DNS Server antwortet den Rechner die IP-Adresse der Webseite
        - Rechner speichert IP-Adresse lokal
+      <img width="813" height="348" alt="Bildschirmfoto 2026-03-01 um 21 00 36" src="https://github.com/user-attachments/assets/0ebf5d97-cfa8-4b0b-a3bf-f7ef2fb5ab0d" />
+
       + DNS Adress Records:
      
 | Name | Type | Class | TTL | RDLength | RData |
@@ -1149,7 +1163,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
             - Cache des DNS Servers wird dann vergiftet durch
             - DNS nutzt UDP und keine Verifikation der Authentizität
             - **Off-Path DNS Cache Poisoning**:
-              + Angreifermodell: Angreifer kann beliebige Nachrichten senden, muss aber 16-bit Transaction-ID im DNS-Header erraten, ansonsten muss 16-bit UDP Zielport der gefälschen Antwort dem UDP Quellport der Anfrage des Resolvers an den autoriativen Server gleichen. Angreifer kann aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken
+              + Angreifermodell: Angreifer kann beliebige Nachrichten senden, um Resolver Caches zu vergiften, muss aber 16-bit Transaction-ID im DNS-Header erraten, ansonsten muss 16-bit UDP Zielport der gefälschen Antwort dem UDP Quellport der Anfrage des Resolvers an den autoriativen Server gleichen. Angreifer kann aber nicht mitlesen, modifizieren, duplizieren oder unterdrücken
               + **Kaminskys Angriff**: *Kaminsky’s Trick* sind die zwei konkreten Kniffe/Technik innerhalb des Angriffs:
                 1. Viele Anfragen auf zufällige, nicht-existierende Subdomains der Opferdomain (DoS-Angriff)
                 2. Gefälschte Antwort vergiftet nicht nur A-Record, sondern setzt NS-Delegation (und macht eine Weiterleitung als die Antwort möglich)
@@ -1838,7 +1852,30 @@ More about Security
    1. Security tisk
    2. Bottleneck
    3. Increased complexity
-- 
+- Attack on NAT: NAT Slipstreaming
+  + Requirement: Application Layer Gateway (ALG) is a feature in firewalls/NATs that allow for customizable connections between applications and clients
+  + The attacker tricks the NAT to open a connection with a special protocol exploiting the rules of ALG, as if the victim device initiated the device, so now the attacker can send packets and get access to any port or service on the victim's machine
 
+### MITRE ATT&CK TTP
+**Reconnaissance**
+1. Maximum Transmission Unit (MTU): is the largest data packet size a network device accepts, this changes across networks
+   - Path MTU Discovery (PMTU) Protocol: used to discover the maximum MTU size for on-path networks. This is necessary for all IPv6 packets, and for IPv4 packets with Don't Fragment (DF) flags. Advantages are: less load on routers, less packet loss and secure from fragmentation attacks
+   - Fragmentation: Packet split to fit the MTU of the next network, carried by routers; fragement size is IPv4 header + data. , 
+   - Re-assembly: carried by the final destination; Problems: Processing overhead (Fragment ID, Offset, Length, MoreFragments (MF) Flag are needed, more CPU work), complexity (problematic whenever there is anything happens just to a fragement). The ICMP "Fragmentation Needed" message can be missing, so sender never learns the correct MTU (Connection may stall)
+   - Fragmentation attacks:
+     1. Teardrop Attack: send packet fragments with overlapping offsets => disrupts reassembly => system crashs
+     2. UDP/ICMP Fragmentation Attack: overwhelm target with large number of ICMP packet => resource exhausion => DoS
+     3. Tiny Fragment Attack: use fragmentation to bypass firewalls by hiding malicious code in fragments
 
+### More about BGP
+When will bGP converge (reach a stable routing state):
+1. Topology Condition: No customer–provider cycles in the AS graph; else break
+2. Preference Condition: Prefer customer-learned to peer-learned paths, both preferred to provider-learned paths
+3. Export Condition (Valley-free): Only export customer routes to peers and providers
 
+**Hijecking Types**:
+1. Redirection
+2. Subversion
+3. Blackholing (Remote, Triggered BlackHole -RTBH)
+
+BGP has no built-in security mechanisms, Computational efficiency, speed and vonvergence ware its priority
