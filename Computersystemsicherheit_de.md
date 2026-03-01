@@ -1828,6 +1828,16 @@ More about Security
    + conceal IPv4 addresses
 - Types:
    1. Static NAT: local address converts to a specific public one
+   2. Dynamic NAT: local address is randomly assigned public IP from a pool
+   3. Port Address Translation (PAT): same public IP is assigned to multiple local addresses leveraging ports to distinguish destinations
+- Advantages:
+   1. Cost saving
+   2. Multi-homing
+   3. Flexibility
+- Disadvantages:
+   1. Security tisk
+   2. Bottleneck
+   3. Increased complexity
 - 
 
 
