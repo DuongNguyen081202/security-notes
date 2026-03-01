@@ -1476,7 +1476,9 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
 - Arten:
   1. Wurm: eigenständige Software, die sich selbst über Netwerk verbreitet. Durch die Replikation vertreiben sich Würmer exponentiell, bis die Menge von verwundbaren Zielsystemen betroffen ist
   2. Virus: hängt sich an andere Software/Systeme an; benögtigt Benutzerinteraktion, um sich zu verbreiten; oft polymorph.
-     + Polymorphe Viren ist verschlüsselt <img width="549" height="206" alt="Bildschirmfoto 2025-11-25 um 23 56 10" src="https://github.com/user-attachments/assets/43a21bad-466f-49a1-8698-a7cfbd36df59" /> und sie können Erscheinungsbild mit jeder Replikation verändern.
+     + Polymorphe Viren ist verschlüsselt <img width="549" height="206" alt="Bildschirmfoto 2025-11-25 um 23 56 10" src="https://github.com/user-attachments/assets/43a21bad-466f-49a1-8698-a7cfbd36df59" />
+     
+     und sie können Erscheinungsbild mit jeder Replikation verändern.
      + Metamorphe Viren:
        - jedes Mal wenn sich der Virus repliziert, erzeugt er eine semantisch unterschiedliche Version des Virus Codes. So sie sind gleiche High-Level Aktionen aber mit kleinen unbedeutenden Abweichungen <img width="227" height="194" alt="Bildschirmfoto 2025-11-26 um 00 00 22" src="https://github.com/user-attachments/assets/a87a9150-501b-47c0-835f-5a125e7252ea" />
        - Gegenmaßnahmen:
