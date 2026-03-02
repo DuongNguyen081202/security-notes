@@ -1834,6 +1834,8 @@ More about Security
 - Addressing in L2 is done via Media Access Control (MAC)
 - Addressing in L3 is using Classless Inter-Domain Routing (CIDR) for notation for IP Addresses, and Internet Assigned Numbers Authority (IANA) for issueing CIDR blocks to Regional Internet Registries (RIR)
 
+<img width="457" height="167" alt="Bildschirmfoto 2026-03-02 um 13 27 38" src="https://github.com/user-attachments/assets/78151b55-ea3b-4a8b-9d15-8ed47fb90b99" />
+
 **Demilitarized Zone (DMZ)** is a subnetwork that protects an organization's intranet from untrusted external networks by implementing network segmentation, extra layer of security, and barrier between trusted and untrusted networks: Some types of DMZ:
 1. Single Firewall Architecture:
    - has several network connections, each attached to a different security zone, allowing it to filter traffic between these zones (handle all traffic)
