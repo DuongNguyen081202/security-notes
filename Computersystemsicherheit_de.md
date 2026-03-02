@@ -1886,7 +1886,7 @@ More about Security
      + Statistical Anomaly-based detection
 
 **Network Address Translation (NAT)**
-- is a method that maps local IP addresses to a set of glabelly routable IP addresses. They:
+- is a method that maps local IP addresses to a set of globally routable IP addresses. They:
    + address IPv4 scarcity and depletion
    + conceal IPv4 addresses
 - Types:
