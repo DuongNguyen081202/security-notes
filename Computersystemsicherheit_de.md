@@ -1048,14 +1048,12 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
           1. Einseitige oder wechselseitige Authentifikation durch X.509-Zertifikate
           2. Aushandlung der Cipher Suite
           3. Generierung neuer Schlüssel für symmetrische Verschlüsselung und Perfect Forward Secrecy <img width="652" height="249" alt="Bildschirmfoto 2026-02-25 um 01 31 30" src="https://github.com/user-attachments/assets/99c71b6f-0bc2-4f23-aee0-e4e18a951603" />
-      
       + TLS 1.3:
         * Neu: 1-RTT und o-RTT Handshake für bessere Performanz
         * Verbesserung der Sicherheit durch Deprecation veralteter Algorithmen
         * Statische RSA und DH Cipher Suites wurde entfernt, Perfect Forward Secrecy
    - DNS:
-     + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“). Architektur:
-<img width="581" height="256" alt="Bildschirmfoto 2026-03-01 um 20 58 18" src="https://github.com/user-attachments/assets/f26b1c16-c179-488d-9283-c241a7816b41" />
+     + Domain: logisch abgegrenzten Teilbereich des Internets mit weltweit eindeutigem, einmaligem Namen (z.B. „com.“, „example.org.“, „www.example.org.“). Architektur: <img width="581" height="256" alt="Bildschirmfoto 2026-03-01 um 20 58 18" src="https://github.com/user-attachments/assets/f26b1c16-c179-488d-9283-c241a7816b41" />
 
      + Subdomain: sich in der Hierarcchie unter einem aneren Namen befindliche Domain (z.B. „scholar.google.com.“ von „google.com.“)
      + Zone: von einer einzigen Autorität verwaltete Domain, exklusive fremd verwalteter Subdomains; Autorität ist z.B. Domain Registrar oder Unternehmen in Eigenregion
@@ -1063,14 +1061,15 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        1. Kommunikationsmodell: Client/Server-Modell: Client stellt Anfrage, Server antwortet auf Client
        2. Servertypen: Name Server, Authoritative Server und Resolver
        3. Transport: über UDP 53 für kleine Antworten, und über TCP 53 für großen Antworten
+     
      + DNS Packet:
        <img width="521" height="310" alt="Bildschirmfoto 2026-03-01 um 21 54 57" src="https://github.com/user-attachments/assets/b69280a3-7b6e-468b-8a1b-12ebeb2529dd" />
-
      + Schritte:
        - Rechner muss IP von Webseite suchen
        - DNS Server kennt entweder IP-Adresse oder fragt Root-Server zu zuständigem Name-Server
        - DNS Server antwortet den Rechner die IP-Adresse der Webseite
        - Rechner speichert IP-Adresse lokal
+       
       <img width="813" height="348" alt="Bildschirmfoto 2026-03-01 um 21 00 36" src="https://github.com/user-attachments/assets/0ebf5d97-cfa8-4b0b-a3bf-f7ef2fb5ab0d" />
 
       + DNS Adress Records:
