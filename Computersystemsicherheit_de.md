@@ -1197,15 +1197,15 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
                - Eliminierung von Paketen mit gespoofter IP-Adresse im Ursprungsnetzwerke
                - Stilllegung von Botnetzen
        10. DNS Tunneling:
-          - verdecktes Übertragen von beliebigen Daten über DNS-Anfragen, damit die folgenden möglich werden:
-            + Exfiltration von ausspionierten Informationen aus einem kompromitierten Netzwerk
-            + Umgehung von Netzsperren und Firewalls
-            + Verdeckte Kommunikation von Bots mit ihrem Master
-          - Funktionsweise:
-            + Angreifer setzt autoritativen Server und Domain als Endpunkt auf
-            + Client codiert Daten in angefragten Namen
-            + Resolver leiten Daten an autoritaativen Server weiter
-          - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
+           - verdecktes Übertragen von beliebigen Daten über DNS-Anfragen, damit die folgenden möglich werden:
+             + Exfiltration von ausspionierten Informationen aus einem kompromitierten Netzwerk
+             + Umgehung von Netzsperren und Firewalls
+             + Verdeckte Kommunikation von Bots mit ihrem Master
+           - Funktionsweise:
+             + Angreifer setzt autoritativen Server und Domain als Endpunkt auf
+             + Client codiert Daten in angefragten Namen
+             + Resolver leiten Daten an autoritaativen Server weiter
+           - Gegenmaßnahme: Filtern durch Firewall mit statischer Anomaliedetektion oft möglich
        11. Zone Enumeration:
            - Ausspähen und auflisten der vorhandenen Subdomain-Namen für Vorbereitung zu Angriff
            - Funktionsweise: Anfragen an übliche Domainnamen aus Wörternuch und Registrieren der Antwort, ob es diesen Namen gibt
