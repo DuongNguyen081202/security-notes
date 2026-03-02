@@ -6,7 +6,7 @@ Es gibt 5 **Sicherheiteigenschaften** (erweitert):
 1. Vertraulichkeit (Confidentiality)
 2. Integrität (Integrity)
 3. Verfügbarkeit (Availability)
-   (CIA-Triade)the Ava
+   (CIA-Triade)
 4. Authentizität (Authenticity)
 5. Nicht-Abstreitbarkeit (Non-Repudiation)
    
