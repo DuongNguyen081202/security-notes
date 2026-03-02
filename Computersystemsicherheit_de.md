@@ -1119,6 +1119,9 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        1. Client wählt Redezvous Point: Client bestimmt einen TOR Node als Rendezvous Point, dann erstellt einen One-Time-Secret String, und baut Circuit zu diesem Node auf
        2. Client kontaktiert Service über Intro Points: Client sendet Rendezvous Point, One-Time-Secret und möglichsweise auch Auth-Information an Service über Intro Point, und der Service kann verifizieren ob User vertrauenswürdig ist
        3. Der Service verbindet sich zum Rendezvous Point: Service baut eigenen Circuit zum gleichen Rendezvous Node, sendet auch einen secret String, und Node vergleicht die Secret 
+   - Anonymity Networks:
+     + Vorteile: Privacy for Users, Censorship Circumvention, Anti-Geoblocking, no-central control, whistleblower support
+     + Nachteile: much slower speed, hidden services anable Illegal activities, Risk from Exit node, Hinder Law Enforcement
    - **SSH**:
         + ermöglicht eine sichere Verbindung zwischen Hosts auf Appllication Layer
         + benutzt für Fernsteuerung/Konfiguration von Servern
@@ -1539,6 +1542,14 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
   3. physich: durch infiziert Tokens
      + Gegenmaßnahmen: nur vertrauenswürdige Quelle akzeptieren
 
+More Malware Types:
+
+<img width="858" height="318" alt="Bildschirmfoto 2026-03-02 um 12 19 14" src="https://github.com/user-attachments/assets/112eba96-3f47-4caa-a345-fe68987a8c57" />
+
+Common Malware API Calls:
+<img width="823" height="342" alt="Bildschirmfoto 2026-03-02 um 12 20 43" src="https://github.com/user-attachments/assets/f2f101d5-05e8-4131-9c1c-bae87c40f0cb" />
+
+
 ### Software Security
 **Schwachstellen und Exploits**
 Auswahl von Fehlerklassen nach *Common Weakness Enumeration (CWE)* in Software Security:
@@ -1917,3 +1928,17 @@ When will bGP converge (reach a stable routing state):
 3. Blackholing (Remote, Triggered BlackHole -RTBH)
 
 BGP has no built-in security mechanisms, Computational efficiency, speed and vonvergence ware its priority
+
+### C Coding Guidelines
+Insecure coding functions and their secure counterparts:
+- strcat() / strncat()
+- stpcpy() / stpncpy()
+- getwd() / getcwd()
+- getwd() / getcw
+
+### Satellite
+**SATCOM Infrastructure**
+- Sapce Segment: is the collection od satellites collecting, processing and sending data downlink to the ground segment
+- Ground Segment:  controls & manages the space segment, ensuring proper satellite operation, data processing, transmission and mission execution. It includes various ground stations, which interface between the terrestrial and satellite networks.
+- User Segment is the collection of various applications and devices that use satellite data. They can communicate directly with satellites using dedicated hardware or receive data forwarded to them via ground stations through Forward Links.
+- Communication Segment is the set of the various forms of communications between the different segments
