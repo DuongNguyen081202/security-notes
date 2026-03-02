@@ -1075,14 +1075,22 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
 <img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
       + **Resource Record Set (RRset)**: ist Menge aller Resource Records mit gleichem (Name, Type, Class, TTL)
       
+   - DNS über TLS? kann auch eine Möglichkeit sein, aber wir möchte DNS schnell und leicht, während TLS langsam ist, ansonsten hilft TLS nicht beim Caching (aber DNS-Rekord muss zwischengespeichert werden), und auch nicht gegen bösartifen Nameservern. So sichert TLS den Kommunikationskanal, aber ermöglicht nicht Vertrauenswürdigkeit der Daten zu prüfen.
    - DNSSEC:
-     + bietet noch Integrität bei der Antwort an, damit Cache-Poisoning-Angriffe verhindert wird.
-     + DNS über TLS? kann auch eine Möglichkeit sein, aber wir möchte DNS schnell und leicht, während TLS langsam ist, ansonsten hilft TLS nicht beim Caching (aber DNS-Rekord muss zwischengespeichert werden), und auch nicht gegen bösartifen Nameservern. So sichert TLS den Kommunikationskanal, aber ermöglicht nicht Vertrauenswürdigkeit der Daten zu prüfen.
+     + bietet effiziente Gegenmaßnahmen gegen Cache-Poisoning-Angriffe, MitM Manipulation, gefäschte DNS Responses verhindert wird (Integrität und Authentizität).
+     + Komponenten:
+       1. Zone Signing Key (ZSK): signs regular DNS record; these signed records are called RRSIG records
+       2. Key Signing Key (KSK): signs DNSKEY set (includes ZSK and KSK public keys)
+       3. Delegation Signer (DS): is stored in the parent zone, contains a hash of the child zone's KSK => creates the chain of trust (e.g. Root is trust anchor, Root signs .com's DNSKEY, and contains DS record for .com; .com signs example.com's DNSKEY, contains DS record for example.com; example.com sign www.example.com record)
+     + Erschränkungen:
+       * response size increases considerably
+       * increased administrative overhead
+       * both server and client need to support it
+       * only experimental support in stub resolvers and forwardeers
      + **Vergleich Trust Chain**:
        - WebPKI: Kette von Zertifikaten bis Root im Trust Store.
        - DNSSEC: Kette über Delegation/Signaturen im DNS-Baum bis zum Root-Trust-Anchor.
        - Single Trust Root ist mächtig, aber auch ein Single Point of Failure.
-
      + DNS nutzt stattdessen
        1. Kryptographie um zu beweisen, dass zurückgegebenen Antworten korrekt sind (mit digitale Signaturen von Nameservern), und
        2. hierarchisches, verteiles Vertrauenssytem (bsp. Root-Nameserver) zur Identifikation, um vor bösartigem Nameserver zu schützen
