@@ -1828,6 +1828,7 @@ More about Security
 
 ### Network topology
 <img width="474" height="278" alt="Bildschirmfoto 2026-03-01 um 15 38 42" src="https://github.com/user-attachments/assets/d3f1bbb6-be37-4ae3-abf2-703b451868e0" />
+
 - Device: switch/hubs (L2) or Router (L3) if the packets are forwarded between networks
 - Addressing in L2 is done via Media Access Control (MAC)
 - Addressing in L3 is using Classless Inter-Domain Routing (CIDR) for notation for IP Addresses, and Internet Assigned Numbers Authority (IANA) for issueing CIDR blocks to Regional Internet Registries (RIR)
