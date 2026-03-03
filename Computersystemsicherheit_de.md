@@ -403,7 +403,7 @@ flowchart LR
 
 ```
 
-- Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: einmalig Schlüssel authentisieren => anschließend beliebig viele Nachrichten signiert prüfen.
+- Der Paar (pk, sk) ermöglicht auch **Mehrfachauthentifizierung**: einmalig Schlüssel authentisieren → anschließend beliebig viele Nachrichten signiert prüfen.
   + Algorithmen: (Gen, Sig, Ver)
     <img width="595" height="182" alt="Bildschirmfoto 2025-10-15 um 21 42 56" src="https://github.com/user-attachments/assets/f16ca8eb-2528-48a7-a0eb-d36b373673da" />
   + Sig(sk,m) hängt stark von Nachricht ab, so Angreifer kann keine Signeturen auf neue Nachricht fälschen.
@@ -717,8 +717,8 @@ Ressourcen und Diensten zugreifen
    + Ziel eines SSO-Konzepts: Benutzeer authentisiert sich einmal, keine separate Authentisierung bei Dienstnutzung mehr erforderlich
    + Design: pro Domäne (Realm) gibt es ein **Key Distribution Center (KDC)**
    + Aufgabe des KDC:
-     - Authentifizierung der Clients (Principals) seiner Domäne => **Authentication Server (AS)**
-     - Ausstellen von Tickets als Identitätsausweise => **Ticket Granting Server (TGS)**:
+     - Authentifizierung der Clients (Principals) seiner Domäne → **Authentication Server (AS)**
+     - Ausstellen von Tickets als Identitätsausweise → **Ticket Granting Server (TGS)**:
        + ein Ticket ist nur für einen Client C und einen Server S
        + das Ticket, das vom AS für die Nutzung des TGS ausgestellt wird, heißt **Ticket Granting Ticket (TGT)**: $T_{C,S} = (S, C, addr, timestamp, lifetime, K_{C,S})$; Ablauf eines Kerberos: Login (lokal am Client): Benutzer gibt Password ein, daraus wird ein Schlüssel generiert: $K_{\text{Bob}} := \mathrm{Hash}(\text{Passwort})$
          1. Bob → AS: Cleint verschlüsselt aktuellen Timestamp mit $K_{\text{Bob}}$ und sendet ihn mit Nonce ${\text{Bob}}_1 + Ziel {\text{TGS}}$
@@ -1087,7 +1087,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
      + Komponenten:
        1. Zone Signing Key (ZSK): signs regular DNS record; these signed records are called RRSIG records
        2. Key Signing Key (KSK): signs DNSKEY set (includes ZSK and KSK public keys)
-       3. Delegation Signer (DS): is stored in the parent zone, contains a hash of the child zone's KSK => creates the chain of trust (e.g. Root is trust anchor, Root signs .com's DNSKEY, and contains DS record for .com; .com signs example.com's DNSKEY, contains DS record for example.com; example.com sign www.example.com record)
+       3. Delegation Signer (DS): is stored in the parent zone, contains a hash of the child zone's KSK → creates the chain of trust (e.g. Root is trust anchor, Root signs .com's DNSKEY, and contains DS record for .com; .com signs example.com's DNSKEY, contains DS record for example.com; example.com sign www.example.com record)
      + Erschränkungen:
        * response size increases considerably
        * increased administrative overhead
@@ -1912,8 +1912,8 @@ More about Security
    - Fragmentation: Packet split to fit the MTU of the next network, carried by routers; fragement size is IPv4 header + data. , 
    - Re-assembly: carried by the final destination; Problems: Processing overhead (Fragment ID, Offset, Length, MoreFragments (MF) Flag are needed, more CPU work), complexity (problematic whenever there is anything happens just to a fragement). The ICMP "Fragmentation Needed" message can be missing, so sender never learns the correct MTU (Connection may stall)
    - Fragmentation attacks:
-     1. Teardrop Attack: send packet fragments with overlapping offsets => disrupts reassembly => system crashs
-     2. UDP/ICMP Fragmentation Attack: overwhelm target with large number of ICMP packet => resource exhausion => DoS
+     1. Teardrop Attack: send packet fragments with overlapping offsets → disrupts reassembly → system crashs
+     2. UDP/ICMP Fragmentation Attack: overwhelm target with large number of ICMP packet → resource exhausion → DoS
      3. Tiny Fragment Attack: use fragmentation to bypass firewalls by hiding malicious code in fragments
 
 ### More about BGP
