@@ -1063,6 +1063,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
      
      + DNS Packet:
        <img width="521" height="310" alt="Bildschirmfoto 2026-03-01 um 21 54 57" src="https://github.com/user-attachments/assets/b69280a3-7b6e-468b-8a1b-12ebeb2529dd" />
+       
      + Schritte:
        - Rechner muss IP von Webseite suchen
        - DNS Server kennt entweder IP-Adresse oder fragt Root-Server zu zuständigem Name-Server
@@ -1071,17 +1072,18 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
        
       <img width="813" height="348" alt="Bildschirmfoto 2026-03-01 um 21 00 36" src="https://github.com/user-attachments/assets/0ebf5d97-cfa8-4b0b-a3bf-f7ef2fb5ab0d" />
 
-      + DNS Adress Records:
+     + DNS Adress Records - Resource Records (RRs):
      
 | Name | Type | Class | TTL | RDLength | RData |
 |------|------|--------|-----|-----------|-------|
 | Fully Qualified Domain Name | Datentypbezeichner | Klassenbezeichner | Time to Live – Verfallsdatum | Länge des Data-Felds in Bytes | Der im Record abgelegte Wert zum Schlüssel |
 
-**DNS Record-Type**
-<img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
-      + **Resource Record Set (RRset)**: ist Menge aller Resource Records mit gleichem (Name, Type, Class, TTL)
+**DNS Record-Type** <img width="786" height="263" alt="Bildschirmfoto 2025-11-10 um 23 09 45" src="https://github.com/user-attachments/assets/b848f5ca-e648-45ab-8ff5-92d821a0ebb7" />
+
+   - **Resource Record Set (RRset)**: ist Menge aller Resource Records mit gleichem (Name, Type, Class, TTL)
       
    - DNS über TLS? kann auch eine Möglichkeit sein, aber wir möchte DNS schnell und leicht, während TLS langsam ist, ansonsten hilft TLS nicht beim Caching (aber DNS-Rekord muss zwischengespeichert werden), und auch nicht gegen bösartifen Nameservern. So sichert TLS den Kommunikationskanal, aber ermöglicht nicht Vertrauenswürdigkeit der Daten zu prüfen.
+   - Teil der URL: https://server01.servers.collection.com/product?id=123#description => Schema = https; Host/FQDN = server01.servers.collection.com (DNS); Pfad = /product; Query = ?id=123; Fragment = #description. Nur der Hostname wird per DNS aufgelöst.
    - DNSSEC:
      + bietet effiziente Gegenmaßnahmen gegen Cache-Poisoning-Angriffe, MitM Manipulation, gefäschte DNS Responses verhindert wird (Integrität und Authentizität).
      + Komponenten:
