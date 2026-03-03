@@ -994,8 +994,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
               3. **UNKNOWN / NOT FOUND**: keine passende ROA vorhanden 
             - Was RPKI leistet:
               + primäre Schutz gegen falsche *Origin*-Ankündigungen, aber es löst nicht automatisch das ganze BGP-Problem
-            - Herausforderungen: Deployment/Abdeckung, Fehlkonfigurationen (falsche ROAs) und Policy-Entscheidung, wie man mit INVALID umgeht (filtern vs. depriorisieren)
-      <img width="645" height="278" alt="Bildschirmfoto 2026-03-01 um 20 46 18" src="https://github.com/user-attachments/assets/885e6d25-cb39-4251-95bb-0ffb4ee9a2c6" />
+            - Herausforderungen: Deployment/Abdeckung, Fehlkonfigurationen (falsche ROAs) und Policy-Entscheidung, wie man mit INVALID umgeht (filtern vs. depriorisieren) <img width="645" height="278" alt="Bildschirmfoto 2026-03-01 um 20 46 18" src="https://github.com/user-attachments/assets/885e6d25-cb39-4251-95bb-0ffb4ee9a2c6" />
       
             - RPKI Limitations:
               + Vulnerabilities: The protocol itself can be attacked and the ROV functionality turned off. Full or partial RPKI downgrade
