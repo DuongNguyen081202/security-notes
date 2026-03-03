@@ -671,8 +671,8 @@ Unterscheidung:
 2. Verschlüsselung: Speichere Passwärter verschlüsselt, Sever hat zusätzlich Schlüsselpaar (sk, pk). Hier sind die Einwegfunktionen benötigt.
 3. Hashen: Speichere Passwörter als Hash
 4. Rainbow Table: benutzen Hashfunktion H: Passwort → Hash und Reduktionsfunktion R: Hash → Passwort, um eine Kette für jede Passwörtern zu erstellen. Aber es Time-Memorz Tradeoff gibt: je länger die Ketten, desto weniger Speicherbedarf, aber desto mehr Zeitaufwand
-5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speichere H(S||pwd) in Passwort.
-6. Peppering: verhält wie Salted Hashing, aber Salt(s) geheim halten (nicht zusammen mit den Hashes in der DB steht.
+5. Salted Hashing: wähle zufälligen Salt S, mit mindestens 64 Bits, speichere H(S||pwd) in Passwort, wird verwendet nur um deterministisches Hash für gleichem Passwort zu verhindern.
+6. Peppering: verhält wie Salted Hashing, aber Salt(s) nicht geheim halten (nicht zusammen mit den Hashes in der DB steht.
 
 **Fast Identity Online (FIDO/2)**: is a new standard that aims to reduce reliance on passwords for authentication, relies on asymmetric cryptogrphy to replace password-based authentication
 <img width="632" height="211" alt="Bildschirmfoto 2026-03-02 um 11 27 21" src="https://github.com/user-attachments/assets/be04f45d-1681-4812-bf66-6e9ee0e6ca95" />
