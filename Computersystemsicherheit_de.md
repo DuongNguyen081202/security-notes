@@ -1087,7 +1087,7 @@ $\mathrm{fin}_C$ und $\mathrm{fin}_S$ wirken als Message Authentication Code (MA
    - DNSSEC:
      + bietet effiziente Gegenmaßnahmen gegen Cache-Poisoning-Angriffe, MitM Manipulation, gefäschte DNS Responses verhindert wird (Integrität und Authentizität).
      + Komponenten:
-       1. Zone Signing Key (ZSK): signs regular DNS record; these signed records are called RRSIG records
+       1. Zone Signing Key (ZSK): signs regular DNS record; these signed records are called RRSIG records (4. Komponent)
        2. Key Signing Key (KSK): signs DNSKEY set (includes ZSK and KSK public keys)
        3. Delegation Signer (DS): is stored in the parent zone, contains a hash of the child zone's KSK → creates the chain of trust (e.g. Root is trust anchor, Root signs .com's DNSKEY, and contains DS record for .com; .com signs example.com's DNSKEY, contains DS record for example.com; example.com sign www.example.com record)
      + Erschränkungen:
