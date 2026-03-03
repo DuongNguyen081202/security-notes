@@ -962,7 +962,7 @@ Adressspeicher eines Switches mit vielen gefälschten Einträgen füllt. Ist die
         + HTTP: über TCP 80, zustandlos
         + HTTPS: HTTP über TLS, meist TCP 443
      2. DNS/DNSSEC: Namensauflösung
-        + DNS (Domain Name System)
+        + Domain Name System (DNS): maps human-readable host names to IP addresses (and the reverse).
         + DNSSEC: Signiert DNS-Records für Integrität und Authentizität
      3. SMTP: E-Mail-Übertragung: über Ports 25 (Server nach Server), 587 (Submission mit STATTLS), und 465 (SMTPS/ TLS-wrapped)
      4. Secure Shell (SSH): läuft über TCP (Port 22):
