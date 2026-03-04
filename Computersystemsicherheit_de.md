@@ -305,11 +305,11 @@ Setup: zyklische Gruppe $G$ der Ordnung $q$ mit Generator $g$ .
    <img width="651" height="272" alt="Bildschirmfoto 2025-10-15 um 10 07 24" src="https://github.com/user-attachments/assets/dc4b403c-4399-4ff3-b572-f05cff91ded7" />
    - Ziel: Zwei Parteien erzeugen einen gemeinsamen Sitzungsschlüssel, ohne ihn direkt zu senden.
    Die Parteien einigen sich auf Primzahl $p$(damit Gruppe $G=\mathbb{Z}_p$) sowie Generator $g$ von $\mathbb{Z}_p^\* = \{1,\dots,p-1\}$ .
-   1. A wählt privat $a$ zufällig (mit $0<a<p$) und sendet $g^a \bmod p$ an B.  
-   2. B wählt privat $b$ zufällig (mit $0<b<p$) und sendet $g^b \bmod p$ an A.  
-   3. A berechnet $(g^b)^a \bmod p$ .  
-   4. B berechnet $g^{ab} \bmod p$ .  
-   Da $(g^b)^a = g^{ab}$ gilt, erhalten beide denselben Schlüssel. 
+   1. A wählt privat $x$ zufällig (mit $0<x<p$) und sendet $g^x \bmod p$ an B.  
+   2. B wählt privat $y$ zufällig (mit $0<y<p$) und sendet $g^y \bmod p$ an A.  
+   3. A berechnet $(g^y)^x \bmod p$ .  
+   4. B berechnet $g^{xy} \bmod p$ .  
+   Da $(g^y)^x = g^{xy}$ gilt, erhalten beide denselben Schlüssel. 
    
    - DH alleine bietet **keine Authentizität** → anfällig für **Man-in-the-Middle**, wenn man nicht zusätzlich authentifiziert (z.B. Signaturen/Zertifikate).
 
