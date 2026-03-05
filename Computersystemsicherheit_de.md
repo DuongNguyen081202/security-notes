@@ -1521,7 +1521,8 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
  
 - Arten:
   1. Wurm: eigenständige Software, die sich selbst über Netwerk verbreitet. Durch die Replikation vertreiben sich Würmer exponentiell, bis die Menge von verwundbaren Zielsystemen betroffen ist
-  2. Virus: hängt sich an andere Software/Systeme an; benögtigt Benutzerinteraktion, um sich zu verbreiten; oft polymorph.
+  2. Fileless Malware> malicious software that operates exclusively within the RAM
+  3. Virus: hängt sich an andere Software/Systeme an; benögtigt Benutzerinteraktion, um sich zu verbreiten; oft polymorph.
      + Polymorphe Viren ist verschlüsselt <img width="549" height="206" alt="Bildschirmfoto 2025-11-25 um 23 56 10" src="https://github.com/user-attachments/assets/43a21bad-466f-49a1-8698-a7cfbd36df59" />
      
      und sie können Erscheinungsbild mit jeder Replikation verändern.
@@ -1533,6 +1534,11 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
   4. Trojaner: Software mit zusätzlicher, böswilliger Funktion; repliziert sich i.d.R nicht von selbst
   5. Ransomware: ist Trojaner, der Dateien verschlüsellt und nur gegen Lösegeld-Zahlung wieder freigibt / oder auch nicht
   6. Scareware: ist Trojaner, der z.N als Virenscanner vermeintlich gefundene Viren gegen Bezahlung lösen soll
+  7. Spyware: convertly collects every type of information from the user and sends it tp a 3rd party
+  8. Keylogger: surveillance software that records all keystrokes made by the user
+  9. Rootkits: malware that enables an attacker to take control of the victim's machine
+  10. Adware: is a subtype of malware that downloads ans/or displays undesired advertising for revenue
+  11. Bots: mallicious software that runs automated tasks for criminal activity purposes
  
 - Weise, die Malware verbreiten können:
   1. klassisch: als E-Mail Anhang oder während einer Programm-Installation
@@ -1542,11 +1548,7 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
   3. physich: durch infiziert Tokens
      + Gegenmaßnahmen: nur vertrauenswürdige Quelle akzeptieren
 
-More Malware Types:
-
-<img width="858" height="318" alt="Bildschirmfoto 2026-03-02 um 12 19 14" src="https://github.com/user-attachments/assets/112eba96-3f47-4caa-a345-fe68987a8c57" />
-
-Common Malware API Calls:
+Common API Calls to recognize Malware:
 <img width="823" height="342" alt="Bildschirmfoto 2026-03-02 um 12 20 43" src="https://github.com/user-attachments/assets/f2f101d5-05e8-4131-9c1c-bae87c40f0cb" />
 
 
