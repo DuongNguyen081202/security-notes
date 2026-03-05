@@ -1935,9 +1935,11 @@ BGP has no built-in security mechanisms, Computational efficiency, speed and von
 ### C Coding Guidelines
 Insecure coding functions and their secure counterparts:
 - strcat() / strncat()
+- strcpy() / strncpy() or ctrlcpy()
 - stpcpy() / stpncpy()
+- sprintf() / snprintf()
+- gets() / fgets()
 - getwd() / getcwd()
-- getwd() / getcw
 
 ### Satellite
 **SATCOM Infrastructure**
