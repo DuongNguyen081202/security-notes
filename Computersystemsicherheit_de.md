@@ -100,9 +100,9 @@ DES, 3-DES, AES, Serpent, Twofish, Blowfish sind Blockchiffren (konkrete Algorit
  - Schlüssellänge: 128, 192 oder 256 Bits
  - ist mit Seiten-Kanal-Angriffe oder Fehleerangriffe angreifbar.
  - Probleme von AES:
-  + ist nur sicher solange die Implementierung und dazugehörige Systeme richtig konfiguriert sind
-  + Schwache Schlüssel und IV-Generierung kann die Sicherheit von AES gefährden
-  + Side-channel Angriffe können verwendet werden. um den Schlüssel abzuleiten (Gegenmaßnahme: Konstantzeit-Implementierung für Timing Angriffe, Maskierung für Power Ananlysis, oder AES-NI - eine Hardwareunterstützung/ eine Erweiterung des x86-Befehlssatzes von Intel- und AMD-Prozessoren, die eine sichere und schnellere Anwendung von AES) 
+   + ist nur sicher solange die Implementierung und dazugehörige Systeme richtig konfiguriert sind
+   + Schwache Schlüssel und IV-Generierung kann die Sicherheit von AES gefährden
+   + Side-channel Angriffe können verwendet werden. um den Schlüssel abzuleiten (Gegenmaßnahme: Konstantzeit-Implementierung für Timing Angriffe, Maskierung für Power Ananlysis, oder AES-NI - eine Hardwareunterstützung/ eine Erweiterung des x86-Befehlssatzes von Intel- und AMD-Prozessoren, die eine sichere und schnellere Anwendung von AES) 
   
 - Probleme von Block-Chiffren:
   + Nicht IND-CPA sicher, weil es deterministisch ist
