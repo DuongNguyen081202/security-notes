@@ -467,7 +467,7 @@ Bis jetzt kennen wir 3 Arten für Datenintegrität: Kollisions-resistente Hashfu
       - Setup:
         + Gruppe G zyklisch, Primordnung q, Generator g
         + Schlüssel: privat $\{x\} \in {1,...,q-1}$, öffentlich $\{y\} = \{g\}^\{x\}$
-      - Signieren:einer Nachricht $m$:
+      - Signieren: einer Nachricht $m$:
          1. Wähle zufällig (und geheim) $k \in \{1,\dots,q-1\}$ .
          2. Berechne $R = g^k$ und $r = H(R \,\|\, m)$ .
          3. Berechne $s = k + r x \pmod q$ .
