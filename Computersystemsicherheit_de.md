@@ -1533,7 +1533,7 @@ Was ist **SQL**: steht für Structured Query Language, ist eine Sprach, um mit D
 
   4. Trojaner: Software mit zusätzlicher, böswilliger Funktion; repliziert sich i.d.R nicht von selbst
   5. Ransomware: ist Trojaner, der Dateien verschlüsellt und nur gegen Lösegeld-Zahlung wieder freigibt / oder auch nicht
-  6. Scareware: ist Trojaner, der z.N als Virenscanner vermeintlich gefundene Viren gegen Bezahlung lösen soll
+  6. Scareware: ist Trojaner, der z.B als Virenscanner vermeintlich gefundene Viren gegen Bezahlung lösen soll
   7. Spyware: convertly collects every type of information from the user and sends it tp a 3rd party
   8. Keylogger: surveillance software that records all keystrokes made by the user
   9. Rootkits: malware that enables an attacker to take control of the victim's machine
