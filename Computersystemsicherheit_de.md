@@ -753,10 +753,13 @@ Ressourcen und Diensten zugreifen
 - Schutzziel: Integrität und Vertraulichkeit
 - Es gibt 2 Arten der Autorisierung:
   1. Rechtfestsetzung - Nach wer die Policy festlegt:
-     1. **Discretionary Access Control (DAC)**: Benutzerbestimmbare Zugriffskontrolle: Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest
-     2. **Mandatory Access Control (MAC)**: Systembestimmte Zugriffskontrolle: Autorität setzt Zugriffsrechte fest
-  2. Zuweisungsprinzip - Nach wie die Policy modelliert wird:
-     1. **Role-based Acess Control (RBAC)**: Zugriffsrecht durch Rolle festgelegt 
+     1. **Discretionary Access Control (DAC)**: Benutzerbestimmbare Zugriffskontrolle: Eigentümer des Objekts legt Zugriffsrechte für Subjekte fest <img width="547" height="128" alt="Bildschirmfoto 2026-03-10 um 15 37 36" src="https://github.com/user-attachments/assets/43b9ab0b-d347-40aa-b3eb-51e5afe8b17e" />
+
+     2. **Mandatory Access Control (MAC)**: Systembestimmte Zugriffskontrolle: Autorität setzt Zugriffsrechte fest<img width="431" height="260" alt="Bildschirmfoto 2026-03-10 um 15 38 30" src="https://github.com/user-attachments/assets/7f48bc58-f9a9-4fe2-a749-0027d628c708" />
+
+  3. Zuweisungsprinzip - Nach wie die Policy modelliert wird:
+     1. **Role-based Acess Control (RBAC)**: Zugriffsrecht durch Rolle festgelegt <img width="443" height="351" alt="Bildschirmfoto 2026-03-10 um 15 38 08" src="https://github.com/user-attachments/assets/509fd5f7-6a68-4f83-826a-ae66ac5c28df" />
+
      2. **Attribute-based Access Control (ABAC)**: feinere Zugriffsrecht gemäß logischer Formel
 
 Beisiele für **DAC**: 
