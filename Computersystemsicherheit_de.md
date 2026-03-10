@@ -779,8 +779,8 @@ Beisiele für **DAC**:
   + Beschränkter Zugriff, z.B. Änderung des eigenen Passworts in der Passwortdatei schwierig zu implementieren
 
 Beispiel von **MAC** ist **Bell-LaPadula Modell** das klassische Modell mit Fokus auf Vertraulichkeit in Multi-Level Security. Dieses Model regelt die Informationsflüsse in eine Hierarchie: 
-- **No-Read-Up Regel**: Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
-- **No-Write-Down Regel**: Erzeugung von Objekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
+- **No-Read-Up Regel** (für Objekte): Lesezugriff (*read*) nur erlaubt wenn Hierarchie Subjekt ≥ Hierarchie Objekt
+- **No-Write-Down Regel** (für Subjekte): Erzeugung von Objekten (*append*) nur für Hierarchie ≥ Hierarchie des Subjekts
   
 So muss jedem Subjekt eine Sicherheitsklasse $\{SC(s)\} \in \{SC\}$ zugewiesen (*Clearance*), und jedem Objekt wird eine Sicherheitsklasse $\{SC(o)\} \in \{SC\}$ zugewiesen (*Classification*)
 
