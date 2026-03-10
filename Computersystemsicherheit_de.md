@@ -1741,8 +1741,7 @@ Wie man erschwert die Angriffe?
            3. Die Clients senden nur Modell-Updates (z. B. Gradienten oder Gewichte) an den Server.
            4. Der Server aggregiert die Updates (z. B. durch Mittelwertbildung) und erstellt ein neues globales Modell.
            5. Der Prozess wiederholt sich iterativ.
-             → Daten bleiben lokal, nur Modellparameter werden geteilt.
-<img width="433" height="242" alt="Bildschirmfoto 2026-03-02 um 11 32 46" src="https://github.com/user-attachments/assets/1a972c79-c6c1-47ca-a8d7-ecdbf0ffdc61" />
+             → Daten bleiben lokal, nur Modellparameter werden geteilt. <img width="433" height="242" alt="Bildschirmfoto 2026-03-02 um 11 32 46" src="https://github.com/user-attachments/assets/1a972c79-c6c1-47ca-a8d7-ecdbf0ffdc61" />
 
          * Vorteile:
            1. Privacy preserving
